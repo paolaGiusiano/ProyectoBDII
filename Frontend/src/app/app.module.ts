@@ -14,6 +14,7 @@ import { ReglasComponent } from './components/reglas/reglas.component';
 import { ComoJugarComponent } from './components/como-jugar/como-jugar.component';
 import { PaginaPrincipalComponent } from './components/pagina-principal/pagina-principal.component';
 import { AuthService } from './services/auth.service';
+import { PrediccionesService } from './services/predicciones.service';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { AuthService } from './services/auth.service';
     ReglasComponent,
     ComoJugarComponent,
     PaginaPrincipalComponent,
+    PrediccionesComponent,
  
   ],
   imports: [
@@ -36,7 +38,7 @@ import { AuthService } from './services/auth.service';
     ReactiveFormsModule,
     AppRoutingModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, PrediccionesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

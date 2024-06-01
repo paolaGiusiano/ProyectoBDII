@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!---<!DOCTYPE html>
 <html lang="es">
 
 <body>
@@ -12,7 +12,6 @@
                     <input type="number" id="score-team-a-1" placeholder="Equipo A" required>
                     <input type="number" id="score-team-b-1" placeholder="Equipo B" required>
                 </div>
-                <!-- Add more matches as needed -->
                 <div class="prediction">
                     <label for="champion">Predicción de Campeón: </label>
                     <input type="text" id="champion" placeholder="Equipo Campeón" required>
@@ -28,3 +27,38 @@
     <script src="predicciones.ts"></script>
 </body>
 </html>
+--->
+
+
+<div class="preiccion-container">
+    <div class="prediccion-content">
+      <<form [formGroup]="predictionForm" (ngSubmit)="submitPrediction()">
+        
+        <div class="form-group">
+            <label for="selectedMatch">Seleccionar Partido:</label>
+            <select id="selectedMatch" formControlName="selectedMatch" class="form-control">
+              <option *ngFor="let match of matches" [value]="match.id">{{ match.name }}</option>
+            </select>
+        </div>
+  
+        
+        <div class="form-group">
+            <label for="prediccionLocal">Predicción Local:</label>
+            <input type="text" id="prediccionLocal" formControlName="prediccionLocal">
+        </div>
+  
+        <div class="form-group">
+            <label for="prediccionVisitante">Predicción Visitante:</label>
+            <input type="text" id="prediccionVisitante" formControlName="prediccionVisitante">
+        </div>
+
+        <div class="btn-container">
+          <button type="submit" class="btn btn-primary" [disabled]="!predictionForm.valid">Enviar Predicción</button>
+        </div>
+      
+    
+    </form>
+  
+    </div>
+  </div>
+  
