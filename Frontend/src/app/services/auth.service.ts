@@ -33,6 +33,7 @@ export class AuthService {
 }
 */
 
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -41,7 +42,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/login'; // URL de tu API de backend
+  private apiUrl = 'http://localhost:3000/login';
 
   constructor(private http: HttpClient) {}
 
@@ -49,4 +50,3 @@ export class AuthService {
     return this.http.post<any>(this.apiUrl, { username, password });
   }
 }
-

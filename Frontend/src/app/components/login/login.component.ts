@@ -104,35 +104,34 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-
   login() {
-    if (this.loginForm.valid) {   
+    if (this.loginForm.valid) {
       const username = this.username?.value;
       const password = this.password?.value;
 
-      if (username && password) {
-        this.authService.login(username, password)
-          .subscribe(
-            (response: any) => {
-              if (response && response.message === 'Login successful') {
-                this.router.navigate(['/inicio']);
-              } else {
-                alert('Usuario o contraseña incorrectos.');
-              }
-            },
-            error => {
-              console.error('Error al iniciar sesión:', error);
-              alert('Error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.');
-            }
-          );
-      } else {
-        alert('Usuario o contraseña no pueden estar vacíos.');
-      }
+      this.authService.login(username, password).subscribe(
+        (response: any) => {
+          if (response && response.message === 'Login successful') {
+            // Redireccionar a la página de inicio después de iniciar sesión exitosamente
+            this.router.navigate(['/inicio']);
+          } else {
+            // Mostrar un mensaje de error si el inicio de sesión falla
+            alert('Usuario o contraseña incorrectos.');
+          }
+        },
+        error => {
+          // Mostrar un mensaje de error si hay un problema con la solicitud HTTP
+          console.error('Error al iniciar sesión:', error);
+          alert('Error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.');
+        }
+      );
     } else {
+      // Marcar todos los campos del formulario como "touched" si el formulario no es válido
       this.loginForm.markAllAsTouched();
-      alert('Error al ingresar los datos.');
+      alert('Por favor, complete todos los campos.');
     }
   }
+
 
   
 }
