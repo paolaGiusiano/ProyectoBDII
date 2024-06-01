@@ -1,0 +1,41 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f4f8; 
+  color: #444; 
+  line-height: 1.6; 
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #31416f;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más definida */
+  margin-bottom: 2rem; /* espacio entre tarjetas */
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-body h2 {
+  font-size: 1.5rem; 
+  margin-bottom: 1rem;
+  color: #31416f;
+}
+
+.card-body p {
+  font-size: 1.1rem; 
+  margin-bottom: 1rem; /* espacio entre párrafos */
+}

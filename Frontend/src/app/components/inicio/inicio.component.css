@@ -1,0 +1,120 @@
+header {
+  background-color: rgba(49,65,111,255);
+  padding: 35px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff;
+  position: relative;
+}
+
+header img.logo {
+  position: absolute;
+  top: -40px; 
+  left: 20px; 
+  width: 290px;
+  height: auto;
+  clip-path: inset(45px 50px 45px 50px); /* Recorta */
+}
+
+.hero {
+  text-align: center;
+  padding: 100px 0;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.title {
+  font-size: 48px;
+  color: rgba(49, 65, 111, 255);
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  margin-top: -50px;
+}
+
+.subtitle {
+  font-size: 24px;
+  color: rgba(49, 65, 111, 255);
+  margin-top: 50px;
+}
+
+.login {
+  position: absolute;
+  top: 40px; 
+  right: 80px;
+}
+
+.nav a.login-link {
+  color: white;
+  text-decoration: none;
+}
+
+/* Estilos para los íconos */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 50px;
+  margin-top: -50px;
+  text-decoration: none;
+  color: #000000;
+  transition: transform 0.3s ease;
+}
+
+.icon img {
+  width: 150px;
+  height: auto;
+  clip-path: inset(0px 0px 6px 0px); /* Recorta solo la imagen por debajo */
+}
+
+.icon span {
+  font-size: 16px;
+  margin-top: 10px; 
+}
+
+.icon:hover {
+  transform: translateY(-5px);
+  color: #FFA500;
+}
+
+/* Estilos para el footer */
+footer {
+  background-color: rgba(49, 65, 111, 255);
+  color: white;
+  text-align: center;
+  padding: 15px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 85px;
+}
+
+.footer h2 {
+  margin: 0;
+  font-size: 17px;
+  color: rgb(255, 255, 255);
+}
+
+.footer-content {
+  margin-left: 1220px; 
+}
+
+.social-icons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.social-icons a {
+  margin: 0 15px;
+  text-decoration: none;
+}
+
+.social-icons img {
+  width: 17px;
+  height: auto;
+}

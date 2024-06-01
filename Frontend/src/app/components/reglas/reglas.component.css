@@ -1,0 +1,37 @@
+/* Estilos para el contenedor principal */
+.container {
+    max-width: 900px; /* Ampliación del ancho */
+    margin: 0 auto; /* Centrar */
+    padding: 40px 20px; /* Aumento del espacio interno */
+    text-align: center; /* Centrar el texto */
+  }
+  
+  /* Estilos para los títulos */
+  .main-heading, h2 {
+    color: rgba(49,65,111,255); /* Color del texto */
+    font-family: 'Arial', sans-serif; /* Familia de fuentes */
+    font-weight: bold; /* Negrita */
+  }
+  
+  /* Estilos para las tarjetas */
+  .rule-card {
+    margin-top: 50px; /* Espacio entre tarjetas */
+    background: #fff; /* Fondo de la tarjeta */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    padding: 30px; 
+    text-align: left; 
+  }
+  
+  /* Estilos  párrafos */
+  p {
+    margin-bottom: 20px; 
+    line-height: 1.6; 
+  }
+  
+  /* Estilos para el mensaje de buena suerte */
+  .good-luck {
+    font-style: italic; 
+    color: #666; 
+    margin-top: 40px; 
+  }

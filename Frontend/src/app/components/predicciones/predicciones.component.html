@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<body>
+    
+    <main>
+        <section id="predictions-section">
+            <h2>Ingrese sus Predicciones</h2>
+            <form id="predictions-form">
+                <div class="prediction">
+                    <label for="match-1">Partido 1 (Equipo A vs Equipo B): </label>
+                    <input type="number" id="score-team-a-1" placeholder="Equipo A" required>
+                    <input type="number" id="score-team-b-1" placeholder="Equipo B" required>
+                </div>
+                <!-- Add more matches as needed -->
+                <div class="prediction">
+                    <label for="champion">Predicción de Campeón: </label>
+                    <input type="text" id="champion" placeholder="Equipo Campeón" required>
+                </div>
+                <div class="prediction">
+                    <label for="runner-up">Predicción de Subcampeón: </label>
+                    <input type="text" id="runner-up" placeholder="Equipo Subcampeón" required>
+                </div>
+                <button type="submit">Guardar Predicciones</button>
+            </form>
+        </section>
+    </main>
+    <script src="predicciones.ts"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 150px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#predictions-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.prediction {
+    margin-bottom: 1rem;
+}
+
+.prediction label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.prediction input[type="number"],
+.prediction input[type="text"] {
+    width: calc(50% - 1rem);
+    padding: 0.5rem;
+    margin-right: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}

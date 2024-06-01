@@ -1,0 +1,64 @@
+.login-container {
+  background-image: url('https://imgs.elpais.com.uy/dims4/default/0bd5c85/2147483647/strip/false/crop/2240x1400+0+0/resize/1200x750!/quality/90/?url=https%3A%2F%2Fel-pais-uruguay-production-web.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fuploads%2F2020%2F11%2F27%2F5fc18a8828c65.jpeg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, ); /* Ajustar último valor para cambiar la opacidad */
+}
+
+.login-content {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 110px; 
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+
+.login-content h2 {
+  text-align: center;
+  margin-top: -40px;
+}
+
+.login-content form {
+  max-width: 500px; 
+  width: 100%; 
+  margin: 0 auto;
+  margin-left: -60px;
+}
+
+
+
+.btn-container {
+  margin-top: 20px; 
+}
+
+.btn-container button {
+  width: 100%;
+}
+
+.form-control {
+  width: 150%; 
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  margin-top: 15px;
+}
+
+.text-danger {
+  color: red;
+}
+
+
+.register-link {
+    position: relative; 
+    left: -60px; 
+    top: 20px; 
+  }
+  
