@@ -11,11 +11,13 @@ export class PrediccionesService {
 
   constructor(private http: HttpClient) { }
 
-  getMatches(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/matches`);
+ 
+  getUpcomingMatches(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/matches/upcoming`);
   }
 
   submitPrediction(prediction: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/prediccion`, prediction);
+    return this.http.post(`${this.baseUrl}/predicciones`, prediction);
   }
+
 }

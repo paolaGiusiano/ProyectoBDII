@@ -28,14 +28,14 @@ import { PrediccionesService } from './services/predicciones.service';
     ReglasComponent,
     ComoJugarComponent,
     PaginaPrincipalComponent,
-    PrediccionesComponent,
+
  
   ],
   imports: [
-    HttpClientModule, 
     BrowserModule,
-    RouterModule,
     ReactiveFormsModule,
+    HttpClientModule, 
+    RouterModule,
     AppRoutingModule,
   ],
   providers: [AuthService, PrediccionesService],
