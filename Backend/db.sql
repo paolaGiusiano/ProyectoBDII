@@ -20,17 +20,50 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`documento`)
 );
 
+CREATE TABLE IF NOT EXISTS `carrerra` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  `departamento` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `administrador` (
+  `documento` varchar(8) NOT NULL,
+  PRIMARY KEY (`documento`),
+  FOREIGN KEY (`documento`) REFERENCES `usuario`(`documento`)
+);
+
+CREATE TABLE IF NOT EXISTS `alumno` (
+  `documento` varchar(8) NOT NULL,
+  `año_ingreso` year(4) NOT NULL,
+  `id_carrera` int(11) NOT NULL,
+  PRIMARY KEY (`documento`),
+  FOREIGN KEY (`documento`) REFERENCES `usuario`(`documento`),
+  FOREIGN KEY (`id_carrera`) REFERENCES `carrerra`(`id`)
+);
+
+
 
 CREATE TABLE IF NOT EXISTS `prediccion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `documento_usuario` varchar(8) NOT NULL,
-  `fecha_partido` date NOT NULL,
-  `local` varchar(20) NOT NULL,
-  `visitante` varchar(20) NOT NULL,
-  `prediccion_local` int(11) NOT NULL,
-  `prediccion_visitante` int(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `documento_alumno` VARCHAR(8) NOT NULL,
+  `id_partido` INT NOT NULL,
+  `prediccion_local` INT(11) NOT NULL,
+  `prediccion_visitante` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`documento_usuario`) REFERENCES `usuario`(`documento`)
+  FOREIGN KEY (`documento_alumno`) REFERENCES `alumno`(`documento`),
+  FOREIGN KEY (`id_partido`) REFERENCES `compite`(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `prediccion_campeonato` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `documento_alumno` VARCHAR(8) NOT NULL,
+  `campeon` VARCHAR(50) NOT NULL,
+  `subcampeon` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`documento_alumno`) REFERENCES `alumno`(`documento`),
+  FOREIGN KEY (`campeon`) REFERENCES `equipo`(`pais`),
+  FOREIGN KEY (`subcampeon`) REFERENCES `equipo`(`pais`)
 );
 
 
@@ -60,6 +93,22 @@ CREATE TABLE IF NOT EXISTS `plantel` (
 );
 
 
+CREATE TABLE IF NOT EXISTS `resultado` (
+  `id_partido` int(25) NOT NULL,
+  `goles_local` int(11) NOT NULL,
+  `goles_visitante` int(11) NOT NULL,
+  `fecha` DATE NOT NULL,
+  PRIMARY KEY (`id_partido`),
+  FOREIGN KEY (`id_partido`) REFERENCES `compite`(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `premio` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+
 ------------------------------------------------------------------------------------
 
 
@@ -81,9 +130,21 @@ INSERT INTO `login` (`username`, `password`, `documento_usuario`)
 VALUES ('test.user', '$2b$10$BUGEwwF5kXguL205h/1OxOOrQ3bnoIeTAJ/1Aaq7AJbef62Lh2erm', '11223344');
 
 
-
--- INSERTAR LOS EQUIPOS 
 USE `pencaucu`;
+
+
+INSERT INTO `carrerra` (`nombre`, `departamento`) VALUES
+('Ingeniería de Sistemas', 'Facultad de Ingeniería'),
+('Medicina', 'Facultad de Ciencias de la Salud'),
+('Derecho', 'Facultad de Derecho'),
+('Economía', 'Facultad de Ciencias Económicas'),
+('Arquitectura', 'Facultad de Arquitectura'),
+('Psicología', 'Facultad de Humanidades'),
+('Biología', 'Facultad de Ciencias Exactas'),
+('Química', 'Facultad de Ciencias Exactas'),
+('Filosofía', 'Facultad de Humanidades'),
+('Matemáticas', 'Facultad de Ciencias Exactas');
+
 
 INSERT INTO `equipo` (`pais`) VALUES
 ('Argentina'),
@@ -608,7 +669,9 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
-SELECT * FROM equipo;
+
+SELECT * FROM carrerra;
+SELECT * FROM prediccion;
 SELECT * FROM compite;
 SELECT * FROM equipo;
 
