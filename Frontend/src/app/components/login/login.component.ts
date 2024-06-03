@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  
+
   get username() {
     return this.loginForm.get('username');
   }
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-
+  
   login() {
     if (this.loginForm.valid) {
       const username = this.username?.value;
@@ -43,9 +45,9 @@ export class LoginComponent implements OnInit {
         (response: any) => {
           if (response && response.message === 'Login successful') {
             if (response.role === 'alumno') {
-              this.router.navigate(['/inicio']);
-            } else if (response.role === 'administrador') {
               this.router.navigate(['/paginaPrincipal']);
+            } else if (response.role === 'administrador') {
+              this.router.navigate(['/inicio']);
             }
           } else {
             alert('Usuario o contraseña incorrectos.');
@@ -65,6 +67,3 @@ export class LoginComponent implements OnInit {
 
   
 }
-
- 
-

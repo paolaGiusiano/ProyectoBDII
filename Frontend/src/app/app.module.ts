@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { HttpClientModule } from '@angular/common/http'; 
+import { FormBuilder } from '@angular/forms';
 import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -36,6 +37,7 @@ import { PrediccionesService } from './services/predicciones.service';
     ReactiveFormsModule,
     HttpClientModule, 
     RouterModule,
+    FormBuilder,
     AppRoutingModule,
   ],
   providers: [AuthService, PrediccionesService],
