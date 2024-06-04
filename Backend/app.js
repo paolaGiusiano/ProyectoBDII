@@ -173,10 +173,6 @@ app.post('/championship-predictions', (req, res) => {
 });
 
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
 
 
 // Ruta para obtener predicciones por documento del alumno
@@ -198,4 +194,28 @@ app.get('/predictions/:documento', (req, res) => {
 
     res.json(results);
   });
+});
+
+
+// Ruta para eliminar una predicción
+app.delete('/predictions/:id_prediccion', (req, res) => {
+  const id_prediccion = req.params.id_prediccion;
+
+  const deletePredictionQuery = 'DELETE FROM prediccion WHERE id = ?'; 
+
+  connection.query(deletePredictionQuery, [id_prediccion], (error, results) => {
+    if (error) {
+      console.error('Error deleting prediction:', error);
+      return res.status(500).json({ error: 'Database error deleting prediction' });
+    }
+
+    res.status(200).json({ message: 'Prediction deleted successfully' });
+  });
+});
+
+
+
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
