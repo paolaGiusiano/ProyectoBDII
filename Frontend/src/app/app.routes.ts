@@ -7,15 +7,15 @@ import { PremiosComponent } from './components/premios/premios.component';
 import { ReglasComponent } from './components/reglas/reglas.component';
 import { ComoJugarComponent } from './components/como-jugar/como-jugar.component';
 import { PaginaPrincipalComponent } from './components/pagina-principal/pagina-principal.component';
+import { VerPrediccionesComponent } from './components/ver-predicciones/ver-predicciones.component';
 
 
 export const routes: Routes = [ 
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'inicio', component: InicioComponent },
-    //{ path: 'inicio', component: InicioComponent },
-    //{ path: 'login', component: LoginComponent },
     { path: 'predicciones', component: PrediccionesComponent},
+    { path: 'ver-predicciones', component: VerPrediccionesComponent},
     { path: 'premios', component: PremiosComponent},
     { path: 'reglas', component: ReglasComponent},
     { path: 'como-jugar', component: ComoJugarComponent},
