@@ -33,5 +33,27 @@ export class VerPrediccionesComponent implements OnInit {
       console.error('Documento del usuario no encontrado');
     }
   }
-  
+
+
+  deletePrediction(id_prediccion: number): void {
+    const documento = this.authService.getDocumento();
+    if (documento) {
+      this.predictionService.deletePrediction(id_prediccion).subscribe(() => {
+        this.loadPredictions();
+      }, error => {
+        console.error('Error al eliminar la predicción', error);
+      });
+    } else {
+      console.error('Documento del usuario no encontrado');
+    }
+  }
+
+
+
+  editPrediction(prediction: any): void {
+    console.log('Editar predicción:', prediction);
+  }
+
+
+
 }

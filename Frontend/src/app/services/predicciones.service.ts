@@ -53,4 +53,8 @@ export class PrediccionesService {
   }
 
 
+  deletePrediction(id_prediccion: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/predictions/${id_prediccion}`);
+  }
+
 }
