@@ -48,5 +48,9 @@ export class PrediccionesService {
     return this.http.post(`${this.baseUrl}/championship-predictions`, prediction);
   }
 
+  getPredictions(documento: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/predictions/${documento}`);
+  }
+
 
 }

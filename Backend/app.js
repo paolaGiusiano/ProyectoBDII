@@ -177,3 +177,25 @@ app.post('/championship-predictions', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+
+// Ruta para obtener predicciones por documento del alumno
+app.get('/predictions/:documento', (req, res) => {
+  const documento = req.params.documento;
+
+  const query = `
+    SELECT p.*, c.equipo_local, c.equipo_visitante 
+    FROM prediccion p
+    JOIN compite c ON p.id_partido = c.id
+    WHERE p.documento_alumno = ?
+  `;
+
+  connection.query(query, [documento], (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error.sqlMessage);
+      return res.status(500).json({ error: 'Error de base de datos al obtener las predicciones', details: error.sqlMessage });
+    }
+
+    res.json(results);
+  });
+});

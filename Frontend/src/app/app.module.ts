@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { HttpClientModule } from '@angular/common/http'; 
 import { FormBuilder } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -16,6 +17,7 @@ import { ComoJugarComponent } from './components/como-jugar/como-jugar.component
 import { PaginaPrincipalComponent } from './components/pagina-principal/pagina-principal.component';
 import { AuthService } from './services/auth.service';
 import { PrediccionesService } from './services/predicciones.service';
+import { VerPrediccionesComponent } from './components/ver-predicciones/ver-predicciones.component';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { PrediccionesService } from './services/predicciones.service';
     ReglasComponent,
     ComoJugarComponent,
     PaginaPrincipalComponent,
+    VerPrediccionesComponent,
 
  
   ],

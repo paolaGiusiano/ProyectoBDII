@@ -50,3 +50,16 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+
+.dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(49,65,111,255);
+    min-width: 160px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

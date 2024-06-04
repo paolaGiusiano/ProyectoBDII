@@ -49,10 +49,13 @@ export class AuthService {
     );
   }
 
+  
   getDocumento(): string | null {
     const documento = this.documento || localStorage.getItem('documento');
     return documento;
   }
+
+
 
   logout(): void {
     this.documento = null;
