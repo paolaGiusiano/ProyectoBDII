@@ -1,13 +1,12 @@
-<!-- src/app/ver-predicciones/ver-predicciones.component.html -->
-
 <div *ngIf="predictions.length > 0; else noPredictions">
     <h2>Mis Predicciones</h2>
     <div *ngFor="let prediction of predictions">
-      <p>Partido: {{ prediction.equipo_local }} vs {{ prediction.equipo_visitante }}</p>
-      <p>Predicción: {{ prediction.prediccion_local }} - {{ prediction.prediccion_visitante }}</p>
+        <p>Partido: {{ prediction.equipo_local }} vs {{ prediction.equipo_visitante }}</p>
+        <p>Predicción: {{ prediction.prediccion_local }} - {{ prediction.prediccion_visitante }}</p>  
+        <button (click)="deletePrediction(prediction.id)">Eliminar</button>
+        <button (click)="editPrediction(prediction)">Modificar</button>
     </div>
-  </div>
-  <ng-template #noPredictions>
+</div>
+<ng-template #noPredictions>
     <p>No hay predicciones para mostrar.</p>
-  </ng-template>
-  
+</ng-template>
