@@ -67,6 +67,7 @@ import { Router } from '@angular/router';
 import { PrediccionesService } from '../../services/predicciones.service';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-predicciones',
@@ -86,7 +87,7 @@ export class PrediccionesComponent implements OnInit {
     runnerUp: ''
   };
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private predictionService: PrediccionesService, private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private predictionService: PrediccionesService, private authService: AuthService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.loadUpcomingMatches();
@@ -104,14 +105,14 @@ export class PrediccionesComponent implements OnInit {
 
   onMatchChange(event: any): void {
     this.prediction.matchId = this.selectedMatch.id;
+    
   }
 
   submitPrediction(): void {
     const documento_alumno = this.authService.getDocumento();
     if (documento_alumno) {
       console.log('Documento del usuario:', documento_alumno);
-  
-      // Datos para la tabla 'prediccion'
+
       const predictionData = {
         documento_alumno: documento_alumno,
         id_partido: this.prediction.matchId,
@@ -120,21 +121,32 @@ export class PrediccionesComponent implements OnInit {
         campeon: this.prediction.champion,
         subcampeon: this.prediction.runnerUp
       };
-  
+
       console.log('Enviando datos de predicción:', predictionData);
-  
-      // Envío de datos para la tabla 'prediccion'
+
       this.predictionService.submitPrediction(predictionData).subscribe(response => {
         console.log('Predicción enviada con éxito', response);
+        this.snackBar.open('Predicción guardada!', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
       }, error => {
-        console.error('Error al enviar la predicción', error);
+        if (error.status === 400 ) {
+          this.snackBar.open('Ya has hecho una predicción para este partido.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        } else {
+          this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
       });
     } else {
       console.error('Documento del usuario no encontrado');
     }
   }
-  
-  
   
   
 }

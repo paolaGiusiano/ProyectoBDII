@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'; 
 import { FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -39,6 +40,7 @@ import { VerPrediccionesComponent } from './components/ver-predicciones/ver-pred
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule, 
+    MatSnackBarModule,
     RouterModule,
     FormBuilder,
     AppRoutingModule,

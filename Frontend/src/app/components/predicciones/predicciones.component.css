@@ -105,3 +105,20 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.snackbar-error {
+  background-color: red;
+  color: white;
+}
+
+
+.snackbar-success {
+  background-color: green;
+  color: white;
+}
+
+.snackbar-error {
+  background-color: red;
+  color: white;
+}
+
