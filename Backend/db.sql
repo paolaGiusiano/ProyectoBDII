@@ -2,6 +2,15 @@ CREATE DATABASE IF NOT EXISTS `pencaucu`;
 
 USE `pencaucu`;
 
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `documento` varchar(8) NOT NULL,
+  `nombre` varchar(40) NOT NULL,
+  `apellido` varchar(40) NOT NULL,
+  `pais_nacimiento` varchar(40) NOT NULL,
+  `rol` varchar(20) NOT NULL, 
+  PRIMARY KEY (`documento`)
+);
+
 
 CREATE TABLE IF NOT EXISTS `login` (
   `username` varchar(100) NOT NULL PRIMARY KEY,
@@ -11,14 +20,6 @@ CREATE TABLE IF NOT EXISTS `login` (
 );
 
 
-CREATE TABLE IF NOT EXISTS `usuario` (
-  `documento` varchar(8) NOT NULL,
-  `nombre` varchar(40) NOT NULL,
-  `apellido` varchar(40) NOT NULL,
-  `pais_nacimiento` varchar(40) NOT NULL,
-  `rol` varchar(20) NOT NULL, 
-  PRIMARY KEY (`documento`)
-);
 
 CREATE TABLE IF NOT EXISTS `carrerra` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -43,6 +44,21 @@ CREATE TABLE IF NOT EXISTS `alumno` (
 );
 
 
+CREATE TABLE IF NOT EXISTS `equipo` (
+  `pais` VARCHAR(50) NOT NULL,
+   PRIMARY KEY (`pais`)
+);
+
+
+CREATE TABLE IF NOT EXISTS `compite` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `fecha` DATE NOT NULL,
+  `hora` TIME NOT NULL,
+  `equipo_local` VARCHAR(50) NOT NULL,
+  `equipo_visitante` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (`equipo_local`) REFERENCES `equipo` (`pais`),
+  FOREIGN KEY (`equipo_visitante`) REFERENCES `equipo` (`pais`)
+);
 
 CREATE TABLE IF NOT EXISTS `prediccion` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -64,23 +80,6 @@ CREATE TABLE IF NOT EXISTS `prediccion_campeonato` (
   FOREIGN KEY (`documento_alumno`) REFERENCES `alumno`(`documento`),
   FOREIGN KEY (`campeon`) REFERENCES `equipo`(`pais`),
   FOREIGN KEY (`subcampeon`) REFERENCES `equipo`(`pais`)
-);
-
-
-CREATE TABLE IF NOT EXISTS `equipo` (
-  `pais` VARCHAR(50) NOT NULL,
-   PRIMARY KEY (`pais`)
-);
-
-
-CREATE TABLE IF NOT EXISTS `compite` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `fecha` DATE NOT NULL,
-  `hora` TIME NOT NULL,
-  `equipo_local` VARCHAR(50) NOT NULL,
-  `equipo_visitante` VARCHAR(50) NOT NULL,
-  FOREIGN KEY (`equipo_local`) REFERENCES `equipo` (`pais`),
-  FOREIGN KEY (`equipo_visitante`) REFERENCES `equipo` (`pais`)
 );
 
 
@@ -108,8 +107,6 @@ CREATE TABLE IF NOT EXISTS `premio` (
   PRIMARY KEY (`id`)
 );
 
-
-------------------------------------------------------------------------------------
 
 
 USE `pencaucu`;
@@ -634,6 +631,8 @@ INSERT INTO `plantel` (`nombre`, `posicion`, `equipo_id`) VALUES
 
 -- insert vs 
 
+
+
 -- Fase de grupos - Jornada 1 de 3
 INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
 ('2024-06-20', '21:00', 'Argentina', 'Canadá'), 
@@ -669,10 +668,8 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
-
-SELECT * FROM prediccion;
-SELECT * FROM prediccion;
-SELECT * FROM compite;
+SELECT * FROM prediccion_campeonato;
+SELECT * FROM carrerra;
 SELECT * FROM equipo;
 
 

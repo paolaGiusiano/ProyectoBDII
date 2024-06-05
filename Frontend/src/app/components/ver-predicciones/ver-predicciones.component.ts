@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class VerPrediccionesComponent implements OnInit {
   predictions: any[] = [];
+  torneoPrediction: any = null;
   showEditForm: boolean = false;
   editingPrediction: any;
    editingPredictionId: number | null = null;
@@ -36,6 +37,7 @@ export class VerPrediccionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPredictions();
+    this.loadTorneoPrediction();
   }
 
   loadPredictions(): void {
@@ -50,6 +52,22 @@ export class VerPrediccionesComponent implements OnInit {
       console.error('Documento del usuario no encontrado');
     }
   }
+
+  loadTorneoPrediction(): void {
+    const documento = this.authService.getDocumento();
+    if (documento) {
+      console.log("TS TORNEO: ", documento);
+      this.predictionService.getTorneoPrediction(documento).subscribe(prediction => {
+        this.torneoPrediction = prediction;
+      }, error => {
+        console.error('Error al cargar la predicción del torneo', error);
+      });
+    } else {
+      console.error('Documento del usuario no encontrado');
+    }
+  }
+
+
 
   deletePrediction(id_prediccion: number): void {
     const documento = this.authService.getDocumento();

@@ -79,10 +79,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class PrediccionesComponent implements OnInit {
   upcomingMatches: any[] = [];
   selectedMatch: any;
-  prediction: any = {
+  matchPrediction: any = {
     local: 0,
     visitante: 0,
     matchId: null,
+    champion: '',
+    runnerUp: ''
+  };
+  torneoPrediction: any = {
     champion: '',
     runnerUp: ''
   };
@@ -98,51 +102,80 @@ export class PrediccionesComponent implements OnInit {
       this.upcomingMatches = matches;
       if (this.upcomingMatches.length > 0) {
         this.selectedMatch = this.upcomingMatches[0];
-        this.prediction.matchId = this.selectedMatch.id;
+        this.matchPrediction.matchId = this.selectedMatch.id;
       }
     });
   }
 
   onMatchChange(event: any): void {
-    this.prediction.matchId = this.selectedMatch.id;
+    this.matchPrediction.matchId = this.selectedMatch.id;
     
   }
 
-  submitPrediction(): void {
+  submitMatchPrediction(): void {
     const documento_alumno = this.authService.getDocumento();
     if (documento_alumno) {
-      console.log('Documento del usuario:', documento_alumno);
 
       const predictionData = {
         documento_alumno: documento_alumno,
-        id_partido: this.prediction.matchId,
-        prediccion_local: this.prediction.local,
-        prediccion_visitante: this.prediction.visitante,
-        campeon: this.prediction.champion,
-        subcampeon: this.prediction.runnerUp
+        id_partido: this.matchPrediction.matchId,
+        prediccion_local: this.matchPrediction.local,
+        prediccion_visitante: this.matchPrediction.visitante,
+        
       };
 
       console.log('Enviando datos de predicción:', predictionData);
 
-      this.predictionService.submitPrediction(predictionData).subscribe(response => {
+      this.predictionService.submitMatchPrediction(predictionData).subscribe(response => {
         console.log('Predicción enviada con éxito', response);
         this.snackBar.open('Predicción guardada!', 'Cerrar', {
           duration: 3000,
           panelClass: ['snackbar-success']
         });
       }, error => {
-        if (error.status === 400 ) {
+        if (error.status === 400) {
           this.snackBar.open('Ya has hecho una predicción para este partido.', 'Cerrar', {
             duration: 3000,
             panelClass: ['snackbar-error']
           });
         } else {
           this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
-            duration: 3000,
+            duration: 5000,
             panelClass: ['snackbar-error']
           });
         }
       });
+    } else {
+      console.error('Documento del usuario no encontrado');
+    }
+  }
+
+  submitTournamentPrediction(): void {
+    const documento_alumno = this.authService.getDocumento();
+    if (documento_alumno) {
+      const predictionData = {
+        documento_alumno: documento_alumno,
+        campeon: this.torneoPrediction.champion,
+        subcampeon: this.torneoPrediction.runnerUp
+      };
+      this.predictionService.submitTournamentPrediction(predictionData).subscribe(response => {
+        this.snackBar.open('Predicción del torneo guardada!', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      }, error => {
+          if (error.status === 400) {
+              this.snackBar.open('Ya has hecho una predicción para este partido.', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-error']
+            });
+          } else {
+            this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
+              duration: 5000,
+              panelClass: ['snackbar-error']
+            });
+          }
+        });
     } else {
       console.error('Documento del usuario no encontrado');
     }

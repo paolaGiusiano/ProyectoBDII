@@ -41,25 +41,27 @@ export class PrediccionesService {
     return this.http.get(`${this.baseUrl}/matches/upcoming`);
   }
 
-  submitPrediction(prediction: any): Observable<any> {
+  submitMatchPrediction(prediction: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/predictions`, prediction);
   }
-
  
-  submitChampionshipPrediction(prediction: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/championship-predictions`, prediction);
+  submitTournamentPrediction(predictionData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/championship-predictions`, predictionData);
   }
 
   getPredictions(documento: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/predictions/${documento}`);
   }
 
+  getTorneoPrediction(documento: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/tournament-prediction/${documento}`);
+  }
 
   deletePrediction(id_prediccion: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/predictions/${id_prediccion}`);
   }
 
-
+  //modificar/actualizar una prediccion
   updatePrediction(predictionData: any): Observable<any> {
     const url = `${this.baseUrl}/predictions/${predictionData.id}`;
     return this.http.put(url, predictionData);

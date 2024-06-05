@@ -51,7 +51,24 @@ app.post('/login', (req, res) => {
           return res.status(500).json({ error: 'Error comparing passwords' });
         }
         if (isMatch) {
-          res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
+          // Insertar en la tabla correspondiente
+          if (userRole === 'alumno') {
+            insertAlumno(documento, (insertError) => {
+              if (insertError) {
+                return res.status(500).json({ error: 'Error inserting alumno' });
+              }
+              res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
+            });
+          } else if (userRole === 'administrador') {
+            insertAdministrador(documento, (insertError) => {
+              if (insertError) {
+                return res.status(500).json({ error: 'Error inserting administrador' });
+              }
+              res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
+            });
+          } else {
+            res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
+          }
         } else {
           res.status(401).json({ message: 'Invalid username or password' });
         }
@@ -62,7 +79,43 @@ app.post('/login', (req, res) => {
   });
 });
 
+function insertAlumno(documento, callback) {
+  const checkQuery = 'SELECT * FROM alumno WHERE documento = ?';
+  connection.query(checkQuery, [documento], (checkError, checkResults) => {
+    if (checkError) return callback(checkError);
+    if (checkResults.length > 0) return callback(null); // Ya está insertado
 
+    const randomYear = Math.floor(Math.random() * (2024 - 2015 + 1)) + 2015;
+    const randomCarreraQuery = 'SELECT id FROM carrerra ORDER BY RAND() LIMIT 1';
+
+    connection.query(randomCarreraQuery, (carreraError, carreraResults) => {
+      if (carreraError) return callback(carreraError);
+      if (carreraResults.length === 0) return callback(new Error('No carreras found'));
+
+      const idCarrera = carreraResults[0].id;
+      const insertQuery = 'INSERT INTO alumno (documento, año_ingreso, id_carrera) VALUES (?, ?, ?)';
+
+      connection.query(insertQuery, [documento, randomYear, idCarrera], (insertError) => {
+        if (insertError) return callback(insertError);
+        callback(null);
+      });
+    });
+  });
+}
+
+function insertAdministrador(documento, callback) {
+  const checkQuery = 'SELECT * FROM administrador WHERE documento = ?';
+  connection.query(checkQuery, [documento], (checkError, checkResults) => {
+    if (checkError) return callback(checkError);
+    if (checkResults.length > 0) return callback(null); // Ya está insertado
+
+    const insertQuery = 'INSERT INTO administrador (documento) VALUES (?)';
+    connection.query(insertQuery, [documento], (insertError) => {
+      if (insertError) return callback(insertError);
+      callback(null);
+    });
+  });
+}
 
 // Ruta para eliminar un usuario
 app.delete('/user/:documento', (req, res) => {
@@ -100,7 +153,6 @@ app.get('/matches/upcoming', (req, res) => {
       console.error('Error executing query:', error);
       return res.status(500).send('Internal Server Error');
     }
-    console.log('Query executed successfully:', results);
     res.json(results);
   });
 });
@@ -108,14 +160,13 @@ app.get('/matches/upcoming', (req, res) => {
 
 
 app.post('/predictions', (req, res) => {
-  const { id_partido, prediccion_local, prediccion_visitante, campeon, subcampeon } = req.body;
+  const { id_partido, prediccion_local, prediccion_visitante} = req.body;
   const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
-
   // Validación de datos
-  if (!documento_alumno || !id_partido || prediccion_local === undefined || prediccion_visitante === undefined || !campeon || !subcampeon) {
+  if (!documento_alumno || !id_partido || prediccion_local === undefined || prediccion_visitante === undefined) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
-
+ 
   // Verificar si ya existe una predicción para este partido por este alumno
   const checkPredictionQuery = `
     SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?
@@ -134,11 +185,6 @@ app.post('/predictions', (req, res) => {
     const insertPredictionQuery = `
       INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante)
       VALUES (?, ?, ?, ?)
-    `;
-
-    const insertPredictionChampionshipQuery = `
-      INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon)
-      VALUES (?, ?, ?)
     `;
 
     // Inserta la predicción del partido
@@ -165,29 +211,47 @@ app.post('/predictions', (req, res) => {
 
 
 // Ruta para guardar predicción del campeonato
+// Ruta para guardar predicción del campeonato
 app.post('/championship-predictions', (req, res) => {
   const { documento_alumno, campeon, subcampeon } = req.body;
-
+  console.log("POST TORNEO");
+  
   // Validación de datos
   if (!documento_alumno || !campeon || !subcampeon) {
     return res.status(400).json({ error: 'Faltan campos obligatorios campeonato' });
   }
 
-  const insertPredictionChampionshipQuery = `
-    INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon)
-    VALUES (?, ?, ?)
+  // Verificar si ya existe una predicción de campeonato para este alumno
+  const checkTournamentPredictionQuery = `
+    SELECT * FROM prediccion_campeonato WHERE documento_alumno = ?
   `;
-
-  // Inserta la predicción del campeonato
-  connection.query(insertPredictionChampionshipQuery, [documento_alumno, campeon, subcampeon], (error, results) => {
+  
+  connection.query(checkTournamentPredictionQuery, [documento_alumno], (error, results) => {
     if (error) {
-      console.error('Error de base de datos al guardar la predicción del campeonato:', error.sqlMessage);
-      return res.status(500).json({ error: 'Error de base de datos al guardar la predicción del campeonato', details: error.sqlMessage });
+      console.error('Error de base de datos al verificar la predicción del campeonato:', error.sqlMessage);
+      return res.status(500).json({ error: 'Error de base de datos al verificar la predicción del campeonato', details: error.sqlMessage });
     }
 
-    res.status(200).json({ message: 'Predicción de campeonato guardada con éxito' });
+    if (results.length > 0) {
+      return res.status(400).json({ error: 'Ya existe una predicción de campeonato para este alumno' });
+    }
+
+    const insertPredictionChampionshipQuery = `
+      INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon)
+      VALUES (?, ?, ?)
+    `;
+
+    connection.query(insertPredictionChampionshipQuery, [documento_alumno, campeon, subcampeon], (error, results) => {
+      if (error) {
+        console.error('Error de base de datos al guardar la predicción del campeonato:', error.sqlMessage);
+        return res.status(500).json({ error: 'Error de base de datos al guardar la predicción del campeonato', details: error.sqlMessage });
+      }
+
+      res.status(200).json({ message: 'Predicción de campeonato guardada con éxito' });
+    });
   });
 });
+
 
 
 
@@ -213,6 +277,27 @@ app.get('/predictions/:documento', (req, res) => {
   });
 });
 
+
+// Ruta para obtener la prediccion del torneo por documento del alumno
+app.get('/tournament-prediction/:documento', (req, res) => {
+  const documento = req.params.documento;
+  const getTournamentPredictionQuery = `
+    SELECT campeon, subcampeon
+    FROM prediccion_campeonato
+    WHERE documento_alumno = ?
+  `;
+  connection.query(getTournamentPredictionQuery, [documento], (error, results) => {
+    if (error) {
+      console.error('Error fetching tournament prediction:', error);
+      return res.status(500).json({ error: 'Database error fetching tournament prediction' });
+    }
+    if (results.length > 0) {
+      res.status(200).json(results[0]);
+    } else {
+      res.status(404).json({ error: 'No tournament prediction found' });
+    }
+  });
+});
 
 // Ruta para eliminar una predicción
   app.delete('/predictions/:id_prediccion', (req, res) => {
@@ -251,7 +336,7 @@ app.get('/predictions/:documento', (req, res) => {
   // Ruta para actualizar una predicción
   app.put('/predictions/:predictionId', async (req, res) => {
     const id_prediccion = req.params.predictionId; 
-    const { documento_alumno, id_partido, prediccion_local, prediccion_visitante} = req.body; // Obtenemos los datos del cuerpo de la solicitud
+    const { documento_alumno, id_partido, prediccion_local, prediccion_visitante} = req.body; 
     
     try {
       const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
@@ -280,7 +365,6 @@ app.get('/predictions/:documento', (req, res) => {
         }
   
       });
-  
 
 
 
