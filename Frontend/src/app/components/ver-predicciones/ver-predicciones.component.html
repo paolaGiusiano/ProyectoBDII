@@ -10,3 +10,21 @@
 <ng-template #noPredictions>
     <p>No hay predicciones para mostrar.</p>
 </ng-template>
+
+
+<!-- Formulario de Edición -->
+<div *ngIf="showEditForm">
+    <h3>Editar Predicción</h3>
+    <form [formGroup]="editPredictionForm" (ngSubmit)="updatePrediction()">
+        <div>
+            <label for="prediccion_local">Predicción Local:</label>
+            <input formControlName="prediccion_local" id="prediccion_local" type="number">
+        </div>
+        <div>
+            <label for="prediccion_visitante">Predicción Visitante:</label>
+            <input formControlName="prediccion_visitante" id="prediccion_visitante" type="number">
+        </div>
+        <button type="submit">Guardar Cambios</button>
+        <button type="button" (click)="cancelEdit()">Cancelar</button>
+    </form>
+</div>

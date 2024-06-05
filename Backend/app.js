@@ -198,20 +198,74 @@ app.get('/predictions/:documento', (req, res) => {
 
 
 // Ruta para eliminar una predicción
-app.delete('/predictions/:id_prediccion', (req, res) => {
-  const id_prediccion = req.params.id_prediccion;
+  app.delete('/predictions/:id_prediccion', (req, res) => {
+    const id_prediccion = req.params.id_prediccion;
 
-  const deletePredictionQuery = 'DELETE FROM prediccion WHERE id = ?'; 
+    const deletePredictionQuery = 'DELETE FROM prediccion WHERE id = ?'; 
 
-  connection.query(deletePredictionQuery, [id_prediccion], (error, results) => {
-    if (error) {
-      console.error('Error deleting prediction:', error);
-      return res.status(500).json({ error: 'Database error deleting prediction' });
-    }
+    connection.query(deletePredictionQuery, [id_prediccion], (error, results) => {
+      if (error) {
+        console.error('Error deleting prediction:', error);
+        return res.status(500).json({ error: 'Database error deleting prediction' });
+      }
 
-    res.status(200).json({ message: 'Prediction deleted successfully' });
+      res.status(200).json({ message: 'Prediction deleted successfully' });
+    });
   });
-});
+
+
+
+  function obtenerHoraInicioPartido(id_partido) {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT hora FROM compite WHERE id = ?';
+      connection.query(query, [id_partido], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        if (results.length > 0) {
+          resolve(new Date(results[0].hora));
+        } else {
+          reject(new Error('Partido no encontrado'));
+        }
+      });
+    });
+  }  
+  
+  // Ruta para actualizar una predicción
+  app.put('/predictions/:predictionId', async (req, res) => {
+    const id_prediccion = req.params.predictionId; 
+    const { documento_alumno, id_partido, prediccion_local, prediccion_visitante} = req.body; // Obtenemos los datos del cuerpo de la solicitud
+    
+    try {
+      const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
+      const horaActual = new Date();
+      const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
+  
+      if (diferenciaHoras < 1) {
+        return res.status(400).json({ error: 'No se puede modificar la predicción porque el partido está a menos de una hora de comenzar.' });
+      }
+  
+      const updatePredictionQuery = `
+        UPDATE prediccion
+        SET documento_alumno = ?, id_partido = ?, prediccion_local = ?, prediccion_visitante = ?
+        WHERE id = ?
+      `;
+      connection.query(updatePredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante, id_prediccion], (error, results) => {
+        if (error) {
+          console.error('Error updating prediction:', error);
+          return res.status(500).json({ error: 'Database error updating prediction' });
+        }
+        res.status(200).json({ success: true, message: 'Predicción actualizada correctamente', data: { id: id_prediccion, documento_alumno, id_partido, prediccion_local, prediccion_visitante } });
+        });
+        } catch (error) {
+          console.error('Error:', error);
+          res.status(500).json({ error: 'Internal Server Error', details: error.message });
+        }
+  
+      });
+  
+
+
 
 
 

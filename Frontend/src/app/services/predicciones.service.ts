@@ -24,8 +24,10 @@ export class PrediccionesService {
 */
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError  } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +57,25 @@ export class PrediccionesService {
 
   deletePrediction(id_prediccion: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/predictions/${id_prediccion}`);
+  }
+
+
+  updatePrediction(predictionData: any): Observable<any> {
+    const url = `${this.baseUrl}/predictions/${predictionData.id}`;
+    return this.http.put(url, predictionData);
+  }
+ 
+ 
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '¡Error desconocido!';
+    if (error.error instanceof ErrorEvent) {
+      // Errores del lado del cliente
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Errores del lado del servidor
+      errorMessage = `Código de Error: ${error.status}\nMensaje: ${error.message}`;
+    }
+    return throwError(errorMessage);
   }
 
 }
