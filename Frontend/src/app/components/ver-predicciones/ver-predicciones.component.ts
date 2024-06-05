@@ -110,12 +110,9 @@ export class VerPrediccionesComponent implements OnInit {
         }
       });
     } else {
-      console.error('No se ha seleccionado ninguna predicción para actualizar');
+      console.error('No se ha seleccionado ninguna predicción para modificar');
     }
   }
-  
-
-
   
 
   cancelEdit(): void {
