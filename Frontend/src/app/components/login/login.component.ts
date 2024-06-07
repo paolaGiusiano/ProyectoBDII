@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit {
         (response: any) => {
           if (response && response.message === 'Login successful') {
             if (response.role === 'alumno') {
-              this.router.navigate(['/paginaPrincipal']);
-            } else if (response.role === 'administrador') {
               this.router.navigate(['/inicio']);
+            } else if (response.role === 'administrador') {
+              this.router.navigate(['/paginaPrincipal']);
             }
           } else {
             alert('Usuario o contraseña incorrectos.');
