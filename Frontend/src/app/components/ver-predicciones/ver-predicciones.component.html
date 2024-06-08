@@ -1,38 +1,50 @@
-<div *ngIf="torneoPrediction; else noTournamentPrediction">
-    <h2>Mi Predicción del Torneo</h2>
-    <p>Campeón: {{ torneoPrediction.campeon }}</p>
-    <p>Subcampeón: {{ torneoPrediction.subcampeon }}</p>
-</div>
-<ng-template #noTournamentPrediction>
-    <p>No hay predicción del torneo para mostrar.</p>
-</ng-template>
+<!-- Separación del navbar -->
+<nav class="navbar">
+    <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+        <li class="nav-item"><a href="#predicciones" class="nav-link">Predicciones</a></li>
+    </ul>
+</nav>
 
-<div *ngIf="predictions.length > 0; else noPredictions">
-    <h2>Mis Predicciones de Partidos</h2>
-    <div *ngFor="let prediction of predictions">
-        <p>Partido: {{ prediction.equipo_local }} vs {{ prediction.equipo_visitante }}</p>
-        <p>Predicción: {{ prediction.prediccion_local }} - {{ prediction.prediccion_visitante }}</p>  
-        <button (click)="deletePrediction(prediction.id)">Eliminar</button>
-        <button (click)="editPrediction(prediction)">Modificar</button>
+<div id="predicciones" class="tournament-prediction-section">
+    <div *ngIf="torneoPrediction; else noTournamentPrediction">
+        <h2>Predicción Torneo</h2>
+        <p>Campeón: {{ torneoPrediction.campeon }}</p>
+        <p>Subcampeón: {{ torneoPrediction.subcampeon }}</p>
     </div>
+    <ng-template #noTournamentPrediction>
+        <p>No hay predicción del torneo para mostrar.</p>
+    </ng-template>
+</div>
+
+<div class="match-prediction-section" *ngIf="predictions.length > 0; else noPredictions">
+    <h2>Predicciones de Partidos</h2>
+    <div *ngFor="let prediction of predictions" class="prediction-item">
+        <p>{{ prediction.equipo_local }} {{ prediction.prediccion_local }} - {{ prediction.prediccion_visitante }} {{ prediction.equipo_visitante }}</p>  
+        <button class="red-button" (click)="deletePrediction(prediction.id)">Eliminar</button>
+        <button (click)="editPrediction(prediction)">Modificar</button>
+  
+    <div *ngIf="showEditForm" class="modal">
+        <div class="modal-content">
+            <span class="close" (click)="cancelEdit()">&times;</span>
+            <h3>Editar Predicción</h3>
+            <form [formGroup]="editPredictionForm" (ngSubmit)="updatePrediction()">
+                <div>
+                    <label for="prediccion_local">{{ prediction.equipo_local }}:</label>
+                    
+                    <input formControlName="prediccion_local" id="prediccion_local" type="number">
+                </div>
+                <div>
+                    <label for="prediccion_visitante">{{ prediction.equipo_visitante }}:</label>
+                    <input formControlName="prediccion_visitante" id="prediccion_visitante" type="number">
+                </div>
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" (click)="cancelEdit()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</div>
 </div>
 <ng-template #noPredictions>
     <p>No hay predicciones para mostrar.</p>
 </ng-template>
-
-<!-- Formulario de Edición -->
-<div *ngIf="showEditForm">
-    <h3>Editar Predicción</h3>
-    <form [formGroup]="editPredictionForm" (ngSubmit)="updatePrediction()">
-        <div>
-            <label for="prediccion_local">Predicción Local:</label>
-            <input formControlName="prediccion_local" id="prediccion_local" type="number">
-        </div>
-        <div>
-            <label for="prediccion_visitante">Predicción Visitante:</label>
-            <input formControlName="prediccion_visitante" id="prediccion_visitante" type="number">
-        </div>
-        <button type="submit">Guardar Cambios</button>
-        <button type="button" (click)="cancelEdit()">Cancelar</button>
-    </form>
-</div>
