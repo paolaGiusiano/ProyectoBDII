@@ -1,82 +1,62 @@
-<!---<div class="container">
-  <h2>Próximos Partidos</h2>
-  <div>
-    <label for="seleccionarPartido">Seleccionar Partido:</label>
-    <select id="seleccionarPartido" [(ngModel)]="selectedMatch" (change)="onMatchChange($event)">
-      <option *ngFor="let match of upcomingMatches" [ngValue]="match">{{ match.equipo_local }} vs {{ match.equipo_visitante }} - {{ match.fecha | date:'dd/MM' }}</option>
-    </select>
-  </div>
-  <div *ngIf="selectedMatch">
-    <form (ngSubmit)="submitPrediction()">
-      <div>
-        <label for="localPrediction">Predicción para {{ selectedMatch.equipo_local }}</label>
-        <input id="localPrediction" type="number" [(ngModel)]="prediction.local" name="localPrediction" required>
+<div class="container1">
+  <!-- Navigation bar -->
+  <nav class="navbar">
+    <img src="https://www.ucu.edu.uy/plantillas/images/avatar.png" alt="Logo" class="logo">
+      <div class="nav-container">
+          <a href="../inicio" class="nav-link">Inicio</a>
+          <a href="../ver-predicciones/" class="nav-link">Mis predicciones</a>
       </div>
-      <div>
-        <label for="visitorPrediction">Predicción para {{ selectedMatch.equipo_visitante }}</label>
-        <input id="visitorPrediction" type="number" [(ngModel)]="prediction.visitante" name="visitorPrediction" required>
-      </div>
-      <div class="prediction">
-        <label for="champion">Predicción de Campeón: </label>
-        <input type="text" id="champion" placeholder="Equipo Campeón" [(ngModel)]="prediction.champion" name="champion" required>
-      </div>
-      <div class="prediction">
-        <label for="runner-up">Predicción de Subcampeón: </label>
-        <input type="text" id="runner-up" placeholder="Equipo Subcampeón" [(ngModel)]="prediction.runnerUp" name="runnerUp" required>
-      </div>
-      <input type="hidden" [(ngModel)]="prediction.matchId" [value]="selectedMatch?.id" name="matchId">
-      <button type="submit">Guardar Predicción</button>
-    </form>
-  </div>
-</div>
-
---->
-
-<div class="prediction-container">
-  <h2>Predicciones</h2>
+  </nav>
   
-  <!-- Match Predictions Form -->
-  <div class="form-group">
-    <label for="seleccionarPartido">Seleccionar Partido:</label>
-    <select id="seleccionarPartido" [(ngModel)]="selectedMatch" (change)="onMatchChange($event)">
-      <option *ngFor="let match of upcomingMatches" [ngValue]="match">
-        {{ match.equipo_local }} vs {{ match.equipo_visitante }} - {{ match.fecha | date:'dd/MM' }}
-      </option>
-    </select>
-  </div>
-  <div *ngIf="selectedMatch" class="prediction-form">
-    <form (ngSubmit)="submitMatchPrediction()">
-      <div class="prediction-section">
-        <h3>Predicciones del Partido</h3>
-        <div class="input-group">
-          <label for="localPrediction">Predicción para {{ selectedMatch.equipo_local }}</label>
-          <input id="localPrediction" type="number" [(ngModel)]="matchPrediction.local" name="localPrediction" required>
-        </div>
-        <div class="input-group">
-          <label for="visitorPrediction">Predicción para {{ selectedMatch.equipo_visitante }}</label>
-          <input id="visitorPrediction" type="number" [(ngModel)]="matchPrediction.visitante" name="visitorPrediction" required>
-        </div>
+  <div class="predictions-container-wrapper">
+    <div class="predictions-container">
+      <h2 id="inicio">Predicciones del Partido</h2>
+      <div class="form-group">
+        <label for="seleccionarPartido">Seleccionar Partido:</label>
+        <select id="seleccionarPartido" [(ngModel)]="selectedMatch" (change)="onMatchChange($event)">
+          <option *ngFor="let match of upcomingMatches" [ngValue]="match">
+            {{ match.equipo_local }} vs {{ match.equipo_visitante }} - {{ match.fecha | date:'dd/MM' }}
+          </option>
+        </select>
       </div>
-      <input type="hidden" [(ngModel)]="matchPrediction.matchId" [value]="selectedMatch?.id" name="matchId">
-      <button type="submit">Guardar Predicción</button>
-    </form>
-  </div>
-  
-  <!-- Tournament Predictions Form -->
-  <div class="prediction-form">
-    <form (ngSubmit)="submitTournamentPrediction()">
-      <div class="prediction-section">
-        <h3>Predicciones del Torneo</h3>
-        <div class="input-group">
-          <label for="champion">Predicción de Campeón:</label>
-          <input type="text" id="champion" placeholder="Equipo Campeón" [(ngModel)]="torneoPrediction.champion" name="champion" required>
-        </div>
-        <div class="input-group">
-          <label for="runner-up">Predicción de Subcampeón:</label>
-          <input type="text" id="runner-up" placeholder="Equipo Subcampeón" [(ngModel)]="torneoPrediction.runnerUp" name="runnerUp" required>
-        </div>
+      <div *ngIf="selectedMatch" class="prediction-form">
+        <form (ngSubmit)="submitMatchPrediction()">
+          <div class="prediction-section">
+            <div class="input-group">
+              <label for="localPrediction">Predicción para {{ selectedMatch.equipo_local }}</label>
+              <input id="localPrediction" type="number" [(ngModel)]="matchPrediction.local" name="localPrediction" required>
+            </div>
+            <div class="input-group">
+              <label for="visitorPrediction">Predicción para {{ selectedMatch.equipo_visitante }}</label>
+              <input id="visitorPrediction" type="number" [(ngModel)]="matchPrediction.visitante" name="visitorPrediction" required>
+            </div>
+          </div>
+          <input type="hidden" [(ngModel)]="matchPrediction.matchId" [value]="selectedMatch?.id" name="matchId">
+          <button type="submit">Guardar Predicción</button>
+        </form>
       </div>
-      <button type="submit">Guardar Predicción del Torneo</button>
-    </form>
+    </div>
+    <div class="header-image">
+      <img src="https://www.ticketkosta.com/userfiles/small/9050ac301fb00d515b338c7b25b424d6.png" alt="Imagen de encabezado">
+      <!---<img src="https://cdn.conmebol.com/wp-content/uploads/2024/05/CopaAmerica2024_PRINCIPAL_RGB_Full-color_FondoClaro.png" alt="Imagen de encabezado">--->
+    </div>
+    <div class="prediction-container">
+      <h2 id="misPredicciones">Predicciones del Torneo</h2>
+      <div class="prediction-form">
+        <form (ngSubmit)="submitTournamentPrediction()">
+          <div class="prediction-section">
+            <div class="input-group">
+              <label for="champion">Predicción de Campeón:</label>
+              <input type="text" id="champion" placeholder="Equipo Campeón" [(ngModel)]="torneoPrediction.champion" name="champion" required>
+            </div>
+            <div class="input-group">
+              <label for="runner-up">Predicción de Subcampeón:</label>
+              <input type="text" id="runner-up" placeholder="Equipo Subcampeón" [(ngModel)]="torneoPrediction.runnerUp" name="runnerUp" required>
+            </div>
+          </div>
+          <button type="submit">Guardar Predicción del Torneo</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

@@ -194,15 +194,8 @@ app.post('/predictions', (req, res) => {
         return res.status(500).json({ error: 'Error de base de datos al guardar la predicción', details: error.sqlMessage });
       }
 
-      // Inserta la predicción del campeonato
-      connection.query(insertPredictionChampionshipQuery, [documento_alumno, campeon, subcampeon], (error, results) => {
-        if (error) {
-          console.error('Error de base de datos al guardar la predicción del campeonato:', error.sqlMessage);
-          return res.status(500).json({ error: 'Error de base de datos al guardar la predicción del campeonato', details: error.sqlMessage });
-        }
-
         res.status(200).json({ message: 'Predicción guardada con éxito' });
-      });
+
     });
   });
 });
