@@ -107,11 +107,12 @@
   }
   
   .banderas img {
-    max-width: 50px;
-    max-height: 30px;
+    max-width: 55px;
+    max-height: 35px;
     margin-right: 5px;
     margin: 0 20px; /* Ajustar margen alrededor de las imágenes */
-    border-radius: 14px;
+    border-radius: 50%; 
+    overflow: hidden; 
   }
   
   .partido-details {
