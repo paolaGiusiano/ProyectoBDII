@@ -1,0 +1,150 @@
+#calendario {
+    margin-left: 150px; 
+    margin-top: 60px;
+  }
+
+.fecha-container {
+    margin-bottom: 30px;
+  }
+  
+  .fecha-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: -50px;
+  }
+  
+  .partidos-por-fecha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .logo {
+    position: absolute;
+    top: -20px; 
+    left: -5px; 
+    width: 220px;
+    height: 100px;
+    clip-path: inset(10px 40px 30px 10px);
+  }
+  
+  .navbar {
+    background-color: rgba(49, 65, 111, 255);
+    padding: 10px 0;
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 100px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-link:hover {
+    background-color:  rgba(255, 255, 255, 0.2);;
+  }
+  
+  .calendario-container {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    width: 315px; 
+    height: 255px; 
+    margin-top: 150px;
+    margin-left: 110px;
+    border-radius: 5%;
+    position: relative; 
+}
+  
+  .calendario-header::after {
+    content: "";
+    position: absolute;
+    top: -17px;
+    left: 0px;
+    width: 100%;
+    height: 180%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: brightness(0.7) contrast(1.2);
+    opacity: 0.5;
+    z-index: -1;
+    border-radius: 8%;
+    clip-path: inset(10% 0% 22% 0%);
+    background-image: var(--imagen-fondo);
+    
+  }
+  
+  .grupo-title {
+    font-weight: bold;
+    margin-top: -25px;
+  }
+  
+  .calendario-header {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding: 10px;
+    flex-direction: column; 
+  }
+  
+  .banderas {
+    display: flex;
+    justify-content: center; /* Centrar las banderas horizontalmente */
+    align-items: center;
+    margin-top: -29px; /* Ajustar margen superior para separar las banderas del título */
+  }
+  
+  .banderas img {
+    max-width: 50px;
+    max-height: 30px;
+    margin-right: 5px;
+    margin: 0 20px; /* Ajustar margen alrededor de las imágenes */
+    border-radius: 14px;
+  }
+  
+  .partido-details {
+    display: flex;
+    padding: 10px;
+    margin-top: 13px;
+  }
+  
+  .equipo {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .equipo-nombre {
+    margin-right: 0px;
+    font-weight: bold;
+  }
+  
+  .equipo img {
+    max-width: 50px;
+    max-height: 50px;
+    margin: 0 10px;
+  }
+  
+  .partido-info {
+    flex: 3;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+  
+  .partido-info div {
+    margin-bottom: 10px;
+  }
+  

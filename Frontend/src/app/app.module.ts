@@ -19,6 +19,9 @@ import { PaginaPrincipalComponent } from './components/pagina-principal/pagina-p
 import { AuthService } from './services/auth.service';
 import { PrediccionesService } from './services/predicciones.service';
 import { VerPrediccionesComponent } from './components/ver-predicciones/ver-predicciones.component';
+import { FixtureComponent } from './components/fixture/fixture.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
+
 
 
 @NgModule({
@@ -33,6 +36,8 @@ import { VerPrediccionesComponent } from './components/ver-predicciones/ver-pred
     ComoJugarComponent,
     PaginaPrincipalComponent,
     VerPrediccionesComponent,
+    FixtureComponent,
+    CalendarioComponent,
 
  
   ],

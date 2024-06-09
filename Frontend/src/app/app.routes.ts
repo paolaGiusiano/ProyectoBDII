@@ -8,6 +8,8 @@ import { ReglasComponent } from './components/reglas/reglas.component';
 import { ComoJugarComponent } from './components/como-jugar/como-jugar.component';
 import { PaginaPrincipalComponent } from './components/pagina-principal/pagina-principal.component';
 import { VerPrediccionesComponent } from './components/ver-predicciones/ver-predicciones.component';
+import { FixtureComponent } from './components/fixture/fixture.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
 
 
 export const routes: Routes = [ 
@@ -20,6 +22,8 @@ export const routes: Routes = [
     { path: 'reglas', component: ReglasComponent},
     { path: 'como-jugar', component: ComoJugarComponent},
     {path: 'paginaPrincipal', component: PaginaPrincipalComponent},
+    {path: 'fixture', component: FixtureComponent},
+    {path: 'calendario', component:  CalendarioComponent},
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 

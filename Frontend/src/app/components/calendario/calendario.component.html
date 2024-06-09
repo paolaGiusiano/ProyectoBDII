@@ -1,0 +1,35 @@
+<nav class="navbar">
+    <img src="https://www.ucu.edu.uy/plantillas/images/avatar.png" alt="Logo" class="logo">
+      <div class="nav-container">
+          <a href="../inicio" class="nav-link">Inicio</a>
+      </div>
+  </nav>
+
+<div id="calendario">
+    
+
+    <div *ngFor="let fecha of fechas" class="fecha-container">
+      <div class="fecha-title">{{ fecha }}</div>
+      <div class="partidos-por-fecha">
+        <div *ngFor="let partido of partidosPorFecha[fecha]" class="calendario-container">
+          <div class="calendario-header" [ngClass]="{ 'con-imagen-fondo': partido.imagenFondo }" [ngStyle]="{ '--imagen-fondo': 'url(' + partido.imagenFondo + ')' }">
+            <div class="grupo-title">{{ partido.grupo }}</div>
+          </div>
+          <div class="banderas">
+            <div class="equipo-nombre">{{ partido.equipos[0] }}</div>
+            <img [src]="partido.banderas[0]" alt="Foto Equipo 1">
+            <img [src]="partido.banderas[1]" alt="Foto Equipo 2">
+            <div class="equipo-nombre">{{ partido.equipos[1] }}</div>
+          </div>
+          <div class="partido-details">
+            <div class="partido-info">
+              <div>📅 {{ partido.fecha }}</div>
+              <div>🕒 {{ partido.hora }}</div>
+              <div>📍 {{ partido.lugar }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
