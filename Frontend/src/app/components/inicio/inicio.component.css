@@ -142,3 +142,22 @@ nav ul li:hover .dropdown-content {
   padding: 20px;
   display: flex;
 }
+
+
+
+
+.sidebar2 {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Centramos horizontalmente */
+  align-items: center; /* Centramos verticalmente */
+}
+
+.sidebar2 img {
+  width: 100%; /* Aseguramos que ocupe todo el ancho del contenedor */
+  height: auto;
+  max-width: 50%; /* Aseguramos que no exceda el ancho del contenedor */
+  max-height: 50%; /* Aseguramos que no exceda la altura del contenedor */
+  margin-top: -500px;
+  clip-path: inset(30% 5% 10% 10%);
+}
