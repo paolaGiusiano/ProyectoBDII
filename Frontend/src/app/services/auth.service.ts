@@ -62,4 +62,7 @@ export class AuthService {
     localStorage.removeItem('documento');
     console.log('Documento eliminado');
   }
+
+  
+
 }

@@ -28,6 +28,7 @@ connection.connect((err) => {
 });
 
 
+
 // Ruta para el login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
