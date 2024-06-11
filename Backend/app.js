@@ -159,20 +159,20 @@ app.get('/matches/upcoming', (req, res) => {
 });
 
 
-
-// Guardar resultados de los partidos
 app.post('/matches/results', (req, res) => {
   const { id_partido, goles_local, goles_visitante } = req.body;
-  const query = 'INSERT INTO resultado (id_partido, goles_local, goles_visitante, fecha) VALUES (?, ?, ?, CURDATE())';
-
-  connection.query(query, [id_partido, goles_local, goles_visitante], (error, results) => {
-    if (error) {
+  const query = 'INSERT INTO resultado (id_partido, goles_local, goles_visitante, fecha) SELECT ?, ?, ?, fecha FROM compite WHERE id = ?';
+  connection.query(query, [id_partido, goles_local, goles_visitante, id_partido], (error, results) => {
+    if (error) {  
       console.error('Error executing query:', error);
       return res.status(500).send('Internal Server Error');
-    }
-    res.status(200).send('Result saved successfully');
+    } 
+    res.status(200).json({ success: true, message: 'Result saved successfully' })
   });
 });
+
+
+
 
 
 

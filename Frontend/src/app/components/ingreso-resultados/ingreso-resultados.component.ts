@@ -3,6 +3,7 @@ import { FormGroup, Validators, ReactiveFormsModule, FormBuilder, FormsModule } 
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { ResultadoService } from '../../services/resultado.service';
 
 interface Match {
   id: number;
@@ -45,7 +46,7 @@ export class IngresoResultadosComponent implements OnInit {
     'Brasil': 'br.jpg',
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private resultadoService: ResultadoService) { }
 
   ngOnInit(): void {
     this.http.get<Match[]>('http://localhost:3000/matches/upcoming')
@@ -60,14 +61,20 @@ export class IngresoResultadosComponent implements OnInit {
 
   saveResult(matchId: number): void {
     const result = this.result[matchId];
-    this.http.post('http://localhost:3000/matches/results', {
+    this.resultadoService.saveResult({
       id_partido: matchId,
       goles_local: result.goles_local,
-      goles_visitante: result.goles_visitante
-    }).subscribe(response => {
-      console.log('Result saved', response);
-    });
+      goles_visitante: result.goles_visitante,
+    }).subscribe(
+      response => {
+        console.log('Result saved', response);
+      },
+      error => {
+        console.error('Error saving result:', error);
+      }
+    );
   }
+  
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);

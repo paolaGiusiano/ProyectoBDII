@@ -666,7 +666,7 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 ('2024-07-02', '22:00', 'Brasil', 'Colombia'),
 ('2024-07-02', '22:00', 'Paraguay', 'Costa Rica');
 
-
+DELETE FROM resultado;
 USE `pencaucu`;
 SELECT * FROM resultado;
 SELECT * FROM carrerra;

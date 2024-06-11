@@ -77,6 +77,8 @@
     filter: brightness(0.7) contrast(1);
     opacity: 0.5;
     z-index: -1;
+   /* background-blend-mode: darken;
+    background-color: rgba(0, 0, 0, 0.1); */
     border-radius: 8%;
     clip-path: inset(10% 0% 22% 0%);
     background-image: var(--imagen-fondo);

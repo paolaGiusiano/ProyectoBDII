@@ -1,14 +1,20 @@
-/*html, body {
-    height: 100%;
+/*body {
     margin: 0;
     padding: 0;
-}
-
-body {
+    font-family: Arial, sans-serif;
     background: url('https://static.deportes13.cl/sites/default/files/componentes/field-comp-fondo/2024-04/bg-ca2024-2.jpg') no-repeat center center fixed;
     background-size: cover;
+    background-blend-mode: darken;
+    background-color: rgba(0, 0, 0, 0.5); 
 }
-*/
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0px;
+    font-family: Arial, sans-serif;
+}*/
+
 
 body {
     margin: 0;
@@ -18,6 +24,7 @@ body {
     background-size: cover;
     background-blend-mode: darken;
     background-color: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad de la imagen de fondo */
+    min-height: 100vh; /* Establece el alto mínimo para asegurar que la imagen de fondo se muestre */
 }
 
 .container {
@@ -25,7 +32,11 @@ body {
     margin: 0 auto;
     padding: 0px;
     font-family: Arial, sans-serif;
+    background-color: rgba(255, 255, 255, 0.8); /* Ajusta la opacidad del contenedor */
+    border-radius: 8px; /* Añade bordes redondeados al contenedor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 .match {
     display: flex;

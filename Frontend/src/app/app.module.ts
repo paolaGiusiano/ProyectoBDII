@@ -22,6 +22,7 @@ import { VerPrediccionesComponent } from './components/ver-predicciones/ver-pred
 import { FixtureComponent } from './components/fixture/fixture.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
+import { ResultadoService } from './services/resultado.service';
 
 
 
@@ -52,7 +53,7 @@ import { IngresoResultadosComponent } from './components/ingreso-resultados/ingr
     FormBuilder,
     AppRoutingModule,
   ],
-  providers: [AuthService, PrediccionesService],
+  providers: [AuthService, PrediccionesService, ResultadoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
