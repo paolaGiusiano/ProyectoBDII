@@ -1,0 +1,182 @@
+import { Component } from '@angular/core';
+import { FormGroup, Validators, ReactiveFormsModule, FormBuilder, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PrediccionesService } from '../../services/predicciones.service';
+import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
+
+interface Match {
+  id: number;
+  fecha: string;
+  hora: string;
+  equipo_local: string;
+  equipo_visitante: string;
+}
+
+
+@Component({
+  selector: 'app-hacer-prediccion',
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  templateUrl: './hacer-prediccion.component.html',
+  styleUrl: './hacer-prediccion.component.css'
+})
+export class HacerPrediccionComponent {
+  matches: Match[] = [];
+  predictions: { [key: number]: any } = {};
+  tournamentPrediction: any = {
+    campeon: '',
+    subcampeon: ''
+  };
+ /* predictions: { [key: number]: { prediccion_local: number, prediccion_visitante: number } } = {};
+  tournamentPrediction = { campeon: '', subcampeon: '' };*/
+
+  teamFlags: { [key: string]: string } = {
+    'Argentina': 'arg.png',
+    'Canadá': 'can.png',
+    'Chile': 'chile.png',
+    'Perú': 'peru.png',
+    'Ecuador': 'ecu.jpg',
+    'Venezuela': 'ven.jpg',
+    'México': 'mex.jpg',
+    'Jamaica': 'jam.png',
+    'Estados Unidos': 'eeuu.jpg',
+    'Bolivia': 'boli.jpg',
+    'Uruguay': 'uy.jpg',
+    'Panamá': 'pan.jpg',
+    'Colombia': 'colom.jpg',
+    'Paraguay': 'py.png',
+    'Costa Rica': 'crica.jpg',
+    'Brasil': 'br.jpg',
+  };
+
+  
+
+  constructor(private formBuilder: FormBuilder, private router: Router, private predictionService: PrediccionesService, private authService: AuthService, private snackBar: MatSnackBar) { }
+
+  ngOnInit(): void {
+    this.loadUpcomingMatches();
+    this.loadSavedPredictions();
+  }
+
+  loadSavedPredictions(): void {
+    const documento = this.authService.getDocumento();
+    if (documento) {
+      this.predictionService.getPredictions(documento).subscribe(predictions => {
+        predictions.forEach((prediction: any) => {
+          this.predictions[prediction.id_partido] = {
+            prediccion_local: prediction.prediccion_local,
+            prediccion_visitante: prediction.prediccion_visitante
+          };
+        });
+      }, error => {
+        console.error('Error al cargar las predicciones guardadas', error);
+      });
+
+      this.predictionService.getTorneoPrediction(documento).subscribe(prediction => {
+        this.tournamentPrediction = prediction || { campeon: '', subcampeon: '' };
+      }, error => {
+        console.error('Error al cargar la predicción del torneo', error);
+      });
+    } else {
+      console.error('Documento del usuario no encontrado');
+    }
+  }
+
+  loadUpcomingMatches(): void {
+    this.predictionService.getUpcomingMatches().subscribe((matches: Match[]) => {
+      this.matches = matches;
+      matches.forEach(match => {
+        this.predictions[match.id] = {
+          prediccion_local: 0,
+          prediccion_visitante: 0
+        };
+      });
+    });
+  }
+
+
+  saveMatchPrediction(matchId: number): void {
+    const documento_alumno = this.authService.getDocumento();
+    if (documento_alumno) {
+      const predictionData = {
+        documento_alumno: documento_alumno,
+        id_partido: matchId,
+        prediccion_local: this.predictions[matchId].prediccion_local,
+        prediccion_visitante: this.predictions[matchId].prediccion_visitante,
+      };
+
+      this.predictionService.submitMatchPrediction(predictionData).subscribe(response => {
+        this.snackBar.open('Predicción guardada!', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      }, error => {
+        if (error.status === 400) {
+          this.snackBar.open('Ya has hecho una predicción para este partido.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        } else {
+          this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
+            duration: 5000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      });
+    } else {
+      console.error('Documento del usuario no encontrado');
+    }
+  }
+
+  saveTournamentPrediction(): void {
+    const documento_alumno = this.authService.getDocumento();
+    if (documento_alumno) {
+      const predictionData = {
+        documento_alumno: documento_alumno,
+        campeon: this.tournamentPrediction.campeon,
+        subcampeon: this.tournamentPrediction.subcampeon
+      };
+      this.predictionService.submitTournamentPrediction(predictionData).subscribe(response => {
+        this.snackBar.open('Predicción del torneo guardada!', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      }, error => {
+        if (error.status === 400) {
+          this.snackBar.open('Ya has hecho una predicción para este torneo.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        } else {
+          this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
+            duration: 5000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      });
+    } else {
+      console.error('Documento del usuario no encontrado');
+    }
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    // Obteniendo día y mes en formato 'DD/MM'
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    return `${day}/${month}`;
+  }
+
+
+  formatTime(time: string): string {
+    return time.substring(0, 5);
+  }
+
+  
+  getFlagUrl(team: string): string {
+    return `assets/${this.teamFlags[team] || 'default.png'}`;
+  }
+}

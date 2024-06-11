@@ -24,6 +24,8 @@ export class PrediccionesService {
     return this.http.post<any>(`${this.baseUrl}/championship-predictions`, predictionData);
   }
 
+
+
   getPredictions(documento: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/predictions/${documento}`);
   }

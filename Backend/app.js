@@ -174,16 +174,15 @@ app.post('/matches/results', (req, res) => {
 
 
 
-
-
 app.post('/predictions', (req, res) => {
+
   const { id_partido, prediccion_local, prediccion_visitante} = req.body;
   const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
   // Validación de datos
   if (!documento_alumno || !id_partido || prediccion_local === undefined || prediccion_visitante === undefined) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
- 
+
   // Verificar si ya existe una predicción para este partido por este alumno
   const checkPredictionQuery = `
     SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?

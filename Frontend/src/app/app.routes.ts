@@ -11,6 +11,7 @@ import { VerPrediccionesComponent } from './components/ver-predicciones/ver-pred
 import { FixtureComponent } from './components/fixture/fixture.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
+import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-prediccion.component';
 
 
 export const routes: Routes = [ 
@@ -26,6 +27,7 @@ export const routes: Routes = [
     {path: 'fixture', component: FixtureComponent},
     {path: 'calendario', component:  CalendarioComponent},
     {path: 'ingreso-resultado', component:  IngresoResultadosComponent},
+    {path: 'hacer-prediccion', component: HacerPrediccionComponent},
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 

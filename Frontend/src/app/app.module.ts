@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { HttpClientModule } from '@angular/common/http'; 
-import { FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppRoutingModule } from './app.routes';
@@ -23,8 +22,7 @@ import { FixtureComponent } from './components/fixture/fixture.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
 import { ResultadoService } from './services/resultado.service';
-
-
+import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-prediccion.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +39,7 @@ import { ResultadoService } from './services/resultado.service';
     FixtureComponent,
     CalendarioComponent,
     IngresoResultadosComponent,
-
- 
+    HacerPrediccionComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +47,7 @@ import { ResultadoService } from './services/resultado.service';
     HttpClientModule, 
     MatSnackBarModule,
     RouterModule,
-    FormBuilder,
+    CommonModule,
     AppRoutingModule,
   ],
   providers: [AuthService, PrediccionesService, ResultadoService],
