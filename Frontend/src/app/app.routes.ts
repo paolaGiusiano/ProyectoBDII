@@ -10,6 +10,7 @@ import { PaginaPrincipalComponent } from './components/pagina-principal/pagina-p
 import { VerPrediccionesComponent } from './components/ver-predicciones/ver-predicciones.component';
 import { FixtureComponent } from './components/fixture/fixture.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
+import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
 
 
 export const routes: Routes = [ 
@@ -24,6 +25,7 @@ export const routes: Routes = [
     {path: 'paginaPrincipal', component: PaginaPrincipalComponent},
     {path: 'fixture', component: FixtureComponent},
     {path: 'calendario', component:  CalendarioComponent},
+    {path: 'ingreso-resultado', component:  IngresoResultadosComponent},
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 

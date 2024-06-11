@@ -1,0 +1,89 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators, ReactiveFormsModule, FormBuilder, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+
+interface Match {
+  id: number;
+  fecha: string;
+  hora: string;
+  equipo_local: string;
+  equipo_visitante: string;
+}
+
+@Component({
+  selector: 'app-ingreso-resultados',
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  templateUrl: './ingreso-resultados.component.html',
+  styleUrl: './ingreso-resultados.component.css'
+})
+
+
+export class IngresoResultadosComponent implements OnInit {
+  matches: Match[] = [];
+  result: { [key: number]: { goles_local: number, goles_visitante: number } } = {};
+
+  // Mapa de equipos a nombres de archivos de banderas
+  teamFlags: { [key: string]: string } = {
+    'Argentina': 'arg.png',
+    'Canadá': 'can.png',
+    'Chile': 'chile.png',
+    'Perú': 'peru.png',
+    'Ecuador': 'ecu.jpg',
+    'Venezuela': 'ven.jpg',
+    'México': 'mex.jpg',
+    'Jamaica': 'jam.png',
+    'Estados Unidos': 'eeuu.jpg',
+    'Bolivia': 'boli.jpg',
+    'Uruguay': 'uy.jpg',
+    'Panamá': 'pan.jpg',
+    'Colombia': 'colom.jpg',
+    'Paraguay': 'py.png',
+    'Costa Rica': 'crica.jpg',
+    'Brasil': 'br.jpg',
+  };
+
+  constructor(private http: HttpClient) { }
+
+  ngOnInit(): void {
+    this.http.get<Match[]>('http://localhost:3000/matches/upcoming')
+      .subscribe(data => {
+        this.matches = data;
+        // Inicializa el objeto result para cada partido
+        this.matches.forEach(match => {
+          this.result[match.id] = { goles_local: 0, goles_visitante: 0 };
+        });
+      });
+  }
+
+  saveResult(matchId: number): void {
+    const result = this.result[matchId];
+    this.http.post('http://localhost:3000/matches/results', {
+      id_partido: matchId,
+      goles_local: result.goles_local,
+      goles_visitante: result.goles_visitante
+    }).subscribe(response => {
+      console.log('Result saved', response);
+    });
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    // Obteniendo día y mes en formato 'DD/MM'
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    return `${day}/${month}`;
+  }
+
+  formatTime(timeString: string): string {
+    const [hours, minutes] = timeString.split(':');
+    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  }
+  
+
+  getFlagUrl(team: string): string {
+    return `assets/${this.teamFlags[team] || 'default.png'}`;
+  }
+}

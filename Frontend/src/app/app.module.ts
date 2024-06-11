@@ -21,6 +21,7 @@ import { PrediccionesService } from './services/predicciones.service';
 import { VerPrediccionesComponent } from './components/ver-predicciones/ver-predicciones.component';
 import { FixtureComponent } from './components/fixture/fixture.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
+import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
 
 
 
@@ -38,6 +39,7 @@ import { CalendarioComponent } from './components/calendario/calendario.componen
     VerPrediccionesComponent,
     FixtureComponent,
     CalendarioComponent,
+    IngresoResultadosComponent,
 
  
   ],

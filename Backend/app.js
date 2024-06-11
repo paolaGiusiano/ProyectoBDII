@@ -145,7 +145,7 @@ app.delete('/user/:documento', (req, res) => {
 
 
 
-// Obtener los partidos próximos
+// Obtener los próximos partidos
 app.get('/matches/upcoming', (req, res) => {
   const query = 'SELECT * FROM compite WHERE fecha >= CURDATE() ORDER BY fecha, hora';
   
@@ -155,6 +155,22 @@ app.get('/matches/upcoming', (req, res) => {
       return res.status(500).send('Internal Server Error');
     }
     res.json(results);
+  });
+});
+
+
+
+// Guardar resultados de los partidos
+app.post('/matches/results', (req, res) => {
+  const { id_partido, goles_local, goles_visitante } = req.body;
+  const query = 'INSERT INTO resultado (id_partido, goles_local, goles_visitante, fecha) VALUES (?, ?, ?, CURDATE())';
+
+  connection.query(query, [id_partido, goles_local, goles_visitante], (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.status(200).send('Result saved successfully');
   });
 });
 
@@ -204,7 +220,6 @@ app.post('/predictions', (req, res) => {
 
 
 
-// Ruta para guardar predicción del campeonato
 // Ruta para guardar predicción del campeonato
 app.post('/championship-predictions', (req, res) => {
   const { documento_alumno, campeon, subcampeon } = req.body;
