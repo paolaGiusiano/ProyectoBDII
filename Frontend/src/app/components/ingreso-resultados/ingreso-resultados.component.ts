@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ResultadoService } from '../../services/resultado.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Match {
   id: number;
@@ -46,15 +47,20 @@ export class IngresoResultadosComponent implements OnInit {
     'Brasil': 'br.jpg',
   };
 
-  constructor(private http: HttpClient, private resultadoService: ResultadoService) { }
+  constructor(private http: HttpClient, private resultadoService: ResultadoService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.http.get<Match[]>('http://localhost:3000/matches/upcoming')
       .subscribe(data => {
         this.matches = data;
-        // Inicializa el objeto result para cada partido
+        // Initialize result object for each match
         this.matches.forEach(match => {
-          this.result[match.id] = { goles_local: 0, goles_visitante: 0 };
+          const savedResult = localStorage.getItem(`result_${match.id}`);
+          if (savedResult) {
+            this.result[match.id] = JSON.parse(savedResult);
+          } else {
+            this.result[match.id] = { goles_local: 0, goles_visitante: 0 };
+          }
         });
       });
   }
@@ -68,9 +74,19 @@ export class IngresoResultadosComponent implements OnInit {
     }).subscribe(
       response => {
         console.log('Result saved', response);
+        // Save result to localStorage
+        localStorage.setItem(`result_${matchId}`, JSON.stringify(result));
+        // Show success snackBar
+        this.snackBar.open('Resultado guardado con éxito', 'Cerrar', {
+          duration: 3000,
+        });
       },
       error => {
         console.error('Error saving result:', error);
+        // Show error snackBar
+        this.snackBar.open('Error al guardar el resultado', 'Cerrar', {
+          duration: 3000,
+        });
       }
     );
   }

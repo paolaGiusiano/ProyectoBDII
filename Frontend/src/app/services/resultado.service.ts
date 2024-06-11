@@ -13,4 +13,6 @@ export class ResultadoService {
   saveResult(result: any): Observable<any> {
     return this.http.post(this.apiUrl, result);
   }
+
+  
 }
