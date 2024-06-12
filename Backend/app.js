@@ -172,6 +172,21 @@ app.post('/matches/results', (req, res) => {
 });
 
 
+app.get('/matches/results', (req, res) => {
+  const query = `
+    SELECT r.id_partido, r.goles_local, r.goles_visitante, r.fecha, c.equipo_local, c.equipo_visitante
+    FROM resultado r
+    JOIN compite c ON r.id_partido = c.id
+  `;
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching results:', error);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.status(200).json(results);
+  });
+});
+
 
 
 app.post('/predictions', (req, res) => {

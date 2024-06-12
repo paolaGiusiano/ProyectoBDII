@@ -12,6 +12,8 @@ import { FixtureComponent } from './components/fixture/fixture.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
 import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-prediccion.component';
+import { VerResultadoComponent } from './components/ver-resultado/ver-resultado.component';
+import { GruposComponent } from './components/grupos/grupos.component';
 
 
 export const routes: Routes = [ 
@@ -23,11 +25,13 @@ export const routes: Routes = [
     { path: 'premios', component: PremiosComponent},
     { path: 'reglas', component: ReglasComponent},
     { path: 'como-jugar', component: ComoJugarComponent},
-    {path: 'paginaPrincipal', component: PaginaPrincipalComponent},
-    {path: 'fixture', component: FixtureComponent},
-    {path: 'calendario', component:  CalendarioComponent},
-    {path: 'ingreso-resultado', component:  IngresoResultadosComponent},
-    {path: 'hacer-prediccion', component: HacerPrediccionComponent},
+    { path: 'paginaPrincipal', component: PaginaPrincipalComponent},
+    { path: 'fixture', component: FixtureComponent},
+    { path: 'calendario', component:  CalendarioComponent},
+    { path: 'ingreso-resultado', component:  IngresoResultadosComponent},
+    { path: 'hacer-prediccion', component: HacerPrediccionComponent},
+    { path: 'ver-resultados', component: VerResultadoComponent},
+    { path: 'grupos', component: GruposComponent},
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 

@@ -1,0 +1,33 @@
+<div class="hacer-prediccion-container">
+    <nav class="navbar">
+        <div class="nav-container">
+          <a href="../inicio" class="nav-link">Inicio</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <img src="assets/esquina.png" alt="Descripción de la imagen" class="imagen-esquina2 rotar-imagen">
+        <img src="assets/esquina.png" alt="Descripción de la imagen" class="imagen-esquina rotar-imagen">
+        <img src='assets/logoCA.png' alt="Descripción de la imagen" class="imagen-lateral">
+        <div class="copa-america">
+            <div class="fila">
+                <div class="grupo" *ngFor="let grupo of grupos.slice(0, 2)">
+                    <h3>{{ grupo.nombre }}</h3>
+                    <div class="equipo" *ngFor="let equipo of grupo.equipos">
+                        <img [src]="equipo.bandera" alt="{{ equipo.nombre }} bandera" class="bandera">
+                        {{ equipo.nombre }}
+                    </div>
+                </div>
+            </div>
+            <div class="fila">
+                <div class="grupo" *ngFor="let grupo of grupos.slice(2, 4)">
+                    <h3>{{ grupo.nombre }}</h3>
+                    <div class="equipo" *ngFor="let equipo of grupo.equipos">
+                        <img [src]="equipo.bandera" alt="{{ equipo.nombre }} bandera" class="bandera">
+                        {{ equipo.nombre }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

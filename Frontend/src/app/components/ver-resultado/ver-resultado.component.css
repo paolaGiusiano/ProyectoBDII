@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px;
+    font-family: Arial, sans-serif;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .logo {
+    position: absolute;
+    top: -25px; 
+    left: -5px; 
+    width: 220px;
+    height: 110px;
+  }
+  
+  
+  .navbar {
+    background-color: rgba(49, 65, 111, 255);
+    padding: 10px 0;
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 100px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-link:hover {
+    background-color:  rgba(255, 255, 255, 0.2);;
+  }
+  
+
+
+  .result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .match-date-time {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .match-date {
+    font-weight: bold;
+  }
+  
+  .team {
+    display: flex;
+    align-items: center;
+    flex: 2;
+  }
+  
+  .team-local {
+    justify-content: flex-end;
+    text-align: right;
+  }
+  
+  .team-visitante {
+    justify-content: flex-start;
+    text-align: left;
+  }
+  
+  .team img.flag {
+    width: 35px;
+    height: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .score {
+    flex: 1;
+    text-align: center;
+  }
+  

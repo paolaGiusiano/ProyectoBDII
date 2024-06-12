@@ -23,6 +23,8 @@ import { CalendarioComponent } from './components/calendario/calendario.componen
 import { IngresoResultadosComponent } from './components/ingreso-resultados/ingreso-resultados.component';
 import { ResultadoService } from './services/resultado.service';
 import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-prediccion.component';
+import { VerResultadoComponent } from './components/ver-resultado/ver-resultado.component';
+import { GruposComponent } from './components/grupos/grupos.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-pr
     CalendarioComponent,
     IngresoResultadosComponent,
     HacerPrediccionComponent,
+    VerResultadoComponent,
+    GruposComponent,
   ],
   imports: [
     BrowserModule,

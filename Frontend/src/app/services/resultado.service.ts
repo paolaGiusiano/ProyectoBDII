@@ -14,5 +14,8 @@ export class ResultadoService {
     return this.http.post(this.apiUrl, result);
   }
 
-  
+  getResults(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
+
 }
