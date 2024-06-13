@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS `pencaucu`;
 
 USE `pencaucu`;
-ALTER TABLE `alumno` RENAME COLUMN `año_ingreso` TO `anio_ingreso`;
+
 
 CREATE TABLE IF NOT EXISTS `usuario` (
   `documento` varchar(8) NOT NULL,
@@ -102,6 +102,15 @@ CREATE TABLE IF NOT EXISTS `resultado` (
   PRIMARY KEY (`id_partido`),
   FOREIGN KEY (`id_partido`) REFERENCES `compite`(`id`)
 );
+
+
+CREATE TABLE IF NOT EXISTS `PuntajeTotal` (
+    `id`  INT AUTO_INCREMENT PRIMARY KEY,
+    `documento_alumno` varchar(8),
+   `puntaje_total`  INT,
+    FOREIGN KEY (`documento_alumno` ) REFERENCES `alumno`(`documento` )
+);
+
 
 CREATE TABLE IF NOT EXISTS `premio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -669,9 +678,9 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 ('2024-07-02', '22:00', 'Paraguay', 'Costa Rica');
 
 USE `pencaucu`;
-DELETE FROM resultado;
+DELETE FROM PuntajeTotal;
 USE `pencaucu`;
-SELECT * FROM compite;
+SELECT * FROM PuntajeTotal;
 SELECT * FROM carrerra;
 SELECT * FROM equipo;
 

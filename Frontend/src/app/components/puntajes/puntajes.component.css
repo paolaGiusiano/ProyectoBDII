@@ -1,44 +1,87 @@
-/* Estilos para la tabla */
+.logo {
+    position: absolute;
+    top: -20px;
+    left: -5px;
+    width: 220px;
+    height: 110px;
+    clip-path: inset(10px 10px 20px 10px);
+}
+  
+.navbar {
+    background-color: rgba(49, 65, 111, 255);
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+  
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #f2f2f2;
+}
+
 .tabla-predicciones {
-    width: 80%; /* Reducir el ancho de la tabla */
-    margin-top: 10px; /* Ajustar el margen superior */
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Reducir la sombra */
-  }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 100px;
+}
   
-  .tabla-predicciones th,
-  .tabla-predicciones td {
-    border: 1px solid #ccc;
-    padding: 8px; /* Reducir el padding de las celdas */
+.tabla-predicciones th,
+.tabla-predicciones td {
+    border: 1px solid #e0e0e0;
+    padding: 12px;
     text-align: center;
-  }
+}
+
+.tabla-predicciones th {
+    background-color: #f8f8f8;
+    font-weight: 600;
+}
   
-  .tabla-predicciones th:first-child,
-  .tabla-predicciones td:first-child {
-    width: 40%; /* Ancho para la columna de PARTIDO */
-  }
+.tabla-predicciones tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
   
-  .tabla-predicciones th:last-child,
-  .tabla-predicciones td:last-child {
-    width: 20%; /* Ancho para la columna de PUNTAJE */
-  }
-  
-  .tabla-predicciones th {
-    background-color: #f2f2f2;
-  }
-  
-  /* Estilos para el contenedor de total */
-  .total-container {
-    margin-top: 10px; /* Ajustar el margen superior */
-    padding: 8px; /* Reducir el padding */
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .total-container p {
-    font-size: 16px; /* Reducir el tamaño de la fuente */
+.tabla-predicciones tr:hover {
+    background-color: #f1f1f1;
+}
+
+.total-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: hsl(0, 0%, 97%);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.total-container p {
+    font-size: 18px;
     font-weight: bold;
+    color: #333;
     margin: 0;
-  }
-  
+}

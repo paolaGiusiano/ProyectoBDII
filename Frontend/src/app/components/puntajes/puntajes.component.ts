@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { PrediccionesService } from '../../services/predicciones.service';
 import { AuthService } from '../../services/auth.service';
 import { ResultadoService } from '../../services/resultado.service';
-import { PartidosService } from '../../services/partidos.services'; // Importa tu servicio de partidos
+import { PartidosService } from '../../services/partidos.services';
+import { PuntajeService } from '../../services/puntaje.service';
 
 @Component({
   selector: 'app-puntajes',
@@ -22,7 +23,8 @@ export class PuntajesComponent implements OnInit {
   constructor(private resultadoService: ResultadoService,
               private prediccionesService: PrediccionesService,
               private authService: AuthService,
-              private partidosService: PartidosService) { }
+              private partidosService: PartidosService,
+              private puntajeService: PuntajeService) { }
 
   ngOnInit(): void {
     const documento = this.authService.getDocumento();
@@ -65,7 +67,6 @@ export class PuntajesComponent implements OnInit {
  
   calcularPuntajes(): void {
     this.puntosTotales = 0;
-    // Aquí se calcula el puntaje total
     this.predicciones.forEach(prediccion => {
       const resultadoPartido = this.resultados.find(resultado => resultado.id_partido === prediccion.id_partido);
       if (resultadoPartido) {
@@ -78,6 +79,22 @@ export class PuntajesComponent implements OnInit {
         }
       }
     });
+    this.actualizarPuntajeTotal();
+  }
+
+
+  actualizarPuntajeTotal(): void {
+    const documento = this.authService.getDocumento();
+    if (documento) {  
+      this.puntajeService.updatePuntajeTotal(documento, this.puntosTotales).subscribe(
+        response => {
+          console.log('Puntaje total actualizado:', response);
+        },
+        error => {
+          console.error('Error al actualizar el puntaje total:', error);
+        }
+      );
+    }
   }
 
 
@@ -95,5 +112,7 @@ export class PuntajesComponent implements OnInit {
     }
     return puntaje;
   }
+
+ 
 
 }

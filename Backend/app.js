@@ -420,11 +420,55 @@ app.get('/partidos', (req, res) => {
     if (error) {
       console.error('Error fetching matches:', error);
       return res.status(500).json({ error: 'Database error fetching matches' });
-    }  console.log("APP2 ", results);
+    }  
     res.status(200).json(results);
   });
 });
      
+
+// Ruta para obtener todos los puntajes totales
+app.get('/puntajes-totales', (req, res) => {
+  const query = `
+    SELECT p.id_partido, p.documento_alumno, p.puntaje_total, a.nombre, c.nombre AS carrera
+    FROM PuntajeTotal p
+    JOIN alumno a ON p.documento_alumno = a.documento
+    JOIN carrerra c ON a.id_carrera = c.id
+  `;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching puntajes totales:', error);
+      return res.status(500).json({ error: 'Database error fetching puntajes totales' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+
+// Ruta para actualizar o insertar un puntaje total
+app.put('/puntajes-totales/:documento_alumno', (req, res) => {
+  const documentoAlumno = req.params.documento_alumno;
+  const { puntaje_total } = req.body;
+
+  // Eliminar cualquier registro existente para el alumno
+  const deleteQuery = 'DELETE FROM PuntajeTotal WHERE documento_alumno = ?';
+  connection.query(deleteQuery, [documentoAlumno], (deleteError, deleteResults) => {
+    if (deleteError) {
+      console.error('Error deleting existing puntaje total:', deleteError);
+      return res.status(500).json({ error: 'Database error deleting existing puntaje total' });
+    }
+
+    // Insertar el nuevo puntaje
+    const insertQuery = 'INSERT INTO PuntajeTotal (documento_alumno, puntaje_total) VALUES (?, ?)';
+    connection.query(insertQuery, [documentoAlumno, puntaje_total], (insertError, insertResults) => {
+      if (insertError) {
+        console.error('Error inserting puntaje total:', insertError);
+        return res.status(500).json({ error: 'Database error inserting puntaje total' });
+      }
+      res.status(201).json({ message: 'Puntaje total inserted successfully' });
+    });
+  });
+});
 
 
 // Iniciar el servidor
