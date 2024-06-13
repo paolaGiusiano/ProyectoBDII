@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS `pencaucu`;
 
 USE `pencaucu`;
+ALTER TABLE `alumno` RENAME COLUMN `año_ingreso` TO `anio_ingreso`;
 
 CREATE TABLE IF NOT EXISTS `usuario` (
   `documento` varchar(8) NOT NULL,
@@ -36,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `administrador` (
 
 CREATE TABLE IF NOT EXISTS `alumno` (
   `documento` varchar(8) NOT NULL,
-  `año_ingreso` year(4) NOT NULL,
+  `anio_ingreso` year(4) NOT NULL,
   `id_carrera` int(11) NOT NULL,
   PRIMARY KEY (`documento`),
   FOREIGN KEY (`documento`) REFERENCES `usuario`(`documento`),
@@ -669,7 +670,7 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 USE `pencaucu`;
 DELETE FROM resultado;
 USE `pencaucu`;
-SELECT * FROM resultado;
+SELECT * FROM alumno;
 SELECT * FROM carrerra;
 SELECT * FROM equipo;
 

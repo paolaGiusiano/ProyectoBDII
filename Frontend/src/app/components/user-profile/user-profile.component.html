@@ -1,0 +1,33 @@
+<nav class="navbar">
+    <img src="https://www.ucu.edu.uy/plantillas/images/avatar.png" alt="Logo" class="logo">
+    <ul class="nav-list">
+        <li class="nav-item"><a href="../inicio" class="nav-link">Inicio</a></li>
+    </ul>
+</nav>
+
+<div class="container"> 
+  
+    <div class="user-profile-container">
+      <div *ngIf="alumno; else loading">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPjD1QeN7rny4PzQTGQzgFMIyvEup_Iq3tTA&s" alt="Foto del alumno" class="profile-image">
+        <h2>Perfil de {{ alumno.nombre }}</h2>
+        <div class="profile-details">
+          <p><strong>Documento:</strong> {{ alumno.documento }}</p>
+          <p><strong>Nombre:</strong> {{ alumno.nombre }}</p>
+          <p><strong>Año de Ingreso:</strong> {{ alumno.anio_ingreso }}</p>
+          <p><strong>Carrera:</strong> {{ alumno.carrerra }}</p>
+        </div>
+        <div class="actions">
+          <button (click)="editProfile()">Editar Perfil</button>
+        </div>
+      </div>
+      <ng-template #loading>
+        <p class="loading-message">Cargando datos del alumno...</p>
+      </ng-template>
+    </div>
+  
+</div>
+<footer>
+    <p>&copy; 2024 Universidad Católica del Uruguay. Todos los derechos reservados.</p>
+</footer>
+  

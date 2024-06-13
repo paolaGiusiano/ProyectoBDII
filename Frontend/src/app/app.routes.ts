@@ -14,6 +14,7 @@ import { IngresoResultadosComponent } from './components/ingreso-resultados/ingr
 import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-prediccion.component';
 import { VerResultadoComponent } from './components/ver-resultado/ver-resultado.component';
 import { GruposComponent } from './components/grupos/grupos.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 
 export const routes: Routes = [ 
@@ -32,6 +33,7 @@ export const routes: Routes = [
     { path: 'hacer-prediccion', component: HacerPrediccionComponent},
     { path: 'ver-resultados', component: VerResultadoComponent},
     { path: 'grupos', component: GruposComponent},
+    { path: 'perfil', component: UserProfileComponent},
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 

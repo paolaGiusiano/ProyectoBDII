@@ -94,7 +94,7 @@ function insertAlumno(documento, callback) {
       if (carreraResults.length === 0) return callback(new Error('No carreras found'));
 
       const idCarrera = carreraResults[0].id;
-      const insertQuery = 'INSERT INTO alumno (documento, año_ingreso, id_carrera) VALUES (?, ?, ?)';
+      const insertQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
 
       connection.query(insertQuery, [documento, randomYear, idCarrera], (insertError) => {
         if (insertError) return callback(insertError);
@@ -322,6 +322,32 @@ app.get('/tournament-prediction/:documento', (req, res) => {
   });
 });
 
+
+ // Ruta para obtener información de un alumno específico
+ app.get('/alumnos/:documento', (req, res) => {
+  const documento = req.params.documento;
+  const query = `
+    SELECT a.documento, a.anio_ingreso, a.id_carrera, u.nombre, c.nombre AS carrerra
+    FROM alumno a
+    JOIN usuario u ON a.documento = u.documento
+    JOIN carrerra c ON a.id_carrera = c.id
+    WHERE a.documento = ?`;
+
+  connection.query(query, [documento], (error, results) => {
+    if (error) {
+      console.error('Error fetching alumno:', error);
+      return res.status(500).json({ error: 'Database error fetching alumno' });
+    }
+    if (results.length > 0) {
+      res.status(200).json(results[0]);
+    } else {
+      res.status(404).json({ error: 'Alumno not found' });
+    }
+  });
+});
+
+
+
 // Ruta para eliminar una predicción
   app.delete('/predictions/:id_prediccion', (req, res) => {
     const id_prediccion = req.params.id_prediccion;
@@ -390,7 +416,7 @@ app.get('/tournament-prediction/:documento', (req, res) => {
       });
 
 
-
+     
 
 
 // Iniciar el servidor

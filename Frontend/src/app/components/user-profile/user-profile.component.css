@@ -1,0 +1,166 @@
+/* General container styles */
+.user-profile-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    font-family: 'Arial', sans-serif;
+}
+
+ 
+.logo {
+    position: absolute;
+    top: -20px; 
+    left: -5px; 
+    width: 240px;
+    height: 100px;
+    clip-path: inset(10px 40px 30px 10px);
+  }
+  
+  .navbar {
+    background-color: rgba(49, 65, 111, 255);
+    padding: 10px 0;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.nav-item {
+    margin: 0 10px;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin-left: 340px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+/* Title styles */
+.user-profile-container h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+/* Paragraph styles */
+.user-profile-container p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Strong text styles */
+.user-profile-container strong {
+    font-weight: bold;
+    color: #444;
+}
+
+/* Loading message styles */
+.user-profile-container .loading-message {
+    font-style: italic;
+    color: #888;
+    text-align: center;
+}
+
+/* Hover effect */
+.user-profile-container:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Additional elements for a more complete page */
+.user-profile-container .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.user-profile-container .profile-details {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.user-profile-container .profile-details p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.user-profile-container .actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.user-profile-container .actions button {
+    background-color:rgba(49, 65, 111, 255);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-profile-container .actions button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .user-profile-container {
+        padding: 15px;
+    }
+    
+    .user-profile-container h2 {
+        font-size: 1.8rem;
+    }
+    
+    .user-profile-container p {
+        font-size: 1rem;
+    }
+    
+    .user-profile-container .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Adding some extra styling to make the page look more complete */
+body {
+    background-color: #f0f2f5;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 20px;
+}
+
+
+footer {
+    background-color: rgba(49, 65, 111, 255);
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

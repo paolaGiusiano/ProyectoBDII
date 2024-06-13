@@ -55,7 +55,9 @@ export class AuthService {
     return documento;
   }
 
-
+  getAlumno(documento: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/alumnos/${documento}`);
+  }
 
   logout(): void {
     this.documento = null;

@@ -25,6 +25,7 @@ import { ResultadoService } from './services/resultado.service';
 import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-prediccion.component';
 import { VerResultadoComponent } from './components/ver-resultado/ver-resultado.component';
 import { GruposComponent } from './components/grupos/grupos.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { GruposComponent } from './components/grupos/grupos.component';
     HacerPrediccionComponent,
     VerResultadoComponent,
     GruposComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
