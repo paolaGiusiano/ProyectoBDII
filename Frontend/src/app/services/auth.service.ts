@@ -48,12 +48,29 @@ export class AuthService {
       })
     );
   }
-
-  
+ 
+  /* 
   getDocumento(): string | null {
     const documento = this.documento || localStorage.getItem('documento');
     return documento;
   }
+  */
+
+  getDocumento() {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        return localStorage.getItem('documento');
+      } else {
+        console.error('localStorage no está disponible en este entorno');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al acceder a localStorage:', error);
+      return null;
+    }
+  }
+  
+    
 
   getAlumno(documento: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/alumnos/${documento}`);

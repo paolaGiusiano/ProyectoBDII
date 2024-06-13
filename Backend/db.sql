@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `compite` (
   FOREIGN KEY (`equipo_visitante`) REFERENCES `equipo` (`pais`)
 );
 
+
 CREATE TABLE IF NOT EXISTS `prediccion` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `documento_alumno` VARCHAR(8) NOT NULL,
@@ -670,7 +671,7 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 USE `pencaucu`;
 DELETE FROM resultado;
 USE `pencaucu`;
-SELECT * FROM alumno;
+SELECT * FROM compite;
 SELECT * FROM carrerra;
 SELECT * FROM equipo;
 

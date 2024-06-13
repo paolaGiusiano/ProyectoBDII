@@ -1,0 +1,44 @@
+/* Estilos para la tabla */
+.tabla-predicciones {
+    width: 80%; /* Reducir el ancho de la tabla */
+    margin-top: 10px; /* Ajustar el margen superior */
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Reducir la sombra */
+  }
+  
+  .tabla-predicciones th,
+  .tabla-predicciones td {
+    border: 1px solid #ccc;
+    padding: 8px; /* Reducir el padding de las celdas */
+    text-align: center;
+  }
+  
+  .tabla-predicciones th:first-child,
+  .tabla-predicciones td:first-child {
+    width: 40%; /* Ancho para la columna de PARTIDO */
+  }
+  
+  .tabla-predicciones th:last-child,
+  .tabla-predicciones td:last-child {
+    width: 20%; /* Ancho para la columna de PUNTAJE */
+  }
+  
+  .tabla-predicciones th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Estilos para el contenedor de total */
+  .total-container {
+    margin-top: 10px; /* Ajustar el margen superior */
+    padding: 8px; /* Reducir el padding */
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .total-container p {
+    font-size: 16px; /* Reducir el tamaño de la fuente */
+    font-weight: bold;
+    margin: 0;
+  }
+  

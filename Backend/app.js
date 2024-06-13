@@ -277,8 +277,6 @@ app.post('/championship-predictions', (req, res) => {
 
 
 
-
-
 // Ruta para obtener predicciones por documento del alumno
 app.get('/predictions/:documento', (req, res) => {
   const documento = req.params.documento;
@@ -415,7 +413,17 @@ app.get('/tournament-prediction/:documento', (req, res) => {
   
       });
 
-
+// Ruta para obtener todos los partidos
+app.get('/partidos', (req, res) => {
+  const query = 'SELECT * FROM compite';
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching matches:', error);
+      return res.status(500).json({ error: 'Database error fetching matches' });
+    }  console.log("APP2 ", results);
+    res.status(200).json(results);
+  });
+});
      
 
 

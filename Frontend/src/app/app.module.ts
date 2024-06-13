@@ -26,6 +26,8 @@ import { HacerPrediccionComponent } from './components/hacer-prediccion/hacer-pr
 import { VerResultadoComponent } from './components/ver-resultado/ver-resultado.component';
 import { GruposComponent } from './components/grupos/grupos.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { PuntajesComponent } from './components/puntajes/puntajes.component';
+import { PartidosService } from './services/partidos.services';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     HacerPrediccionComponent,
     VerResultadoComponent,
     GruposComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    PuntajesComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     CommonModule,
     AppRoutingModule,
   ],
-  providers: [AuthService, PrediccionesService, ResultadoService],
+  providers: [AuthService, PrediccionesService, ResultadoService, PartidosService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

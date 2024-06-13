@@ -25,7 +25,6 @@ export class PrediccionesService {
   }
 
 
-
   getPredictions(documento: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/predictions/${documento}`);
   }
@@ -33,6 +32,7 @@ export class PrediccionesService {
   getTorneoPrediction(documento: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/tournament-prediction/${documento}`);
   }
+
 
   deletePrediction(id_prediccion: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/predictions/${id_prediccion}`);
