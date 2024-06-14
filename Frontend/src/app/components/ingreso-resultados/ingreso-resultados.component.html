@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Match Results</title>
-    <link rel="stylesheet" href="./ingreso-resultados.component.css">
-</head>
-<body>
+<div class="ingreso-resultado-container">
     <div class="container">
         <div *ngFor="let match of matches" class="match">
             <div class="match-date-time">
@@ -17,7 +9,7 @@
                 <span>{{ match.equipo_local }}</span>
                 <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
             </div>
-            <div class="score-inputs">
+            <div *ngIf="result[match.id]" class="score-inputs">
                 <label>
                     <input type="number" [(ngModel)]="result[match.id].goles_local">
                 </label>
@@ -33,5 +25,4 @@
             <button (click)="saveResult(match.id)">Save Result</button>
         </div>
     </div>
-</body>
-</html>
+</div>

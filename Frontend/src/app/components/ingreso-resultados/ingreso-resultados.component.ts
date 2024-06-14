@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, ReactiveFormsModule, FormBuilder, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ResultadoService } from '../../services/resultado.service';
+import { PartidosService } from '../../services/partidos.services'; // Importa el servicio PartidosService
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Match {
@@ -19,10 +19,8 @@ interface Match {
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './ingreso-resultados.component.html',
-  styleUrl: './ingreso-resultados.component.css'
+  styleUrls: ['./ingreso-resultados.component.css']
 })
-
-
 export class IngresoResultadosComponent implements OnInit {
   matches: Match[] = [];
   result: { [key: number]: { goles_local: number, goles_visitante: number } } = {};
@@ -47,10 +45,15 @@ export class IngresoResultadosComponent implements OnInit {
     'Brasil': 'br.jpg',
   };
 
-  constructor(private http: HttpClient, private resultadoService: ResultadoService, private snackBar: MatSnackBar) { }
+  constructor(
+    private http: HttpClient,
+    private resultadoService: ResultadoService,
+    private snackBar: MatSnackBar,
+    private partidosService: PartidosService // Inyecta el servicio PartidosService
+  ) { }
 
   ngOnInit(): void {
-    this.http.get<Match[]>('http://localhost:3000/matches/upcoming')
+    this.partidosService.getPartidos() // Usa el servicio PartidosService
       .subscribe(data => {
         this.matches = data;
         // Initialize result object for each match
@@ -90,7 +93,6 @@ export class IngresoResultadosComponent implements OnInit {
       }
     );
   }
-  
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -104,7 +106,6 @@ export class IngresoResultadosComponent implements OnInit {
     const [hours, minutes] = timeString.split(':');
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   }
-  
 
   getFlagUrl(team: string): string {
     return `assets/${this.teamFlags[team] || 'default.png'}`;
