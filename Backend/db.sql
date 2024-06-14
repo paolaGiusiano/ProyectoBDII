@@ -1,6 +1,8 @@
 CREATE DATABASE IF NOT EXISTS `pencaucu`;
 
 USE `pencaucu`;
+ALTER TABLE `usuario`
+ADD CONSTRAINT `unique_documento` UNIQUE (`documento`);
 
 
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -106,8 +108,9 @@ CREATE TABLE IF NOT EXISTS `resultado` (
 
 CREATE TABLE IF NOT EXISTS `PuntajeTotal` (
     `id`  INT AUTO_INCREMENT PRIMARY KEY,
-    `documento_alumno` varchar(8),
-   `puntaje_total`  INT,
+    `documento_alumno` varchar(8) NOT NULL,
+    `puntaje_total`  INT,
+    UNIQUE(`documento_alumno`),
     FOREIGN KEY (`documento_alumno` ) REFERENCES `alumno`(`documento` )
 );
 

@@ -12,7 +12,7 @@ export class PuntajeService {
 
   // Método para obtener los puntajes totales
   getPuntajesTotales(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.apiUrl}/puntajes-totales/`);
   }
 
   // Método para actualizar un puntaje total

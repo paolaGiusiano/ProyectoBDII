@@ -1,0 +1,119 @@
+.logo {
+  position: absolute;
+  top: -20px;
+  left: -5px;
+  width: 220px;
+  height: 110px;
+  clip-path: inset(10px 10px 20px 10px);
+}
+
+
+.navbar {
+  background-color: rgba(49, 65, 111, 255);
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+  margin-left: 310px;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #f2f2f2;
+}
+
+.ranking-container {
+  margin: 20px auto;
+  color: #333;
+  width: 80%;
+  max-width: 800px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 80px;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin: 20px 0;
+  color: #c00e0ec2;
+}
+
+.ranking-list {
+  border-top: 2px solid #c00e0ec2;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px dashed #ddd;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.ranking-item:not(:last-child) {
+  border-bottom: 1px dashed #ddd;
+}
+
+.ranking-position,
+.ranking-name,
+.ranking-score {
+  text-align: left;
+}
+
+.ranking-position {
+  font-weight: bold;
+  font-size: 18px;
+  flex: 0 0 80px;
+}
+
+.ranking-image {
+  flex: 0 0 50px;
+  padding-left: 10px;
+}
+
+.ranking-image img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.ranking-name {
+  padding-left: 10px;
+  flex: 1;
+  font-size: 16px;
+}
+
+.ranking-score {
+  text-align: right;
+  padding-right: 10px;
+  font-size: 16px;
+  flex: 0 0 100px;
+}
+
+.ranking-item:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-2px);
+}
