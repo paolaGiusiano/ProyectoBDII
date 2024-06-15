@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ResultadoService } from '../../services/resultado.service';
-import { PartidosService } from '../../services/partidos.services'; // Importa el servicio PartidosService
+import { PartidosService } from '../../services/partidos.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Match {
@@ -58,9 +58,13 @@ export class IngresoResultadosComponent implements OnInit {
         this.matches = data;
         // Initialize result object for each match
         this.matches.forEach(match => {
-          const savedResult = localStorage.getItem(`result_${match.id}`);
-          if (savedResult) {
-            this.result[match.id] = JSON.parse(savedResult);
+          if (this.isLocalStorageAvailable()) {
+            const savedResult = localStorage.getItem(`result_${match.id}`);
+            if (savedResult) {
+              this.result[match.id] = JSON.parse(savedResult);
+            } else {
+              this.result[match.id] = { goles_local: 0, goles_visitante: 0 };
+            }
           } else {
             this.result[match.id] = { goles_local: 0, goles_visitante: 0 };
           }
@@ -78,7 +82,9 @@ export class IngresoResultadosComponent implements OnInit {
       response => {
         console.log('Result saved', response);
         // Save result to localStorage
-        localStorage.setItem(`result_${matchId}`, JSON.stringify(result));
+        if (this.isLocalStorageAvailable()) {
+          localStorage.setItem(`result_${matchId}`, JSON.stringify(result));
+        }
         // Show success snackBar
         this.snackBar.open('Resultado guardado con éxito', 'Cerrar', {
           duration: 3000,
@@ -109,5 +115,17 @@ export class IngresoResultadosComponent implements OnInit {
 
   getFlagUrl(team: string): string {
     return `assets/${this.teamFlags[team] || 'default.png'}`;
+  }
+
+  // Función para verificar si localStorage está disponible
+  isLocalStorageAvailable(): boolean {
+    try {
+      const test = '__storage_test__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

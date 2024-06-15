@@ -122,20 +122,6 @@ nav ul li:hover .dropdown-content {
   width: 300%;
   height: 90vh; 
 }
-/*
-.sidebar {
-  flex: 1;
-  display: flex;
-  margin-left: -95px;
-}
-
-.sidebar img {
-  width: 100%;
-  height: auto;
-  max-width: 90%; 
-  max-height: 650px; 
-  margin-top: 50px;
-}*/
 
 .sidebar {
   flex: 1;
