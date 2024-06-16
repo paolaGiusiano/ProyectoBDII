@@ -1,53 +1,79 @@
-<div class="tournament-grid">
-    <!-- Cuartos de Final -->
-    <div class="round quarter-finals">
-      <div class="match">
-        <div class="team">{{ partidosCuartos[0].equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidosCuartos[0].equipoVisitante }}</div>
-      </div>
-      <div class="connector"></div>
-      <div class="match">
-        <div class="team">{{ partidosCuartos[1].equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidosCuartos[1].equipoVisitante }}</div>
-      </div>
-      <div class="connector"></div>
-      <div class="match">
-        <div class="team">{{ partidosCuartos[2].equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidosCuartos[2].equipoVisitante }}</div>
-      </div>
-      <div class="connector"></div>
-      <div class="match">
-        <div class="team">{{ partidosCuartos[3].equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidosCuartos[3].equipoVisitante }}</div>
-      </div>
+<div class="fixture-container">
+   <nav class="navbar">
+    <div class="nav-container">
+      <a href="../inicio" class="nav-link">Inicio</a>
+      <a href="../ver-predicciones/" class="nav-link">Mis predicciones</a>
     </div>
+  </nav>
   
-    <!-- Semifinales -->
-    <div class="round semi-finals">
-      <div class="match">
-        <div class="team">{{ partidosSemifinales[0].equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidosSemifinales[0].equipoVisitante }}</div>
+
+ <div class="cuartos-final">
+    <h2>Cuartos de Final</h2>
+    <div *ngFor="let match of cuartosFinales" class="match">
+      <div class="match-date-time">
+        <span class="match-date">{{ match.fecha }}</span>
+        <span class="match-time">{{ match.hora }}</span>
       </div>
-      <div class="connector"></div>
-      <div class="match">
-        <div class="team">{{ partidosSemifinales[1].equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidosSemifinales[1].equipoVisitante }}</div>
+      <div class="team team-local">
+        <span>{{ match.equipo_local }}</span>
+        <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
       </div>
-    </div>
-  
-    <!-- Final -->
-    <div class="round final">
-      <div class="match">
-        <div class="team">{{ partidoFinal.equipoLocal }}</div>
-        <div class="vs">VS</div>
-        <div class="team">{{ partidoFinal.equipoVisitante }}</div>
+      <div class="score-inputs">
+        <label>
+          <input type="number" [ngModel]="predictions[match.id]?.prediccion_local" (ngModelChange)="predictions[match.id].prediccion_local = $event || null">
+        </label>
+        -
+        <label>
+          <input type="number" [ngModel]="predictions[match.id]?.prediccion_visitante" (ngModelChange)="predictions[match.id].prediccion_visitante = $event || null">
+        </label>
       </div>
+      <div class="team team-visitante">
+        <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+        <span>{{ match.equipo_visitante }}</span>
+      </div>
+      <button (click)="saveMatchPrediction(match.id)">Guardar</button>
     </div>
   </div>
-  
+
+  <div class="semifinal">
+    <h2>Semifinales</h2>
+    <div *ngFor="let match of semifinales" class="match">
+      <div class="match-date-time">
+        <span class="match-date">{{ match.fecha }}</span>
+        <span class="match-time">{{ match.hora }}</span>
+      </div>
+      <div class="team team-local">
+        <span>{{ match.equipo_local }}</span>
+        <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
+      </div>
+      <div class="score-inputs">
+        <label>
+          <input type="number" [ngModel]="predictions[match.id]?.prediccion_local" (ngModelChange)="predictions[match.id].prediccion_local = $event || null">
+        </label>
+        -
+        <label>
+          <input type="number" [ngModel]="predictions[match.id]?.prediccion_visitante" (ngModelChange)="predictions[match.id].prediccion_visitante = $event || null">
+        </label>
+      </div>
+      <div class="team team-visitante">
+        <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+        <span>{{ match.equipo_visitante }}</span>
+      </div>
+      <button (click)="saveMatchPrediction(match.id)">Guardar</button>
+    </div>
+  </div>
+
+  <div class="final">
+    <h2>Predicción del Torneo</h2>
+    <label>
+      Campeón:
+      <input type="text" [(ngModel)]="tournamentPrediction.campeon">
+    </label>
+    <label>
+      Subcampeón:
+      <input type="text" [(ngModel)]="tournamentPrediction.subcampeon">
+    </label>
+    <button (click)="saveTournamentPrediction()">Guardar</button>
+  </div>
+
+</div> 

@@ -1,9 +1,6 @@
 CREATE DATABASE IF NOT EXISTS `pencaucu`;
 
 USE `pencaucu`;
-ALTER TABLE `usuario`
-ADD CONSTRAINT `unique_documento` UNIQUE (`documento`);
-
 
 CREATE TABLE IF NOT EXISTS `usuario` (
   `documento` varchar(8) NOT NULL,
@@ -11,6 +8,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `apellido` varchar(40) NOT NULL,
   `pais_nacimiento` varchar(40) NOT NULL,
   `rol` varchar(20) NOT NULL, 
+  `email` varchar(100) NOT NULL, 
+   UNIQUE(`documento`),
   PRIMARY KEY (`documento`)
 );
 
@@ -123,13 +122,12 @@ CREATE TABLE IF NOT EXISTS `premio` (
 
 
 
-USE `pencaucu`;
-
-INSERT INTO `usuario` (`documento`, `nombre`, `apellido`, `pais_nacimiento`, `rol`)
+INSERT INTO `usuario` (`documento`, `nombre`, `apellido`, `pais_nacimiento`, `rol`, `email`)
 VALUES
-('12345678', 'Paola', 'Giusiano', 'Uruguay', 'alumno'),
-('87654321', 'Pepe', 'Gomez', 'Argentina', 'administrador'),
-('11223344', 'Test', 'User', 'Pais3', 'alumno');
+('12345678', 'Paola', 'Giusiano', 'Uruguay', 'alumno', 'paolagiusianop@gmail.com'),
+('87654321', 'Pepe', 'Gomez', 'Argentina', 'administrador', 'pepe.gomez@gmail.com'),
+('11223344', 'Test', 'User', 'Uruguay', 'alumno', 'test.user@example.com');
+
 
 INSERT INTO `login` (`username`, `password`, `documento_usuario`) 
 VALUES ('paola.giusiano', '$2b$10$9QSGpaUKyZc6DjKRSUiJYuYGa8216jflsDf3GyomOHtw/e1BakcMu', '12345678');
@@ -680,10 +678,25 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 ('2024-07-02', '22:00', 'Brasil', 'Colombia'),
 ('2024-07-02', '22:00', 'Paraguay', 'Costa Rica');
 
+-- cuartos de final
+INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
+('2024-07-04', '22:00', 'Por definirse', 'Por definirse'),
+('2024-07-05', '22:00', 'Por definirse', 'Por definirse'),
+('2024-07-06', '19:00', 'Por definirse', 'Por definirse'),
+('2024-07-06', '22:00', 'Por definirse', 'Por definirse');
+
+
+-- Semifinal
+INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
+('2024-07-09', '21:00', 'Por definirse', 'Por definirse'),
+('2024-07-10', '21:00', 'Por definirse', 'Por definirse');
+
+
+
 USE `pencaucu`;
-DELETE FROM resultado;
+DELETE FROM prediccion;
 USE `pencaucu`;
-SELECT * FROM resultado;
+SELECT * FROM compite;
 SELECT * FROM carrerra;
 SELECT * FROM equipo;
 

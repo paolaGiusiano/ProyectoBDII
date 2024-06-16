@@ -18,4 +18,6 @@ export class ResultadoService {
     return this.http.get(this.apiUrl);
   }
 
+  
+
 }

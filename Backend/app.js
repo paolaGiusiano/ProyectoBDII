@@ -193,7 +193,7 @@ app.post('/predictions', (req, res) => {
 
   const { id_partido, prediccion_local, prediccion_visitante} = req.body;
   const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
-  // Validación de datos
+ 
   if (!documento_alumno || !id_partido || prediccion_local === undefined || prediccion_visitante === undefined) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
@@ -203,26 +203,26 @@ app.post('/predictions', (req, res) => {
     SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?
   `;
 
-  connection.query(checkPredictionQuery, [documento_alumno, id_partido], (error, results) => {
+  connection.query(checkPredictionQuery, [documento_alumno, id_partido], (error, results) => { 
     if (error) {
       console.error('Error de base de datos al verificar la predicción:', error.sqlMessage);
       return res.status(500).json({ error: 'Error de base de datos al verificar la predicción', details: error.sqlMessage });
     }
 
-    if (results.length > 0) {
+    if (results.length > 0) { 
       return res.status(400).json({ error:'Ya existe una predicción para este partido' });
     }
-
+   
     const insertPredictionQuery = `
       INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante)
       VALUES (?, ?, ?, ?)
     `;
-
+   
     // Inserta la predicción del partido
     connection.query(insertPredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante], (error, results) => {
-      if (error) {
-        console.error('Error de base de datos al guardar la predicción:', error.sqlMessage);
-        return res.status(500).json({ error: 'Error de base de datos al guardar la predicción', details: error.sqlMessage });
+      if (error) { console.log("APP2 ", documento_alumno, id_partido, prediccion_local, prediccion_visitante);
+        console.error('Error al guardar la predicción:', error.sqlMessage);
+        return res.status(500).json({ error: 'Error al guardar la predicción', details: error.sqlMessage });
       }
 
         res.status(200).json({ message: 'Predicción guardada con éxito' });
@@ -239,12 +239,11 @@ app.post('/championship-predictions', (req, res) => {
   const { documento_alumno, campeon, subcampeon } = req.body;
   console.log("POST TORNEO");
   
-  // Validación de datos
   if (!documento_alumno || !campeon || !subcampeon) {
     return res.status(400).json({ error: 'Faltan campos obligatorios campeonato' });
   }
 
-  // Verificar si ya existe una predicción de campeonato para este alumno
+
   const checkTournamentPredictionQuery = `
     SELECT * FROM prediccion_campeonato WHERE documento_alumno = ?
   `;
@@ -453,7 +452,6 @@ app.put('/puntajes-totales/:documento_alumno', (req, res) => {
   const documentoAlumno = req.params.documento_alumno;
   const { puntaje_total } = req.body;
 
-  // Insertar o actualizar el puntaje
   const upsertQuery = `
     INSERT INTO PuntajeTotal (documento_alumno, puntaje_total)
     VALUES (?, ?)

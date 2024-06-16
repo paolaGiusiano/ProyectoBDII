@@ -1,35 +1,187 @@
-.tournament-grid {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .round {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .match {
-    display: flex;
-    align-items: center;
-  }
-  
-  .connector {
-    width: 50px;
-    height: 2px;
-    background-color: #000;
-    margin: 10px 0;
-  }
-  
-  .team {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0 10px;
-  }
-  
-  .vs {
-    font-size: 16px;
-    margin: 0 10px;
-  }
-  
+/* General */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor principal */
+.fixture-container {
+  min-height: 100vh;
+  background: url('https://static.deportes13.cl/sites/default/files/componentes/field-comp-fondo/2024-04/bg-ca2024-2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #333;
+  padding: 20px;
+}
+
+/* Barra de navegación */
+.navbar {
+  padding: 10px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 25px;
+  font-size: 16px;
+  border-radius: 4px;
+  margin: 0 10px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Secciones de partidos */
+.cuartos-final,
+.semifinal {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Partidos individuales */
+.match {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.match-date-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.match-date {
+  font-weight: bold;
+}
+
+.match-time {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  flex: 2;
+}
+
+.team-local {
+  justify-content: flex-end;
+}
+
+.team-visitante {
+  justify-content: flex-start;
+}
+
+.team-local span,
+.team-visitante span {
+  margin: 0 10px;
+}
+
+.team img.flag {
+  width: 35px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.score-inputs {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.score-inputs input {
+  width: 50px;
+  padding: 5px;
+  margin: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.match button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.match button:hover {
+  background-color: #218838;
+}
+
+/* Predicción del torneo */
+.final {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.final h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.final label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.final input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.final button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 20px auto 0;
+}
+
+.final button:hover {
+  background-color: #0056b3;
+}
