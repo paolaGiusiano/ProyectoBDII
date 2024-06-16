@@ -87,7 +87,7 @@ export class HacerPrediccionComponent {
 
   loadUpcomingMatches(): void {
     this.predictionService.getUpcomingMatches().subscribe((matches: Match[]) => {
-      this.matches = matches;
+      this.matches = matches.filter(match => match.id <= 24);
       matches.forEach(match => {
         this.predictions[match.id] = {
           prediccion_local: 0,
@@ -131,40 +131,9 @@ export class HacerPrediccionComponent {
     }
   }
 
-  saveTournamentPrediction(): void {
-    const documento_alumno = this.authService.getDocumento();
-    if (documento_alumno) {
-      const predictionData = {
-        documento_alumno: documento_alumno,
-        campeon: this.tournamentPrediction.campeon,
-        subcampeon: this.tournamentPrediction.subcampeon
-      };
-      this.predictionService.submitTournamentPrediction(predictionData).subscribe(response => {
-        this.snackBar.open('Predicción del torneo guardada!', 'Cerrar', {
-          duration: 3000,
-          panelClass: ['snackbar-success']
-        });
-      }, error => {
-        if (error.status === 400) {
-          this.snackBar.open('Ya has hecho una predicción para este torneo.', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['snackbar-error']
-          });
-        } else {
-          this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
-            duration: 5000,
-            panelClass: ['snackbar-error']
-          });
-        }
-      });
-    } else {
-      console.error('Documento del usuario no encontrado');
-    }
-  }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    // Obteniendo día y mes en formato 'DD/MM'
     const day = ('0' + date.getDate()).slice(-2);
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     return `${day}/${month}`;

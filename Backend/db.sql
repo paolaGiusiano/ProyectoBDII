@@ -694,9 +694,9 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
-DELETE FROM prediccion;
+DELETE FROM resultado;
 USE `pencaucu`;
-SELECT * FROM compite;
+SELECT * FROM resultado;
 SELECT * FROM carrerra;
 SELECT * FROM equipo;
 

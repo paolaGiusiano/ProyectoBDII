@@ -76,7 +76,7 @@ export class FixtureComponent {
     this.loadUpcomingMatches();
     this.loadSavedPredictions();
     this.actualizarCuartos();
-    this.actualizarSemifinales();
+    this.actualizarSemifinal();
   }
 
   loadSavedPredictions(): void {
@@ -181,7 +181,6 @@ export class FixtureComponent {
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    // Obteniendo día y mes en formato 'DD/MM'
     const day = ('0' + date.getDate()).slice(-2);
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     return `${month}/${day}`;
@@ -210,7 +209,6 @@ export class FixtureComponent {
       const teams: { [key: string]: Team } = {};
       const matchesPlayed: { [key: string]: number } = {};
   
-      // Procesar resultados para calcular puntos y diferencia de goles
       results.forEach((result: any) => {
         if (!teams[result.equipo_local]) {
           teams[result.equipo_local] = { nombre: result.equipo_local, puntos: 0, golesFavor: 0, golesContra: 0 };
@@ -241,15 +239,12 @@ export class FixtureComponent {
   
       const groupWinners: { [key: string]: Team } = {};
       const groupRunnersUp: { [key: string]: Team } = {};
-  
-      // Procesar cada grupo
+
       Object.keys(groups).forEach(groupKey => {
         const groupTeams = groups[groupKey].map(teamName => teams[teamName]);
   
-        // Filtrar equipos que hayan jugado exactamente 3 partidos en el grupo
         const eligibleTeams = groupTeams.filter(team => matchesPlayed[team.nombre] === 3);
   
-        // Ordenar equipos por puntos y diferencia de goles
         const sortedTeams = eligibleTeams.sort((a, b) => {
           if (b.puntos === a.puntos) {
             return (b.golesFavor - b.golesContra) - (a.golesFavor - a.golesContra);
@@ -257,14 +252,14 @@ export class FixtureComponent {
           return b.puntos - a.puntos;
         });
   
-        // Agregar el ganador del grupo (mejor)
+
         if (sortedTeams.length > 0) {
           groupWinners[groupKey] = sortedTeams[0];
         } else {
           console.error(`No hay suficientes equipos elegibles que hayan jugado 3 partidos en el grupo ${groupKey}.`);
         }
   
-        // Agregar el segundo lugar del grupo (segundo mejor)
+ 
         if (sortedTeams.length > 1) {
           groupRunnersUp[groupKey] = sortedTeams[1];
         } else {
@@ -272,9 +267,8 @@ export class FixtureComponent {
         }
       });
   
-      // Verificar si se encontraron los 4 ganadores y 4 segundos lugares
       if (Object.keys(groupWinners).length === 4 && Object.keys(groupRunnersUp).length === 4) {
-        // Asignar los partidos de cuartos de final según las reglas especificadas
+   
         this.cuartosFinales[0].equipo_local = groupWinners['A'].nombre;
         this.cuartosFinales[0].equipo_visitante = groupRunnersUp['B'].nombre;
         this.cuartosFinales[1].equipo_local = groupWinners['B'].nombre;
@@ -291,31 +285,40 @@ export class FixtureComponent {
     });
   }
 
-  
-  actualizarSemifinales(): void {
+  actualizarSemifinal(): void {
+    // Obtener los resultados de los cuartos de final
     this.resultadoService.getResults().subscribe(results => {
-      // Suponiendo que los resultados de los cuartos de final se encuentran en 'results'
+      const cuartosGanadores: { [key: number]: string } = {};
   
-      // Obtener los equipos que avanzaron desde los cuartos de final
-      const equiposCuartos = results.map((result: any) => ({
-        equipo_local: result.equipo_local,
-        equipo_visitante: result.equipo_visitante
-      }));
+      // Asignar los equipos ganadores de cada partido de cuartos
+      this.cuartosFinales.forEach(cuarto => {
+        const result = results.find((r: { id_partido: number }) => r.id_partido === cuarto.id);
+        if (result) {
+          if (result.goles_local > result.goles_visitante) {
+            cuartosGanadores[cuarto.id] = cuarto.equipo_local;
+          } else {
+            cuartosGanadores[cuarto.id] = cuarto.equipo_visitante;
+          }
+        } else {
+          console.error(`No se encontró el resultado para el partido de cuartos con ID ${cuarto.id}`);
+        }
+      });
   
-      // Asignar los nombres de los equipos a los partidos de semifinales
-      if (equiposCuartos.length >= 4) { // Verificar que haya suficientes resultados
-        this.semifinales[0].equipo_local = equiposCuartos[0].equipo_local;
-        this.semifinales[0].equipo_visitante = equiposCuartos[1].equipo_visitante;
-        this.semifinales[1].equipo_local = equiposCuartos[2].equipo_local;
-        this.semifinales[1].equipo_visitante = equiposCuartos[3].equipo_visitante;
-      } else {
-        console.error('No hay suficientes resultados de cuartos de final para actualizar las semifinales.');
-      }
+      // Asignar equipos y banderas a las semifinales
+      this.semifinales.forEach(semifinal => {
+        if (semifinal.id === 29) {
+          semifinal.equipo_local = cuartosGanadores[31]; // Ganador partido 1 cuartos
+          semifinal.equipo_visitante = cuartosGanadores[32]; // Ganador partido 2 cuartos
+        } else if (semifinal.id === 30) {
+          semifinal.equipo_local = cuartosGanadores[33]; // Ganador partido 3 cuartos
+          semifinal.equipo_visitante = cuartosGanadores[34]; // Ganador partido 4 cuartos
+        }
+      });
+  
     }, error => {
-      console.error('Error al obtener los resultados de los partidos de cuartos de final', error);
+      console.error('Error al obtener los resultados de los cuartos de final', error);
     });
   }
-  
   
 
 

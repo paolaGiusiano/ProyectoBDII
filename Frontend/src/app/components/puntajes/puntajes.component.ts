@@ -32,7 +32,7 @@ export class PuntajesComponent implements OnInit {
       console.error('Documento del usuario no encontrado');
       return;
     }
-    console.log("TS ", documento);
+
     this.prediccionesService.getPredictions(documento).subscribe(
       (data) => {
         this.predicciones = data;

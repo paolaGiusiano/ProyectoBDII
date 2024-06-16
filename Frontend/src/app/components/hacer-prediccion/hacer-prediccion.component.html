@@ -7,6 +7,7 @@
     </nav>
   
     <div class="container">
+      <h2>Fase de grupos</h2>
       <div *ngFor="let match of matches" class="match">
         <div class="match-date-time">
           <span class="match-date">{{ formatDate(match.fecha) }}</span>
@@ -33,17 +34,5 @@
       </div>
     </div>
     
-    <div class="tournament-prediction">
-      <h2>Predicción del Torneo</h2>
-      <label>
-        Campeón:
-        <input type="text" [(ngModel)]="tournamentPrediction.campeon">
-      </label>
-      <label>
-        Subcampeón:
-        <input type="text" [(ngModel)]="tournamentPrediction.subcampeon">
-      </label>
-      <button (click)="saveTournamentPrediction()">Guardar</button>
-    </div>
   </div>
   
