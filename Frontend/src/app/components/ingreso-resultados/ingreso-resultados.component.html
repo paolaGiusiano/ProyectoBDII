@@ -1,28 +1,100 @@
 <div class="ingreso-resultado-container">
-    <div class="container">
-        <div *ngFor="let match of matches" class="match">
-            <div class="match-date-time">
-                <span class="match-date">{{ formatDate(match.fecha) }}</span>
-                <span class="match-time">{{ formatTime(match.hora) }}</span>
-            </div>
-            <div class="team team-local">
-                <span>{{ match.equipo_local }}</span>
-                <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
-            </div>
-            <div *ngIf="result[match.id]" class="score-inputs">
-                <label>
-                    <input type="number" [(ngModel)]="result[match.id].goles_local">
-                </label>
-                -
-                <label>
-                    <input type="number" [(ngModel)]="result[match.id].goles_visitante">
-                </label>
-            </div>
-            <div class="team team-visitante">
-                <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
-                <span>{{ match.equipo_visitante }}</span>
-            </div>
-            <button (click)="saveResult(match.id)">Save Result</button>
+ 
+    
+<div class="fixture-container">
+    <nav class="navbar">
+     <div class="nav-container">
+       <a href="#" class="nav-link">Inicio</a>
+     </div>
+   </nav>
+   
+
+   <div class="container">
+    <h2>Fase de grupos</h2>
+    <div *ngFor="let match of matches" class="match">
+        <div class="match-date-time">
+            <span class="match-date">{{ formatDate(match.fecha) }}</span>
+            <span class="match-time">{{ formatTime(match.hora) }}</span>
         </div>
+        <div class="team team-local">
+            <span>{{ match.equipo_local }}</span>
+            <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
+        </div>
+        <div *ngIf="result[match.id]" class="score-inputs">
+            <label>
+                <input type="number" [(ngModel)]="result[match.id].goles_local">
+            </label>
+            -
+            <label>
+                <input type="number" [(ngModel)]="result[match.id].goles_visitante">
+            </label>
+        </div>
+        <div class="team team-visitante">
+            <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+            <span>{{ match.equipo_visitante }}</span>
+        </div>
+        <button (click)="saveResult(match.id)">Save Result</button>
     </div>
 </div>
+   
+ 
+  <div class="cuartos-final">
+     <h2>Cuartos de Final</h2>
+     <div *ngFor="let match of cuartosFinales" class="match">
+       <div class="match-date-time">
+         <span class="match-date">{{ formatDate(match.fecha)}}</span>
+         <span class="match-time">{{ formatTime(match.hora) }}</span>
+       </div>
+       <div class="team team-local">
+         <span>{{ match.equipo_local }}</span>
+         <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
+       </div>
+       <div class="score-inputs">
+         <label>
+            <input type="number" [(ngModel)]="result[match.id].goles_local">
+         </label>
+         -
+         <label>
+            <input type="number" [(ngModel)]="result[match.id].goles_visitante">
+         </label>
+       </div>
+       <div class="team team-visitante">
+         <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+         <span>{{ match.equipo_visitante }}</span>
+       </div>
+       <button (click)="saveResult(match.id)">Save Result</button>
+     </div>
+   </div>
+ 
+   <div class="semifinal">
+     <h2>Semifinales</h2>
+     <div *ngFor="let match of semifinales" class="match">
+       <div class="match-date-time">
+         <span class="match-date">{{ formatDate(match.fecha) }}</span>
+         <span class="match-time">{{ formatTime(match.hora) }}</span>
+       </div>
+       <div class="team team-local">
+         <span>{{ match.equipo_local }}</span>
+         <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
+       </div>
+       <div class="score-inputs">
+         <label>
+            <input type="number" [(ngModel)]="result[match.id].goles_local">
+         </label>
+         -
+         <label>
+            <input type="number" [(ngModel)]="result[match.id].goles_visitante">
+         </label>
+       </div>
+       <div class="team team-visitante">
+         <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+         <span>{{ match.equipo_visitante }}</span>
+       </div>
+       <button (click)="saveResult(match.id)">Save Result</button>
+     </div>
+   </div>
+ 
+  
+   </div>
+ 
+ </div> 
