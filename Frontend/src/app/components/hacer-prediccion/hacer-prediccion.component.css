@@ -1,137 +1,238 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .hacer-prediccion-container {
-    min-height: 100vh;
-    background: url('https://static.deportes13.cl/sites/default/files/componentes/field-comp-fondo/2024-04/bg-ca2024-2.jpg') no-repeat center center fixed;
-    background-size: cover;
-    background-blend-mode: darken;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .navbar {
-    padding: 10px;
-  }
-  
-  .nav-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .nav-link {
-    color: #fff;
-    text-decoration: none;
-    padding: 25px 0px;
-    font-size: 16px;
-    border-radius: 4px;
-    margin: 0 -100px;
-    margin-left: 230px;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  .match {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 25px;
-    border: 1px solid #ddd;
-    margin-bottom: 35px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .match-date-time {
-    display: flex;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.hacer-prediccion-container {
+  min-height: 100vh;
+  background: url('https://static.deportes13.cl/sites/default/files/componentes/field-comp-fondo/2024-04/bg-ca2024-2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+  padding: 10px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 25px 0px;
+  font-size: 16px;
+  border-radius: 4px;
+  margin: 0 -100px;
+  margin-left: 230px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.match {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+  border: 1px solid #ddd;
+  margin-bottom: 35px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.match-date-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  text-align: left;
+}
+
+.match-date {
+  font-weight: bold;
+}
+
+.match-time {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  flex: 2;
+}
+
+.team-local {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.team-visitante {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.team-local img.flag,
+.team-visitante img.flag {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.team img.flag {
+  width: 35px;
+  height: 25px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.score-inputs {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.score-inputs input {
+  width: 50px;
+  padding: 5px;
+  margin: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.match button {
+  padding: 5px 10px;
+  border: none;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button {
+  background-color: #28a745;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}
+
+.edit-button {
+  background-color: #dc3545; /* Rojo */
+}
+
+.edit-button:hover {
+  background-color: #c82333;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 80%;
+  max-width: 390px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+form {
+  margin-top: 20px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+}
+
+input[type="number"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+.nav-list {
     flex-direction: column;
     align-items: flex-start;
-    flex: 1;
-    text-align: left;
-  }
-  
-  .match-date {
-    font-weight: bold;
-  }
-  
-  .match-time {
-    margin-top: 5px;
-    font-size: 0.9em;
-    color: #555;
-  }
-  
-  .team {
-    display: flex;
-    align-items: center;
-    flex: 2;
-  }
-  
-  .team-local {
-    justify-content: flex-end;
-    text-align: right;
-  }
-  
-  .team-visitante {
-    justify-content: flex-start;
-    text-align: left;
-  }
-  
-  .team-local img.flag,
-  .team-visitante img.flag {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  
-  .team img.flag {
-    width: 35px;
-    height: 25px;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-  
-  .score-inputs {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .score-inputs input {
-    width: 50px;
-    padding: 5px;
-    margin: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    text-align: center;
-  }
-  
-  .match button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .match button:hover {
-    background-color: #218838;
-  }
-  
-  
+}
+
+.nav-item {
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+form div {
+    width: 100%;
+}
+}
+
+button {
+background-color: rgba(49, 65, 111, 255);
+color: white;
+border: none;
+padding: 10px 20px;
+margin-right: 50px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s, transform 0.3s;
+}

@@ -15,7 +15,6 @@ interface Match {
   equipo_visitante: string;
 }
 
-
 @Component({
   selector: 'app-hacer-prediccion',
   standalone: true,
@@ -30,9 +29,6 @@ export class HacerPrediccionComponent {
     campeon: '',
     subcampeon: ''
   };
- /* predictions: { [key: number]: { prediccion_local: number, prediccion_visitante: number } } = {};
-  tournamentPrediction = { campeon: '', subcampeon: '' };*/
-
   teamFlags: { [key: string]: string } = {
     'Argentina': 'arg.png',
     'Canadá': 'can.png',
@@ -52,9 +48,7 @@ export class HacerPrediccionComponent {
     'Brasil': 'br.jpg',
   };
 
-  
-
-  constructor(private formBuilder: FormBuilder, private router: Router, private predictionService: PrediccionesService, private authService: AuthService, private snackBar: MatSnackBar) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private predictionService: PrediccionesService, private authService: AuthService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadUpcomingMatches();
@@ -97,7 +91,6 @@ export class HacerPrediccionComponent {
     });
   }
 
-
   saveMatchPrediction(matchId: number): void {
     const documento_alumno = this.authService.getDocumento();
     if (documento_alumno) {
@@ -115,9 +108,16 @@ export class HacerPrediccionComponent {
         });
       }, error => {
         if (error.status === 400) {
-          this.snackBar.open('Ya has hecho una predicción para este partido.', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['snackbar-error']
+          this.predictionService.updatePrediction(predictionData).subscribe(updateResponse => {
+            this.snackBar.open('Predicción actualizada!', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-success']
+            });
+          }, updateError => {
+            this.snackBar.open('Ocurrió un error al actualizar la predicción.', 'Cerrar', {
+              duration: 5000,
+              panelClass: ['snackbar-error']
+            });
           });
         } else {
           this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
@@ -131,7 +131,6 @@ export class HacerPrediccionComponent {
     }
   }
 
-
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     const day = ('0' + date.getDate()).slice(-2);
@@ -139,12 +138,10 @@ export class HacerPrediccionComponent {
     return `${day}/${month}`;
   }
 
-
   formatTime(time: string): string {
     return time.substring(0, 5);
   }
 
-  
   getFlagUrl(team: string): string {
     return `assets/${this.teamFlags[team] || 'default.png'}`;
   }

@@ -56,7 +56,6 @@ export class VerPrediccionesComponent implements OnInit {
   loadTorneoPrediction(): void {
     const documento = this.authService.getDocumento();
     if (documento) {
-      console.log("TS TORNEO: ", documento);
       this.predictionService.getTorneoPrediction(documento).subscribe(prediction => {
         this.torneoPrediction = prediction;
       }, error => {

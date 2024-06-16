@@ -1,38 +1,38 @@
 <div class="hacer-prediccion-container">
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="../inicio" class="nav-link">Inicio</a>
-        <a href="../ver-predicciones/" class="nav-link">Mis predicciones</a>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../inicio" class="nav-link">Inicio</a>
+      <a href="../ver-predicciones/" class="nav-link">Mis predicciones</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Fase de grupos</h2>
+    <div *ngFor="let match of matches" class="match">
+      <div class="match-date-time">
+        <span class="match-date">{{ formatDate(match.fecha) }}</span>
+        <span class="match-time">{{ formatTime(match.hora) }}</span>
       </div>
-    </nav>
-  
-    <div class="container">
-      <h2>Fase de grupos</h2>
-      <div *ngFor="let match of matches" class="match">
-        <div class="match-date-time">
-          <span class="match-date">{{ formatDate(match.fecha) }}</span>
-          <span class="match-time">{{ formatTime(match.hora) }}</span>
-        </div>
-        <div class="team team-local">
-          <span>{{ match.equipo_local }}</span>
-          <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
-        </div>
-        <div class="score-inputs">
-          <label>
-            <input type="number" [(ngModel)]="predictions[match.id].prediccion_local">
-          </label>
-          -
-          <label>
-            <input type="number" [(ngModel)]="predictions[match.id].prediccion_visitante">
-          </label>
-        </div>
-        <div class="team team-visitante">
-          <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
-          <span>{{ match.equipo_visitante }}</span>
-        </div>
-        <button (click)="saveMatchPrediction(match.id)">Guardar</button>
+      <div class="team team-local">
+        <span>{{ match.equipo_local }}</span>
+        <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
+      </div>
+      <div class="score-inputs">
+        <label>
+          <input type="number" [(ngModel)]="predictions[match.id].prediccion_local">
+        </label>
+        -
+        <label>
+          <input type="number" [(ngModel)]="predictions[match.id].prediccion_visitante">
+        </label>
+      </div>
+      <div class="team team-visitante">
+        <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+        <span>{{ match.equipo_visitante }}</span>
+      </div>
+      <div class="button-group">
+        <button (click)="saveMatchPrediction(match.id)" class="save-button">Guardar</button>
       </div>
     </div>
-    
   </div>
-  
+</div>
