@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS `login` (
 );
 
 
-
 CREATE TABLE IF NOT EXISTS `carrerra` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
@@ -143,16 +142,15 @@ USE `pencaucu`;
 
 
 INSERT INTO `carrerra` (`nombre`, `departamento`) VALUES
-('Ingeniería de Sistemas', 'Facultad de Ingeniería'),
+('Ingeniería en informática', 'Facultad de Ingeniería'),
 ('Medicina', 'Facultad de Ciencias de la Salud'),
 ('Derecho', 'Facultad de Derecho'),
 ('Economía', 'Facultad de Ciencias Económicas'),
 ('Arquitectura', 'Facultad de Arquitectura'),
 ('Psicología', 'Facultad de Humanidades'),
-('Biología', 'Facultad de Ciencias Exactas'),
-('Química', 'Facultad de Ciencias Exactas'),
+('Química', 'Facultad Química'),
 ('Filosofía', 'Facultad de Humanidades'),
-('Matemáticas', 'Facultad de Ciencias Exactas');
+('Matemáticas', 'Facultad de Ciencias');
 
 
 INSERT INTO `equipo` (`pais`) VALUES
@@ -694,10 +692,11 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
-DELETE FROM resultado;
+DELETE FROM alumno;
+DELETE FROM login;
+DELETE FROM usuario;
 USE `pencaucu`;
-SELECT * FROM prediccion;
-SELECT * FROM carrerra;
-SELECT * FROM equipo;
+SELECT * FROM login;
+SELECT * FROM usuario;
 
 

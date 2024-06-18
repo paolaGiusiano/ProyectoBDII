@@ -29,7 +29,127 @@ connection.connect((err) => {
 
 
 
-// Ruta para el login
+app.post('/register', async (req, res) => {
+  const { nombre, apellido, documento, email, paisNacimiento, carrera, username, password} = req.body;
+
+  // Validar los datos recibidos
+  if (!documento || !nombre || !apellido || !email || !paisNacimiento || !username || !password) {
+    return res.status(400).json({ message: 'Todos los campos requeridos deben ser completados.' });
+  }
+
+   // Generar un anio_ingreso aleatorio 
+   const currentYear = new Date().getFullYear();
+   const anio_ingreso = Math.floor(Math.random() * 5) + (currentYear - 4);
+
+  try {
+    // Hashear la contraseña
+     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Obtener el ID de la carrera basado en el nombre de la carrera
+    const queryCarrera = 'SELECT id FROM carrerra WHERE nombre = ?';
+    connection.query(queryCarrera, [carrera], (error, results) => {
+      if (error) {
+        console.error('Error al buscar la carrera:', error);
+        return res.status(500).json({ message: 'Error al registrar el usuario.' });
+      }
+
+      if (results.length === 0) {
+        return res.status(400).json({ message: 'La carrera proporcionada no existe.' });
+      }
+
+      const id_carrera = results[0].id;
+
+      connection.beginTransaction(async (err) => {
+        if (err) {
+          console.error('Error al iniciar la transacción:', err);
+          return res.status(500).json({ message: 'Error al registrar el usuario.' });
+        }
+
+        try {
+          // Insertar los datos en la tabla usuario
+          const userQuery = 'INSERT INTO usuario (documento, nombre, apellido, pais_nacimiento, email, rol) VALUES (?, ?, ?, ?, ?, ?)';
+          const userResult = await queryPromise(userQuery, [documento, nombre, apellido, paisNacimiento, email, "alumno"]);
+
+          // Insertar los datos en la tabla login
+          const loginQuery = 'INSERT INTO login (username, password, documento_usuario) VALUES (?, ?, ?)';
+          await queryPromise(loginQuery, [username, hashedPassword, documento]);
+
+          // Si el rol es alumno, insertar los datos en la tabla alumno
+            const studentQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
+            await queryPromise(studentQuery, [documento, anio_ingreso, id_carrera]);
+          
+
+          // Commit de la transacción si todo fue exitoso
+          connection.commit((err) => {
+            if (err) {
+              console.error('Error al hacer commit de la transacción:', err);
+              return connection.rollback(() => {
+                res.status(500).json({ message: 'Error al registrar el usuario.' });
+              });
+            }
+            res.status(201).json({ message: 'Usuario registrado exitosamente.' });
+          });
+        } catch (error) {
+          console.error('Error durante la transacción:', error);
+          connection.rollback(() => {
+            res.status(500).json({ message: 'Error al registrar el usuario.' });
+          });
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Error al hashear la contraseña:', error);
+    res.status(500).json({ message: 'Error al registrar el usuario.' });
+  }
+});
+
+// Función para ejecutar consultas con promesas
+function queryPromise(sql, args) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, args, (err, rows) => {
+      if (err)
+        return reject(err);
+      resolve(rows);
+    });
+  });
+}
+
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const query = `
+    SELECT l.password, u.rol, u.documento
+    FROM login l 
+    JOIN usuario u ON l.documento_usuario = u.documento 
+    WHERE l.username = ?`;
+  
+  connection.query(query, [username], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (results.length > 0) {
+      const hashedPassword = results[0].password;
+      const userRole = results[0].rol;
+      const documento = results[0].documento;
+
+      bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+        if (err) {
+          return res.status(500).json({ error: 'Error comparing passwords' });
+        }
+        if (isMatch) {
+          res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
+        } else {
+          res.status(401).json({ message: 'Invalid username or password' });
+        }
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid username or password' });
+    }
+  });
+});
+
+
+/*
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   const query = `
@@ -116,7 +236,7 @@ function insertAdministrador(documento, callback) {
       callback(null);
     });
   });
-}
+}*/
 
 // Ruta para eliminar un usuario
 app.delete('/user/:documento', (req, res) => {
@@ -472,6 +592,32 @@ app.put('/puntajes-totales/:documento_alumno', (req, res) => {
   });
 });
 
+
+// Ruta para obtener todas las carreras
+app.get('/carreras', (req, res) => {
+  const query = 'SELECT * FROM carrerra';
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching carreras:', error);
+      return res.status(500).json({ error: 'Database error fetching carreras' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+// Ruta para obtener todas las carreras
+app.get('/equipos', (req, res) => {
+  const query = 'SELECT * FROM equipo';
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching equipos:', error);
+      return res.status(500).json({ error: 'Database error fetching equipos' });
+    }
+    res.status(200).json(results);
+  });
+});
 
 
 // Iniciar el servidor

@@ -17,11 +17,13 @@ import { GruposComponent } from './components/grupos/grupos.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { PuntajesComponent } from './components/puntajes/puntajes.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 export const routes: Routes = [ 
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '', redirectTo: 'register', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent},
     { path: 'inicio', component: InicioComponent },
     { path: 'predicciones', component: PrediccionesComponent},
     { path: 'ver-predicciones', component: VerPrediccionesComponent},

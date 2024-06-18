@@ -29,6 +29,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { PuntajesComponent } from './components/puntajes/puntajes.component';
 import { PartidosService } from './services/partidos.services';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { RankingComponent } from './components/ranking/ranking.component';
     GruposComponent,
     UserProfileComponent,
     PuntajesComponent,
-    RankingComponent
+    RankingComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,67 @@
+
+.btn-container {
+  margin-top: 20px;
+}
+
+.btn-container button {
+  width: 100%;
+}
+
+.form-control {
+  width: 40%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  margin-top: 15px;
+}
+
+.text-danger {
+  color: red;
+}
+
+.register-link {
+  margin-top: 20px;
+  text-align: center;
+  margin-left: -60px;
+}
+
+.register-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.flag-icon {
+  width: 20px;
+  height: 15px;
+  margin-right: 8px;
+}
+
+
+::placeholder {
+  color: #6c757da1; 
+  opacity: 1; 
+}
+
+
+:-ms-input-placeholder { 
+  color: #6c757d;
+  font-style: italic;
+}
+
+::-ms-input-placeholder { 
+  color: #6c757d;
+  font-style: italic;
+}
+
+.placeholder-option {
+  color: #999;
+}
+

@@ -61,6 +61,18 @@ export class AuthService {
     console.log('Documento eliminado');
   }
 
-  
+  register(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, userData);
+  }
+
+
+  getCarreras(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/carreras`);
+  }
+
+  getEquipos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/equipos`);
+  }
+
 
 }
