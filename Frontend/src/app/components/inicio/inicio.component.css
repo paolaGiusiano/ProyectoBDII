@@ -3,14 +3,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  background-color: rgba(49, 65, 111, 255);
-  padding: 10px 20px;
-}
-
-header .logo {
+.logoPenca {
   position: absolute;
   top: -20px; 
   left: -5px; 
@@ -20,11 +13,12 @@ header .logo {
 }
 
 nav ul {
+  font-size: 1.2em;
   list-style-type: none;
-  margin: 0;
+  margin-top: -67px;
   padding: 0;
   display: flex;
-  margin-left: 575px;
+  margin-left: 460px; 
 }
 
 nav ul li {
@@ -44,13 +38,14 @@ nav ul li a:hover {
   border-radius: 5px;
 }
 
+
 nav ul li .dropdown-content {
   display: none;
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.9);
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  background-color: rgba(252, 246, 246, 0.658);
+  min-width: 155px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 2; 
 }
 
 nav ul li .dropdown-content a {
@@ -69,97 +64,113 @@ nav ul li:hover .dropdown-content {
   display: block;
 }
 
-.hero {
-  text-align: center;
-  padding: 100px 0;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-.title {
-  font-size: 3em;
-  color: rgba(49, 65, 111, 255);
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-left: -600px;
-}
 
 .subtitle {
+  font-size: 2.5em;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  margin-top: 170px;
+  margin-left: 950px;
+  color: rgba(230, 24, 24, 0.763);
+}
+
+.subtitle2 {
   font-size: 1.2em;
-  margin-top: 75px;
-  margin-left: -600px;
-  color: rgba(49, 65, 111, 255);
+  margin-top: 65px;
+  margin-left: 850px;
+  color: white;
+  text-align: center;
+  max-width: 500px; 
+  word-wrap: break-word; 
+  word-break: break-word; 
+}
+
+
+.hacer-prediccion-container {
+  min-height: 100vh;
+  background: url('https://acdn.mitiendanube.com/stores/001/736/624/products/art11741-24901-cd709c0748550fabbd16238680549273-640-0.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  position: absolute; 
+  top: -80px; 
+  left: 40px; 
+  width: 23%;
+}
+
+
+.content {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.hero {
+  margin-top: 20px;
 }
 
 .icons {
-  margin-top: 100px;
-  margin-left: -600px;
+  margin-top: 70px;
+  margin-left: 840px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .icons a {
-  color: rgba(49, 65, 111, 255);
+  color: white;
   text-decoration: none;
-  font-size: 1.2em;
-  margin: 10px 0;
+  font-size: 1.4em;
+  margin: 15px 0;
   display: flex;
   align-items: center;
+  
 }
 
 .icons a i {
   margin-right: 8px;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 .icons a:hover {
-  color: rgba(255, 99, 71, 1);
+  color: rgba(230, 24, 24, 0.763);
 }
 
-.container {
-  display: flex;
-  width: 300%;
-  height: 90vh; 
+.icons a i.fas.fa-book {
+  margin-right: 8px;
+  font-size: 1.0em;
 }
+
+.icons a i.fas.fa-gamepad {
+  margin-right: 8px;
+  font-size: 1.0em;
+}
+
+.icons a i.fas.fa-trophy {
+  margin-right: 8px;
+  font-size: 1.0em;
+}
+
 
 .sidebar {
-  flex: 1;
   display: flex;
-  margin-left: -95px;
 }
 
 .sidebar img {
-  width: 100%;
-  height: auto;
-  max-width: 90%; 
-  max-height: 550px; 
-  margin-top: 120px;
-}
-
-.main-content {
-  flex: 2;
-  padding: 20px;
-  display: flex;
-}
-
-
-
-
-.sidebar2 {
   flex: 1;
   display: flex;
-  justify-content: center; /* Centramos horizontalmente */
-  align-items: center; /* Centramos verticalmente */
-}
-
-.sidebar2 img {
-  width: 100%; /* Aseguramos que ocupe todo el ancho del contenedor */
-  height: auto;
-  max-width: 50%; /* Aseguramos que no exceda el ancho del contenedor */
-  max-height: 50%; /* Aseguramos que no exceda la altura del contenedor */
-  margin-top: -500px;
-  margin-left:-1500px ;
-  clip-path: inset(30% 5% 10% 10%);
+  width: 130%; 
+  height: 400px;
+  margin-top: -400px;
+  margin-right: 800px;
 }
 
