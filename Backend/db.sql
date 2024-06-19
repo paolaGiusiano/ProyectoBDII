@@ -2,12 +2,12 @@ CREATE DATABASE IF NOT EXISTS `pencaucu`;
 
 USE `pencaucu`;
 
+
 CREATE TABLE IF NOT EXISTS `usuario` (
   `documento` varchar(8) NOT NULL,
   `nombre` varchar(40) NOT NULL,
   `apellido` varchar(40) NOT NULL,
   `pais_nacimiento` varchar(40) NOT NULL,
-  `rol` varchar(20) NOT NULL, 
   `email` varchar(100) NOT NULL, 
    UNIQUE(`documento`),
   PRIMARY KEY (`documento`)
@@ -692,11 +692,15 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
+DELETE FROM prediccion_campeonato;
 DELETE FROM alumno;
 DELETE FROM login;
 DELETE FROM usuario;
 USE `pencaucu`;
+SELECT * FROM prediccion_campeonato;
+SELECT * FROM alumno;
 SELECT * FROM login;
 SELECT * FROM usuario;
+
 
 

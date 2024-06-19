@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap} from 'rxjs';
+
 
 interface LoginResponse {
   message: string;
@@ -50,10 +51,14 @@ export class AuthService {
   }
   
     
-
   getAlumno(documento: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/alumnos/${documento}`);
   }
+
+  getAdministrador(documento: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/administrador/${documento}`);
+  }
+
 
   logout(): void {
     this.documento = null;
@@ -73,6 +78,7 @@ export class AuthService {
   getEquipos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/equipos`);
   }
+
 
 
 }

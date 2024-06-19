@@ -35,36 +35,63 @@ export class LoginComponent implements OnInit {
   }
 
 
+    login() {
+      if (this.loginForm.valid) {
+        const username = this.username?.value;
+        const password = this.password?.value;
   
-  login() {
-    if (this.loginForm.valid) {
-      const username = this.username?.value;
-      const password = this.password?.value;
-      
-      this.authService.login(username, password).subscribe(
-        (response: any) => {
-          if (response && response.message === 'Login successful') {
-            if (response.role === 'alumno') {
-              this.router.navigate(['/inicio']);
-            } else if (response.role === 'administrador') {
-              this.router.navigate(['/ingreso-resultado']);
+        this.authService.login(username, password).subscribe(
+          (response: any) => {
+            if (response && response.message === 'Login successful') {
+              const documento = response.documento;
+              this.authService.getAlumno(documento).subscribe(
+                alumnoResponse => {
+                  if (alumnoResponse) {
+                    // Si es un alumno, redirigir a /inicio
+                    this.router.navigate(['/inicio']);
+                  } else {
+                    // Verificar si es administrador
+                    this.authService.getAdministrador(documento).subscribe(
+                      adminResponse => {
+                        if (adminResponse) {
+                          // Si es administrador, redirigir a /ingreso-resultado
+                          this.router.navigate(['/ingreso-resultado']);
+                        } else {
+                          alert('No se pudo determinar el rol del usuario.');
+                        }
+                      },
+                      error => {
+                        console.error('Error verificando administrador:', error);
+                        alert('Error al verificar el rol del usuario.');
+                      }
+                    );
+                  }
+                },
+                error => {
+                  console.error('Error verificando alumno:', error);
+                  alert('Error al verificar el rol del usuario.');
+                }
+              );
+            } else {
+              alert(response.message); // Mostrar el mensaje de error devuelto por el backend
             }
-          } else {
-            alert('Usuario o contraseña incorrectos.');
+          },
+          error => {
+            console.error('LoginComponent: Error al iniciar sesión:', error);
+            if (error.status === 401) {
+              alert(error.error.message); // Mostrar mensaje personalizado en caso de error 401
+            } else {
+              alert('Error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.');
+            }
           }
-        },
-        error => {
-          console.error('LoginComponent: Error al iniciar sesión:', error);
-          alert('Error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.');
-        }
-      );
-    } else {
-      // Marcar todos los campos del formulario como "touched" si el formulario no es válido
-      this.loginForm.markAllAsTouched();
-      alert('Por favor, complete todos los campos.');
+        );
+      } else {
+        // Marcar todos los campos del formulario como "touched" si el formulario no es válido
+        this.loginForm.markAllAsTouched();
+        alert('Por favor, complete todos los campos.');
+      }
     }
-  }
-
+    
 
   Register() {
     this.router.navigate(['/register']);

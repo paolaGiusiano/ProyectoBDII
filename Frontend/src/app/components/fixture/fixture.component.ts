@@ -147,7 +147,7 @@ export class FixtureComponent {
       console.error('Documento del usuario no encontrado');
     }
   }
-
+/*
   saveTournamentPrediction(): void {
     const documento_alumno = this.authService.getDocumento();
     if (documento_alumno) {
@@ -178,7 +178,7 @@ export class FixtureComponent {
       console.error('Documento del usuario no encontrado');
     }
   }
-
+*/
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     const day = ('0' + date.getDate()).slice(-2);

@@ -3,6 +3,7 @@ import { FormGroup, Validators, ReactiveFormsModule, FormBuilder, FormsModule, A
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 function documentoValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -56,17 +57,15 @@ export class RegisterComponent implements OnInit {
     'Brasil': 'br.jpg',
     };
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {
     this.registerForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
+      nombreApellido: ['', Validators.required],
       documento: ['', [Validators.required, documentoValidator]],
       email: ['', [Validators.required, Validators.email, emailValidator]],
       paisNacimiento: [''],
       carrera: ['', Validators.required],  
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-     // rol: ['alumno', Validators.required], 
       campeon: [''],
       subcampeon: ['']
     });
@@ -90,20 +89,27 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     console.log('Formulario enviado', this.registerForm.value);
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe(
+      const formValue = this.registerForm.value;
+      const [nombre, apellido] = formValue.nombreApellido.split(' ');
+
+      const formData = {
+        ...formValue,
+        nombre,
+        apellido,
+      };
+
+      this.authService.register(formData).subscribe(
         response => {
-          console.log('Registro exitoso', response);
+          this.snackBar.open('Registro exitoso', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/login']);
         },
         error => {
-          console.error('Error en el registro', error);
+          this.snackBar.open('Error en el registro', 'Cerrar', { duration: 3000 });
         }
       );
     } else {
-
-        this.registerForm.markAllAsTouched();
-        alert('Por favor, complete todos los campos.');
-      
+      this.registerForm.markAllAsTouched();
+      alert('Por favor, complete todos los campos.');
     }
   }
   

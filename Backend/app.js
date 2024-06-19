@@ -30,23 +30,19 @@ connection.connect((err) => {
 
 
 app.post('/register', async (req, res) => {
-  const { nombre, apellido, documento, email, paisNacimiento, carrera, username, password} = req.body;
-
-  // Validar los datos recibidos
+  const { nombre, apellido, documento, email, paisNacimiento, carrera, username, password, campeon, subcampeon } = req.body;
+  
   if (!documento || !nombre || !apellido || !email || !paisNacimiento || !username || !password) {
     return res.status(400).json({ message: 'Todos los campos requeridos deben ser completados.' });
   }
-
-   // Generar un anio_ingreso aleatorio 
-   const currentYear = new Date().getFullYear();
-   const anio_ingreso = Math.floor(Math.random() * 5) + (currentYear - 4);
+  
+  const currentYear = new Date().getFullYear();
+  const anio_ingreso = Math.floor(Math.random() * 5) + (currentYear - 4);
 
   try {
-    // Hashear la contraseña
-     const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Obtener el ID de la carrera basado en el nombre de la carrera
-    const queryCarrera = 'SELECT id FROM carrerra WHERE nombre = ?';
+    const queryCarrera = 'SELECT id FROM carrerra WHERE id = ?';
     connection.query(queryCarrera, [carrera], (error, results) => {
       if (error) {
         console.error('Error al buscar la carrera:', error);
@@ -66,20 +62,34 @@ app.post('/register', async (req, res) => {
         }
 
         try {
-          // Insertar los datos en la tabla usuario
-          const userQuery = 'INSERT INTO usuario (documento, nombre, apellido, pais_nacimiento, email, rol) VALUES (?, ?, ?, ?, ?, ?)';
-          const userResult = await queryPromise(userQuery, [documento, nombre, apellido, paisNacimiento, email, "alumno"]);
+          // Verificar si el usuario ya existe en la tabla usuario
+          const userCheckQuery = 'SELECT documento FROM usuario WHERE documento = ?';
+          const userCheckResult = await queryPromise(userCheckQuery, [documento]);
 
-          // Insertar los datos en la tabla login
-          const loginQuery = 'INSERT INTO login (username, password, documento_usuario) VALUES (?, ?, ?)';
-          await queryPromise(loginQuery, [username, hashedPassword, documento]);
+          if (userCheckResult.length === 0) {
+            // Insertar en la tabla usuario si el usuario no existe
+            const userQuery = 'INSERT INTO usuario (documento, nombre, apellido, pais_nacimiento, email) VALUES (?, ?, ?, ?, ?)';
+            await queryPromise(userQuery, [documento, nombre, apellido, paisNacimiento, email]);
 
-          // Si el rol es alumno, insertar los datos en la tabla alumno
+            // Insertar en la tabla login
+            const loginQuery = 'INSERT INTO login (username, password, documento_usuario) VALUES (?, ?, ?)';
+            await queryPromise(loginQuery, [username, hashedPassword, documento]);
+          }
+
+          // Verificar si el alumno ya existe en la tabla alumno
+          const studentCheckQuery = 'SELECT documento FROM alumno WHERE documento = ?';
+          const studentCheckResult = await queryPromise(studentCheckQuery, [documento]);
+         
+          if (studentCheckResult.length === 0) {
+            // Insertar en la tabla alumno si el alumno no existe
             const studentQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
             await queryPromise(studentQuery, [documento, anio_ingreso, id_carrera]);
+          }
           
-
-          // Commit de la transacción si todo fue exitoso
+          // Insertar en la tabla prediccion_campeonato
+          const predictionQuery = 'INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon) VALUES (?, ?, ?)';
+          await queryPromise(predictionQuery, [documento, campeon, subcampeon]);
+          console.log("APP2 ",documento);
           connection.commit((err) => {
             if (err) {
               console.error('Error al hacer commit de la transacción:', err);
@@ -115,21 +125,21 @@ function queryPromise(sql, args) {
 }
 
 
+
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   const query = `
-    SELECT l.password, u.rol, u.documento
+    SELECT l.password, u.documento
     FROM login l 
     JOIN usuario u ON l.documento_usuario = u.documento 
     WHERE l.username = ?`;
-  
+
   connection.query(query, [username], (error, results) => {
     if (error) {
       return res.status(500).json({ error: 'Database error' });
     }
     if (results.length > 0) {
       const hashedPassword = results[0].password;
-      const userRole = results[0].rol;
       const documento = results[0].documento;
 
       bcrypt.compare(password, hashedPassword, (err, isMatch) => {
@@ -137,106 +147,17 @@ app.post('/login', (req, res) => {
           return res.status(500).json({ error: 'Error comparing passwords' });
         }
         if (isMatch) {
-          res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
+          res.status(200).json({ message: 'Login successful', documento: documento });
         } else {
           res.status(401).json({ message: 'Invalid username or password' });
         }
       });
     } else {
-      res.status(401).json({ message: 'Invalid username or password' });
+      res.status(401).json({ message: 'Usted no está registrado en la pencaUCU' });
     }
   });
 });
 
-
-/*
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  const query = `
-    SELECT l.password, u.rol, u.documento
-    FROM login l 
-    JOIN usuario u ON l.documento_usuario = u.documento 
-    WHERE l.username = ?`;
-  
-  connection.query(query, [username], (error, results) => {
-    if (error) {
-      return res.status(500).json({ error: 'Database error' });
-    }
-    if (results.length > 0) {
-      const hashedPassword = results[0].password;
-      const userRole = results[0].rol;
-      const documento = results[0].documento;
-
-      bcrypt.compare(password, hashedPassword, (err, isMatch) => {
-        if (err) {
-          return res.status(500).json({ error: 'Error comparing passwords' });
-        }
-        if (isMatch) {
-          // Insertar en la tabla correspondiente
-          if (userRole === 'alumno') {
-            insertAlumno(documento, (insertError) => {
-              if (insertError) {
-                return res.status(500).json({ error: 'Error inserting alumno' });
-              }
-              res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
-            });
-          } else if (userRole === 'administrador') {
-            insertAdministrador(documento, (insertError) => {
-              if (insertError) {
-                return res.status(500).json({ error: 'Error inserting administrador' });
-              }
-              res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
-            });
-          } else {
-            res.status(200).json({ message: 'Login successful', role: userRole, documento: documento });
-          }
-        } else {
-          res.status(401).json({ message: 'Invalid username or password' });
-        }
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid username or password' });
-    }
-  });
-});
-
-function insertAlumno(documento, callback) {
-  const checkQuery = 'SELECT * FROM alumno WHERE documento = ?';
-  connection.query(checkQuery, [documento], (checkError, checkResults) => {
-    if (checkError) return callback(checkError);
-    if (checkResults.length > 0) return callback(null); // Ya está insertado
-
-    const randomYear = Math.floor(Math.random() * (2024 - 2015 + 1)) + 2015;
-    const randomCarreraQuery = 'SELECT id FROM carrerra ORDER BY RAND() LIMIT 1';
-
-    connection.query(randomCarreraQuery, (carreraError, carreraResults) => {
-      if (carreraError) return callback(carreraError);
-      if (carreraResults.length === 0) return callback(new Error('No carreras found'));
-
-      const idCarrera = carreraResults[0].id;
-      const insertQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
-
-      connection.query(insertQuery, [documento, randomYear, idCarrera], (insertError) => {
-        if (insertError) return callback(insertError);
-        callback(null);
-      });
-    });
-  });
-}
-
-function insertAdministrador(documento, callback) {
-  const checkQuery = 'SELECT * FROM administrador WHERE documento = ?';
-  connection.query(checkQuery, [documento], (checkError, checkResults) => {
-    if (checkError) return callback(checkError);
-    if (checkResults.length > 0) return callback(null); // Ya está insertado
-
-    const insertQuery = 'INSERT INTO administrador (documento) VALUES (?)';
-    connection.query(insertQuery, [documento], (insertError) => {
-      if (insertError) return callback(insertError);
-      callback(null);
-    });
-  });
-}*/
 
 // Ruta para eliminar un usuario
 app.delete('/user/:documento', (req, res) => {
@@ -468,6 +389,29 @@ app.get('/tournament-prediction/:documento', (req, res) => {
   });
 });
 
+
+
+ // Ruta para obtener información de un alumno específico
+ app.get('/administrador/:documento', (req, res) => {
+  const documento = req.params.documento;
+  const query = `
+    SELECT a.documento, a.anio_ingreso, a.id_carrera, u.nombre, 
+    FROM administrador a
+    JOIN usuario u ON a.documento = u.documento
+    WHERE a.documento = ?`;
+
+  connection.query(query, [documento], (error, results) => {
+    if (error) {
+      console.error('Error fetching admin:', error);
+      return res.status(500).json({ error: 'Database error fetching aadmin' });
+    }
+    if (results.length > 0) {
+      res.status(200).json(results[0]);
+    } else {
+      res.status(404).json({ error: 'Admin not found' });
+    }
+  });
+});
 
 
 // Ruta para eliminar una predicción

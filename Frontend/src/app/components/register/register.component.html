@@ -8,18 +8,10 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Ej: Juan">
-        <div *ngIf="registerForm.get('nombre')?.invalid && (registerForm.get('nombre')?.dirty || registerForm.get('nombre')?.touched)" class="invalid-feedback">
-          Nombre es requerido.
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="apellido">Apellido</label>
-        <input type="text" class="form-control" id="apellido" formControlName="apellido" placeholder="Ej: Perez">
-        <div *ngIf="registerForm.get('apellido')?.invalid && (registerForm.get('apellido')?.dirty || registerForm.get('apellido')?.touched)" class="text-danger">
-          Apellido es requerido.
+        <label for="nombreApellido">Nombre y Apellido</label>
+        <input type="text" class="form-control" id="nombreApellido" formControlName="nombreApellido" placeholder="Ej: Juan Perez">
+        <div *ngIf="registerForm.get('nombreApellido')?.invalid && (registerForm.get('nombreApellido')?.dirty || registerForm.get('nombreApellido')?.touched)" class="invalid-feedback">
+          Nombre y Apellido son requeridos.
         </div>
       </div>
   
@@ -75,6 +67,22 @@
           Username es requerido.
         </div>
       </div>
+
+
+
+      <div class="form-group">
+  <label for="password">Password</label>
+  <input type="password" class="form-control" id="password" formControlName="password" placeholder="Ej: ">
+  <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+    <div *ngIf="registerForm.get('password')?.errors?.['required']" class="text-danger">
+      Password es requerido.
+    </div>
+    <div *ngIf="registerForm.get('password')?.errors?.['minlength']" class="text-danger">
+      Password debe tener al menos 6 dígitos.
+    </div>
+  </div>
+</div>
+
 
   
       <div class="form-group">
