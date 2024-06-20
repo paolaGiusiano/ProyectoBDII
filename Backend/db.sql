@@ -113,11 +113,24 @@ CREATE TABLE IF NOT EXISTS `PuntajeTotal` (
 );
 
 
+
+CREATE TABLE IF NOT EXISTS `notificaciones` (
+  `id`  INT AUTO_INCREMENT PRIMARY KEY,
+  `documento_alumno` varchar(8) NOT NULL,
+  `mensaje`  TEXT NOT NULL,
+  `fecha`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`documento_alumno` ) REFERENCES alumno(`documento` )
+);
+
+
 CREATE TABLE IF NOT EXISTS `premio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+
+
 
 
 
@@ -643,8 +656,10 @@ INSERT INTO `plantel` (`nombre`, `posicion`, `equipo_id`) VALUES
 
 
 
+USE `pencaucu`;
 -- Fase de grupos - Jornada 1 de 3
 INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
+('2024-06-19', '23:20', 'Argentina', 'Canadá');
 ('2024-06-20', '21:00', 'Argentina', 'Canadá'), 
 ('2024-06-21', '21:00', 'Chile', 'Perú'),
 ('2024-06-22', '19:00', 'Ecuador', 'Venezuela'),
@@ -692,6 +707,15 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
+DELETE FROM `compite`
+WHERE fecha = '2024-06-19' 
+AND hora = '21:00' 
+AND equipo_local = 'Argentina' 
+AND equipo_visitante = 'Canadá'
+LIMIT 1;
+
+
+
 DELETE FROM prediccion_campeonato;
 DELETE FROM alumno;
 DELETE FROM login;

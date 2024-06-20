@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit {
         // Marcar todos los campos del formulario como "touched" si el formulario no es válido
         this.loginForm.markAllAsTouched();
         alert('Por favor, complete todos los campos.');
+        
       }
     }
     

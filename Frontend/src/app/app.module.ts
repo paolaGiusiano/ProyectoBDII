@@ -30,6 +30,7 @@ import { PuntajesComponent } from './components/puntajes/puntajes.component';
 import { PartidosService } from './services/partidos.services';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { RegisterComponent } from './components/register/register.component';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,7 @@ import { RegisterComponent } from './components/register/register.component';
     CommonModule,
     AppRoutingModule,
   ],
-  providers: [AuthService, PrediccionesService, ResultadoService, PartidosService],
+  providers: [AuthService, PrediccionesService, ResultadoService, PartidosService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
