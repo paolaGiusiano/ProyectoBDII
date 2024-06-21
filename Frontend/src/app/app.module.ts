@@ -32,6 +32,7 @@ import { RankingComponent } from './components/ranking/ranking.component';
 import { RegisterComponent } from './components/register/register.component';
 import { NotificationService } from './services/notification.service';
 import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
+import { EstadisticasService } from './services/estadisticas.service';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,7 @@ import { EstadisticasComponent } from './components/estadisticas/estadisticas.co
     CommonModule,
     AppRoutingModule,
   ],
-  providers: [AuthService, PrediccionesService, ResultadoService, PartidosService, NotificationService],
+  providers: [AuthService, PrediccionesService, ResultadoService, PartidosService, NotificationService, EstadisticasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

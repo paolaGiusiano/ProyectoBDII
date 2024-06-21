@@ -1,19 +1,25 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { EstadisticasService } from '../../services/estadisticas.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
   selector: 'app-estadisticas',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './estadisticas.component.html',
   styleUrl: './estadisticas.component.css'
 })
 export class EstadisticasComponent {
   estadisticas: any[] = [];
-  carreras: any[] = []; 
+  carreras: any[] = [];
+  filteredEstadisticas: any[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private estadisticasService: EstadisticasService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loadEstadisticas();
@@ -21,27 +27,37 @@ export class EstadisticasComponent {
   }
 
   loadEstadisticas() {
-    // Ejemplo de solicitud ficticia (ajusta según tu backend)
-    this.http.get<any[]>('URL_DEL_BACKEND/api/estadisticas')
-      .subscribe(data => {
+    this.estadisticasService.getEstadisticas().subscribe(
+      data => {
         this.estadisticas = data;
-      }, error => {
+        this.filteredEstadisticas = data;
+      },
+      error => {
         console.error('Error al cargar estadísticas', error);
-      });
+      }
+    );
   }
 
   loadCarreras() {
-
-    this.http.get<any[]>('URL_DEL_BACKEND/api/carreras')
-      .subscribe(data => {
+    this.authService.getCarreras().subscribe(
+      data => {
         this.carreras = data;
-      }, error => {
+      },
+      error => {
         console.error('Error al cargar carreras', error);
-      });
+      }
+    );
   }
 
-
-  filtrarPorCarrera(idCarrera: number) {
-
+  filtrarPorCarrera(event: any) {
+    const idCarrera = event.target.value;
+    if (idCarrera === '0') {
+      this.filteredEstadisticas = this.estadisticas;
+    } else {
+      this.filteredEstadisticas = this.estadisticas.filter(e => e.id_carrera == idCarrera);
+    }
   }
+  
+
+
 }

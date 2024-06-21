@@ -219,7 +219,7 @@ app.post('/login', (req, res) => {
     FROM login l 
     JOIN usuario u ON l.documento_usuario = u.documento 
     WHERE l.username = ?`;
-
+    
   connection.query(query, [username], (error, results) => {
     if (error) {
       return res.status(500).json({ error: 'Database error' });
@@ -232,7 +232,7 @@ app.post('/login', (req, res) => {
         if (err) {
           return res.status(500).json({ error: 'Error comparing passwords' });
         }
-        if (isMatch) {
+        if (isMatch) {      
           res.status(200).json({ message: 'Login successful', documento: documento });
         } else {
           res.status(401).json({ message: 'Invalid username or password' });
@@ -329,10 +329,6 @@ app.post('/predictions', async (req, res) => {
     const horaActual = new Date();
     const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
 
-    console.log('Hora inicio partido:', horaInicioPartido);
-    console.log('Hora actual:', horaActual);
-    console.log('Diferencia en horas:', diferenciaHoras);
-
     // Verificar si ya existe una predicción para este partido por este alumno
     const checkPredictionQuery = 'SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?';
     const [error, results] = await new Promise((resolve) => {
@@ -348,7 +344,6 @@ app.post('/predictions', async (req, res) => {
 
     if (results.length > 0) {
       if (diferenciaHoras < 1) {
-        console.log('ENTRE: No se puede modificar la predicción');
         return res.status(400).json({ error: 'No se puede modificar la predicción' });
       }
 
@@ -368,7 +363,6 @@ app.post('/predictions', async (req, res) => {
       return res.status(200).json({ message: 'Predicción actualizada con éxito' });
     } else {
       if (diferenciaHoras < 1) {
-        console.log('ENTRE: No se puede realizar la predicción');
         return res.status(400).json({ error: 'No se puede realizar la predicción' });
       }
 
@@ -507,15 +501,15 @@ app.get('/tournament-prediction/:documento', (req, res) => {
 
 
 
- // Ruta para obtener información de un alumno específico
+ // Ruta para obtener información de un admin específico
  app.get('/administrador/:documento', (req, res) => {
   const documento = req.params.documento;
   const query = `
-    SELECT a.documento, a.anio_ingreso, a.id_carrera, u.nombre, 
+    SELECT a.documento, u.nombre
     FROM administrador a
     JOIN usuario u ON a.documento = u.documento
     WHERE a.documento = ?`;
-
+   
   connection.query(query, [documento], (error, results) => {
     if (error) {
       console.error('Error fetching admin:', error);
@@ -691,6 +685,26 @@ app.get('/equipos', (req, res) => {
     if (error) {
       console.error('Error fetching equipos:', error);
       return res.status(500).json({ error: 'Database error fetching equipos' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+
+// Ruta para obtener estadísticas
+app.get('/estadisticas', (req, res) => {
+  const query = `
+    SELECT a.documento, u.nombre, u.apellido, c.nombre AS carrera, pt.puntaje_total
+    FROM alumno a
+    JOIN usuario u ON a.documento = u.documento
+    JOIN carrerra c ON a.id_carrera = c.id
+    JOIN PuntajeTotal pt ON a.documento = pt.documento_alumno;
+  `;
+  console.log("APP ");
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching statistics:', error);
+      return res.status(500).json({ error: 'Database error fetching statistics' });
     }
     res.status(200).json(results);
   });

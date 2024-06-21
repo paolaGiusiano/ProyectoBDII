@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 );
 
 
+
 CREATE TABLE IF NOT EXISTS `carrerra` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
@@ -133,25 +134,21 @@ CREATE TABLE IF NOT EXISTS `premio` (
 
 
 
-
-INSERT INTO `usuario` (`documento`, `nombre`, `apellido`, `pais_nacimiento`, `rol`, `email`)
+INSERT INTO `usuario` (`documento`, `nombre`, `apellido`, `pais_nacimiento`, `email`)
 VALUES
-('12345678', 'Paola', 'Giusiano', 'Uruguay', 'alumno', 'paolagiusianop@gmail.com'),
-('87654321', 'Pepe', 'Gomez', 'Argentina', 'administrador', 'pepe.gomez@gmail.com'),
-('11223344', 'Test', 'User', 'Uruguay', 'alumno', 'test.user@example.com');
+('34875244', 'Pepe', 'Gomez', 'Uruguay', 'pepegomez@gmail.com');
 
 
-INSERT INTO `login` (`username`, `password`, `documento_usuario`) 
-VALUES ('paola.giusiano', '$2b$10$9QSGpaUKyZc6DjKRSUiJYuYGa8216jflsDf3GyomOHtw/e1BakcMu', '12345678');
+INSERT INTO `administrador` (`documento`)
+VALUES
+('34875244');
 
-INSERT INTO `login` (`username`, `password`, `documento_usuario`) 
-VALUES ('pepe.gomez', '$2b$10$nVAgV5kECObED7VLQNSIc.3ifPg/2Mx/hjaoIyxLxbePPxG.rrIdS', '87654321');
-
-INSERT INTO `login` (`username`, `password`, `documento_usuario`) 
-VALUES ('test.user', '$2b$10$BUGEwwF5kXguL205h/1OxOOrQ3bnoIeTAJ/1Aaq7AJbef62Lh2erm', '11223344');
+INSERT INTO `login` (`username`, `password`, `documento_usuario`)
+VALUES
+('pepe.gomez', 'pepe123', '34875244');
 
 
-USE `pencaucu`;
+
 
 
 INSERT INTO `carrerra` (`nombre`, `departamento`) VALUES
@@ -707,12 +704,6 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 
-DELETE FROM `compite`
-WHERE fecha = '2024-06-19' 
-AND hora = '23:20' 
-AND equipo_local = 'Argentina' 
-AND equipo_visitante = 'Canadá'
-LIMIT 1;
 
 
 USE `pencaucu`;
@@ -721,9 +712,8 @@ DELETE FROM alumno;
 DELETE FROM login;
 DELETE FROM usuario;
 USE `pencaucu`;
-SELECT * FROM prediccion;
+SELECT * FROM administrador;
 SELECT * FROM alumno;
-SELECT * FROM login;
 SELECT * FROM usuario;
 
 
