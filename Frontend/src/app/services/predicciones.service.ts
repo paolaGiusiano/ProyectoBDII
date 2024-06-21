@@ -16,6 +16,10 @@ export class PrediccionesService {
     return this.http.get(`${this.baseUrl}/matches/upcoming`);
   }
 
+  getPastMatches(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/matches/upcoming`);
+  }
+
   submitMatchPrediction(prediction: any): Observable<any> {   
     return this.http.post(`${this.baseUrl}/predictions`, prediction);
   }

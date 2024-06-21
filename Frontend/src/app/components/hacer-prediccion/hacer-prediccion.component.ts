@@ -29,6 +29,8 @@ export class HacerPrediccionComponent {
     campeon: '',
     subcampeon: ''
   };
+  upcomingMatches: Match[] = [];
+  pastMatches: Match[] = [];
   teamFlags: { [key: string]: string } = {
     'Argentina': 'arg.png',
     'Canadá': 'can.png',
@@ -78,7 +80,7 @@ export class HacerPrediccionComponent {
       console.error('Documento del usuario no encontrado');
     }
   }
-
+  
   loadUpcomingMatches(): void {
     this.predictionService.getUpcomingMatches().subscribe((matches: Match[]) => {
       this.matches = matches.filter(match => match.id <= 24);
@@ -143,7 +145,8 @@ export class HacerPrediccionComponent {
       console.error('Documento del usuario no encontrado');
     }
   }
-  
+
+
   
 
   formatDate(dateString: string): string {

@@ -271,7 +271,32 @@ app.delete('/user/:documento', (req, res) => {
 
 
 
+app.get('/matches/upcoming', (req, res) => {
+  const query = 'SELECT * FROM compite  ORDER BY fecha, hora';
+  
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.json(results);
+  });
+});
 
+app.get('/matches/past', (req, res) => {
+  const query = 'SELECT * FROM compite WHERE fecha < CURDATE() ORDER BY fecha, hora';
+  
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.json(results);
+  });
+});
+
+
+/*
 // Obtener los próximos partidos
 app.get('/matches/upcoming', (req, res) => {
   const query = 'SELECT * FROM compite WHERE fecha >= CURDATE() ORDER BY fecha, hora';
@@ -284,7 +309,7 @@ app.get('/matches/upcoming', (req, res) => {
     res.json(results);
   });
 });
-
+*/
 
 app.post('/matches/results', (req, res) => {
   const { id_partido, goles_local, goles_visitante } = req.body;
@@ -315,7 +340,6 @@ app.get('/matches/results', (req, res) => {
 });
 
 
-
 app.post('/predictions', async (req, res) => {
   const { id_partido, prediccion_local, prediccion_visitante } = req.body;
   const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
@@ -325,10 +349,6 @@ app.post('/predictions', async (req, res) => {
   }
 
   try {
-    const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
-    const horaActual = new Date();
-    const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
-
     // Verificar si ya existe una predicción para este partido por este alumno
     const checkPredictionQuery = 'SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?';
     const [error, results] = await new Promise((resolve) => {
@@ -336,18 +356,41 @@ app.post('/predictions', async (req, res) => {
         resolve([error, results]);
       });
     });
+    const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
+    const horaActual = new Date();
+    const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
 
+    // Obtener la fecha del partido para comparar con la fecha actual
+    const fechaPartido = await obtenerFechaPartido(id_partido);
+    const fechaActual = new Date();
+
+    // Verificar si ya pasó la fecha del partido
+    if (formatDate(fechaPartido) < formatDate(fechaActual)) {
+      if (results.length > 0) {
+        return res.status(400).json({ error: 'No se puede modificar la predicción' });
+      } else {
+        return res.status(400).json({ error: 'No se puede realizar la predicción' });
+      }
+    }
+
+    // Verificar si ya pasó menos de 1 hora para el inicio del partido
+    if (diferenciaHoras < 1) {
+      if (results.length > 0) {
+        return res.status(400).json({ error: 'No se puede modificar la predicción' });
+      } else {
+        return res.status(400).json({ error: 'No se puede realizar la predicción' });
+      }
+    }
+
+
+    
     if (error) {
       console.error('Error de base de datos al verificar la predicción:', error.sqlMessage);
       return res.status(500).json({ error: 'Error de base de datos al verificar la predicción', details: error.sqlMessage });
     }
 
     if (results.length > 0) {
-      if (diferenciaHoras < 1) {
-        return res.status(400).json({ error: 'No se puede modificar la predicción' });
-      }
-
-      // Actualizar la predicción existente si ya hay una
+      // Si existe una predicción, actualizarla si es posible
       const updatePredictionQuery = 'UPDATE prediccion SET prediccion_local = ?, prediccion_visitante = ? WHERE documento_alumno = ? AND id_partido = ?';
       const [updateError] = await new Promise((resolve) => {
         connection.query(updatePredictionQuery, [prediccion_local, prediccion_visitante, documento_alumno, id_partido], (error, results) => {
@@ -362,11 +405,7 @@ app.post('/predictions', async (req, res) => {
 
       return res.status(200).json({ message: 'Predicción actualizada con éxito' });
     } else {
-      if (diferenciaHoras < 1) {
-        return res.status(400).json({ error: 'No se puede realizar la predicción' });
-      }
-
-      // Insertar una nueva predicción si no hay ninguna para ese partido y alumno
+      // Si no existe una predicción, insertar una nueva
       const insertPredictionQuery = 'INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante) VALUES (?, ?, ?, ?)';
       const [insertError] = await new Promise((resolve) => {
         connection.query(insertPredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante], (error, results) => {
@@ -387,6 +426,30 @@ app.post('/predictions', async (req, res) => {
   }
 });
 
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = ('0' + date.getDate()).slice(-2);
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  return `${day}/${month}`;
+}
+
+async function obtenerFechaPartido(id_partido) {
+  const query = 'SELECT fecha FROM compite WHERE id = ?';
+  return new Promise((resolve, reject) => {
+    connection.query(query, [id_partido], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        if (results.length > 0) {
+          resolve(new Date(results[0].fecha));
+        } else {
+          reject(new Error(`No se encontró ningún partido con id_partido = ${id_partido}`));
+        }
+      }
+    });
+  });
+}
 
 
 
@@ -573,41 +636,36 @@ app.get('/tournament-prediction/:documento', (req, res) => {
   function formatTime(time) {
     return time.substring(0, 5); 
   }
-  
-  
-  // Ruta para actualizar una predicción
-  app.put('/predictions/:predictionId', async (req, res) => {
-    const id_prediccion = req.params.predictionId; 
-    const { documento_alumno, id_partido, prediccion_local, prediccion_visitante} = req.body; 
-    
-    try {
-      const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
-      const horaActual = new Date();
-      const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
-  
-      if (diferenciaHoras < 1) {
-        return res.status(400).json({ error: 'No se puede modificar la predicción porque el partido está a menos de una hora de comenzar.' });
-      }
-  
-      const updatePredictionQuery = `
-        UPDATE prediccion
-        SET documento_alumno = ?, id_partido = ?, prediccion_local = ?, prediccion_visitante = ?
-        WHERE id = ?
-      `;
-      connection.query(updatePredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante, id_prediccion], (error, results) => {
-        if (error) {
-          console.error('Error updating prediction:', error);
-          return res.status(500).json({ error: 'Database error updating prediction' });
-        }
-        res.status(200).json({ success: true, message: 'Predicción actualizada correctamente', data: { id: id_prediccion, documento_alumno, id_partido, prediccion_local, prediccion_visitante } });
-        });
-        } catch (error) {
-          console.error('Error:', error);
-          res.status(500).json({ error: 'Internal Server Error', details: error.message });
-        }
-  
-      });
 
+
+  function obtenerFechaHoraInicioPartido(id_partido) {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT fecha, hora FROM compite WHERE id = ?';
+      connection.query(query, [id_partido], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        if (results.length > 0) {
+          const fecha = results[0].fecha;
+          const hora = results[0].hora;
+          const formattedTime = formatTime(hora); // HH:MM
+          const [year, month, day] = fecha.split('-').map(Number); // Parsear la fecha en año, mes y día
+          const [hours, minutes] = formattedTime.split(':').map(Number); // Parsear la hora en horas y minutos
+          const parsedDate = new Date(year, month - 1, day, hours, minutes, 0); // Construir la fecha completa
+  
+          if (isNaN(parsedDate.getTime())) {
+            return reject(new Error('Fecha y hora del partido no válidas'));
+          }
+          resolve(parsedDate);
+        } else {
+          reject(new Error('Partido no encontrado'));
+        }
+      });
+    });
+  }
+  
+  
+  
 // Ruta para obtener todos los partidos
 app.get('/partidos', (req, res) => {
   const query = 'SELECT * FROM compite';
