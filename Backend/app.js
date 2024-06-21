@@ -316,7 +316,7 @@ app.get('/matches/results', (req, res) => {
 
 
 
-app.post('/predictions', (req, res) => {
+app.post('/predictions', async (req, res) => {
   const { id_partido, prediccion_local, prediccion_visitante } = req.body;
   const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
 
@@ -324,46 +324,76 @@ app.post('/predictions', (req, res) => {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
-  // Verificar si ya existe una predicción para este partido por este alumno
-  const checkPredictionQuery = `
-    SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?
-  `;
+  try {
+    const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
+    const horaActual = new Date();
+    const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
 
-  connection.query(checkPredictionQuery, [documento_alumno, id_partido], (error, results) => {
+    console.log('Hora inicio partido:', horaInicioPartido);
+    console.log('Hora actual:', horaActual);
+    console.log('Diferencia en horas:', diferenciaHoras);
+
+    // Verificar si ya existe una predicción para este partido por este alumno
+    const checkPredictionQuery = 'SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?';
+    const [error, results] = await new Promise((resolve) => {
+      connection.query(checkPredictionQuery, [documento_alumno, id_partido], (error, results) => {
+        resolve([error, results]);
+      });
+    });
+
     if (error) {
       console.error('Error de base de datos al verificar la predicción:', error.sqlMessage);
       return res.status(500).json({ error: 'Error de base de datos al verificar la predicción', details: error.sqlMessage });
     }
 
     if (results.length > 0) {
+      if (diferenciaHoras < 1) {
+        console.log('ENTRE: No se puede modificar la predicción');
+        return res.status(400).json({ error: 'No se puede modificar la predicción' });
+      }
+
       // Actualizar la predicción existente si ya hay una
-      const updatePredictionQuery = `
-        UPDATE prediccion SET prediccion_local = ?, prediccion_visitante = ?
-        WHERE documento_alumno = ? AND id_partido = ?
-      `;
-      connection.query(updatePredictionQuery, [prediccion_local, prediccion_visitante, documento_alumno, id_partido], (error, results) => {
-        if (error) {
-          console.error('Error al actualizar la predicción:', error.sqlMessage);
-          return res.status(500).json({ error: 'Error al actualizar la predicción', details: error.sqlMessage });
-        }
-        res.status(200).json({ message: 'Predicción actualizada con éxito' });
+      const updatePredictionQuery = 'UPDATE prediccion SET prediccion_local = ?, prediccion_visitante = ? WHERE documento_alumno = ? AND id_partido = ?';
+      const [updateError] = await new Promise((resolve) => {
+        connection.query(updatePredictionQuery, [prediccion_local, prediccion_visitante, documento_alumno, id_partido], (error, results) => {
+          resolve([error, results]);
+        });
       });
+
+      if (updateError) {
+        console.error('Error al actualizar la predicción:', updateError.sqlMessage);
+        return res.status(500).json({ error: 'Error al actualizar la predicción', details: updateError.sqlMessage });
+      }
+
+      return res.status(200).json({ message: 'Predicción actualizada con éxito' });
     } else {
+      if (diferenciaHoras < 1) {
+        console.log('ENTRE: No se puede realizar la predicción');
+        return res.status(400).json({ error: 'No se puede realizar la predicción' });
+      }
+
       // Insertar una nueva predicción si no hay ninguna para ese partido y alumno
-      const insertPredictionQuery = `
-        INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante)
-        VALUES (?, ?, ?, ?)
-      `;
-      connection.query(insertPredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante], (error, results) => {
-        if (error) {
-          console.error('Error al guardar la predicción:', error.sqlMessage);
-          return res.status(500).json({ error: 'Error al guardar la predicción', details: error.sqlMessage });
-        }
-        res.status(200).json({ message: 'Predicción guardada con éxito' });
+      const insertPredictionQuery = 'INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante) VALUES (?, ?, ?, ?)';
+      const [insertError] = await new Promise((resolve) => {
+        connection.query(insertPredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante], (error, results) => {
+          resolve([error, results]);
+        });
       });
+
+      if (insertError) {
+        console.error('Error al guardar la predicción:', insertError.sqlMessage);
+        return res.status(500).json({ error: 'Error al guardar la predicción', details: insertError.sqlMessage });
+      }
+
+      return res.status(200).json({ message: 'Predicción guardada con éxito' });
     }
-  });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
 });
+
+
 
 
 // Ruta para guardar predicción del campeonato
@@ -516,23 +546,40 @@ app.get('/tournament-prediction/:documento', (req, res) => {
     });
   });
 
-
-
   function obtenerHoraInicioPartido(id_partido) {
-    return new Promise((resolve, reject) => {
-      const query = 'SELECT hora FROM compite WHERE id = ?';
-      connection.query(query, [id_partido], (error, results) => {
-        if (error) {
-          return reject(error);
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT hora FROM compite WHERE id = ?';
+    connection.query(query, [id_partido], (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      if (results.length > 0) {
+        const hora = results[0].hora;
+        const formattedTime = formatTime(hora); // HH:MM
+        const today = new Date(); // Fecha actual
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        const day = today.getDate();
+        const hours = parseInt(formattedTime.substring(0, 2)); // Obtener las horas
+        const minutes = parseInt(formattedTime.substring(3, 5)); // Obtener los minutos
+        const parsedDate = new Date(year, month, day, hours, minutes, 0); // Construir la fecha completa
+
+        if (isNaN(parsedDate.getTime())) {
+          return reject(new Error('Hora del partido no válida'));
         }
-        if (results.length > 0) {
-          resolve(new Date(results[0].hora));
-        } else {
-          reject(new Error('Partido no encontrado'));
-        }
-      });
+        resolve(parsedDate);
+      } else {
+        reject(new Error('Partido no encontrado'));
+      }
     });
-  }  
+  });
+}
+
+  
+  function formatTime(time) {
+    return time.substring(0, 5); 
+  }
+  
   
   // Ruta para actualizar una predicción
   app.put('/predictions/:predictionId', async (req, res) => {

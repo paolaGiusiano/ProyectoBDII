@@ -18,6 +18,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { PuntajesComponent } from './components/puntajes/puntajes.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { RegisterComponent } from './components/register/register.component';
+import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
 
 
 export const routes: Routes = [ 
@@ -40,6 +41,7 @@ export const routes: Routes = [
     { path: 'perfil', component: UserProfileComponent},
     { path: 'puntajes', component: PuntajesComponent},
     { path: 'ranking', component: RankingComponent},
+    { path: 'estadisticas', component: EstadisticasComponent},
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 

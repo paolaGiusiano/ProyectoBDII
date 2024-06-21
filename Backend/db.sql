@@ -659,7 +659,6 @@ INSERT INTO `plantel` (`nombre`, `posicion`, `equipo_id`) VALUES
 USE `pencaucu`;
 -- Fase de grupos - Jornada 1 de 3
 INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
-('2024-06-19', '23:20', 'Argentina', 'Canadá');
 ('2024-06-20', '21:00', 'Argentina', 'Canadá'), 
 ('2024-06-21', '21:00', 'Chile', 'Perú'),
 ('2024-06-22', '19:00', 'Ecuador', 'Venezuela'),
@@ -706,22 +705,23 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 
-USE `pencaucu`;
+
+
 DELETE FROM `compite`
 WHERE fecha = '2024-06-19' 
-AND hora = '21:00' 
+AND hora = '23:20' 
 AND equipo_local = 'Argentina' 
 AND equipo_visitante = 'Canadá'
 LIMIT 1;
 
 
-
-DELETE FROM prediccion_campeonato;
+USE `pencaucu`;
+DELETE FROM prediccion;
 DELETE FROM alumno;
 DELETE FROM login;
 DELETE FROM usuario;
 USE `pencaucu`;
-SELECT * FROM prediccion_campeonato;
+SELECT * FROM prediccion;
 SELECT * FROM alumno;
 SELECT * FROM login;
 SELECT * FROM usuario;

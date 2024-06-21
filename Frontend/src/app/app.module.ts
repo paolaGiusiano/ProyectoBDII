@@ -31,6 +31,7 @@ import { PartidosService } from './services/partidos.services';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { RegisterComponent } from './components/register/register.component';
 import { NotificationService } from './services/notification.service';
+import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { NotificationService } from './services/notification.service';
     UserProfileComponent,
     PuntajesComponent,
     RankingComponent,
-    RegisterComponent
+    RegisterComponent,
+    EstadisticasComponent
   ],
   imports: [
     BrowserModule,
