@@ -124,18 +124,38 @@ export class FixtureComponent {
         prediccion_local: this.predictions[matchId].prediccion_local,
         prediccion_visitante: this.predictions[matchId].prediccion_visitante,
       };
-
-      this.predictionService.submitMatchPrediction(predictionData).subscribe(response => {   
+  
+      this.predictionService.submitMatchPrediction(predictionData).subscribe(response => {
         this.snackBar.open('Predicción guardada!', 'Cerrar', {
           duration: 3000,
           panelClass: ['snackbar-success']
         });
       }, error => {
-        if (error.status === 400) {
-          this.snackBar.open('Ya has hecho una predicción para este partido.', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['snackbar-error']
-          });
+        if (error.status === 400 && error.error) {
+          if (error.error.error === 'No se puede modificar la predicción') {
+            this.snackBar.open('No se puede modificar la predicción', 'Cerrar', {
+              duration: 5000,
+              panelClass: ['snackbar-error']
+            });
+          } else if (error.error.error === 'No se puede realizar la predicción') {
+            this.snackBar.open('No se puede realizar la predicción', 'Cerrar', {
+              duration: 5000,
+              panelClass: ['snackbar-error']
+            });
+          } else {
+            // Asumimos que el error 400 significa que la predicción ya existe y debe ser actualizada
+            this.predictionService.updatePrediction(predictionData).subscribe(updateResponse => {
+              this.snackBar.open('Predicción actualizada!', 'Cerrar', {
+                duration: 3000,
+                panelClass: ['snackbar-success']
+              });
+            }, updateError => {
+              this.snackBar.open('Ocurrió un error al actualizar la predicción.', 'Cerrar', {
+                duration: 5000,
+                panelClass: ['snackbar-error']
+              });
+            });
+          }
         } else {
           this.snackBar.open('Ocurrió un error al enviar la predicción.', 'Cerrar', {
             duration: 5000,
