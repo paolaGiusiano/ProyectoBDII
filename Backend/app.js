@@ -121,76 +121,91 @@ app.post('/register', async (req, res) => {
   if (!documento || !nombre || !apellido || !email || !paisNacimiento || !username || !password) {
     return res.status(400).json({ message: 'Todos los campos requeridos deben ser completados.' });
   }
-  
+
   const currentYear = new Date().getFullYear();
   const anio_ingreso = Math.floor(Math.random() * 5) + (currentYear - 4);
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const queryCarrera = 'SELECT id FROM carrerra WHERE id = ?';
-    connection.query(queryCarrera, [carrera], (error, results) => {
+    // Check if the user is an administrator
+    const adminCheckQuery = 'SELECT documento FROM administrador WHERE documento = ?';
+    connection.query(adminCheckQuery, [documento], async (error, results) => {
       if (error) {
-        console.error('Error al buscar la carrera:', error);
+        console.error('Error al buscar el administrador:', error);
         return res.status(500).json({ message: 'Error al registrar el usuario.' });
       }
 
-      if (results.length === 0) {
-        return res.status(400).json({ message: 'La carrera proporcionada no existe.' });
+      if (results.length > 0) {
+        // User is an administrator, respond with error
+        return res.status(400).json({ message: 'Solo se pueden registrar alumnos.' });
       }
 
-      const id_carrera = results[0].id;
+      // Proceed with student registration
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-      connection.beginTransaction(async (err) => {
-        if (err) {
-          console.error('Error al iniciar la transacción:', err);
+      const queryCarrera = 'SELECT id FROM carrerra WHERE id = ?';
+      connection.query(queryCarrera, [carrera], (error, results) => {
+        if (error) {
+          console.error('Error al buscar la carrera:', error);
           return res.status(500).json({ message: 'Error al registrar el usuario.' });
         }
 
-        try {
-          // Verificar si el usuario ya existe en la tabla usuario
-          const userCheckQuery = 'SELECT documento FROM usuario WHERE documento = ?';
-          const userCheckResult = await queryPromise(userCheckQuery, [documento]);
-
-          if (userCheckResult.length === 0) {
-            // Insertar en la tabla usuario si el usuario no existe
-            const userQuery = 'INSERT INTO usuario (documento, nombre, apellido, pais_nacimiento, email) VALUES (?, ?, ?, ?, ?)';
-            await queryPromise(userQuery, [documento, nombre, apellido, paisNacimiento, email]);
-
-            // Insertar en la tabla login
-            const loginQuery = 'INSERT INTO login (username, password, documento_usuario) VALUES (?, ?, ?)';
-            await queryPromise(loginQuery, [username, hashedPassword, documento]);
-          }
-
-          // Verificar si el alumno ya existe en la tabla alumno
-          const studentCheckQuery = 'SELECT documento FROM alumno WHERE documento = ?';
-          const studentCheckResult = await queryPromise(studentCheckQuery, [documento]);
-         
-          if (studentCheckResult.length === 0) {
-            // Insertar en la tabla alumno si el alumno no existe
-            const studentQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
-            await queryPromise(studentQuery, [documento, anio_ingreso, id_carrera]);
-          }
-          
-          // Insertar en la tabla prediccion_campeonato
-          const predictionQuery = 'INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon) VALUES (?, ?, ?)';
-          await queryPromise(predictionQuery, [documento, campeon, subcampeon]);
-          console.log("APP2 ",documento);
-          connection.commit((err) => {
-            if (err) {
-              console.error('Error al hacer commit de la transacción:', err);
-              return connection.rollback(() => {
-                res.status(500).json({ message: 'Error al registrar el usuario.' });
-              });
-            }
-            res.status(201).json({ message: 'Usuario registrado exitosamente.' });
-          });
-        } catch (error) {
-          console.error('Error durante la transacción:', error);
-          connection.rollback(() => {
-            res.status(500).json({ message: 'Error al registrar el usuario.' });
-          });
+        if (results.length === 0) {
+          return res.status(400).json({ message: 'La carrera proporcionada no existe.' });
         }
+
+        const id_carrera = results[0].id;
+
+        connection.beginTransaction(async (err) => {
+          if (err) {
+            console.error('Error al iniciar la transacción:', err);
+            return res.status(500).json({ message: 'Error al registrar el usuario.' });
+          }
+
+          try {
+            // Verificar si el usuario ya existe en la tabla usuario
+            const userCheckQuery = 'SELECT documento FROM usuario WHERE documento = ?';
+            const userCheckResult = await queryPromise(userCheckQuery, [documento]);
+
+            if (userCheckResult.length === 0) {
+              // Insertar en la tabla usuario si el usuario no existe
+              const userQuery = 'INSERT INTO usuario (documento, nombre, apellido, pais_nacimiento, email) VALUES (?, ?, ?, ?, ?)';
+              await queryPromise(userQuery, [documento, nombre, apellido, paisNacimiento, email]);
+
+              // Insertar en la tabla login
+              const loginQuery = 'INSERT INTO login (username, password, documento_usuario) VALUES (?, ?, ?)';
+              await queryPromise(loginQuery, [username, hashedPassword, documento]);
+            }
+
+            // Verificar si el alumno ya existe en la tabla alumno
+            const studentCheckQuery = 'SELECT documento FROM alumno WHERE documento = ?';
+            const studentCheckResult = await queryPromise(studentCheckQuery, [documento]);
+
+            if (studentCheckResult.length === 0) {
+              // Insertar en la tabla alumno si el alumno no existe
+              const studentQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
+              await queryPromise(studentQuery, [documento, anio_ingreso, id_carrera]);
+            }
+
+            // Insertar en la tabla prediccion_campeonato
+            const predictionQuery = 'INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon) VALUES (?, ?, ?)';
+            await queryPromise(predictionQuery, [documento, campeon, subcampeon]);
+
+            connection.commit((err) => {
+              if (err) {
+                console.error('Error al hacer commit de la transacción:', err);
+                return connection.rollback(() => {
+                  res.status(500).json({ message: 'Error al registrar el usuario.' });
+                });
+              }
+              res.status(201).json({ message: 'Usuario registrado exitosamente.' });
+            });
+          } catch (error) {
+            console.error('Error durante la transacción:', error);
+            connection.rollback(() => {
+              res.status(500).json({ message: 'Error al registrar el usuario.' });
+            });
+          }
+        });
       });
     });
   } catch (error) {
@@ -198,6 +213,7 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Error al registrar el usuario.' });
   }
 });
+
 
 // Función para ejecutar consultas con promesas
 function queryPromise(sql, args) {

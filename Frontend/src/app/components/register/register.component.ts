@@ -85,26 +85,29 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  
   onSubmit() {
     console.log('Formulario enviado', this.registerForm.value);
     if (this.registerForm.valid) {
       const formValue = this.registerForm.value;
       const [nombre, apellido] = formValue.nombreApellido.split(' ');
-
+  
       const formData = {
         ...formValue,
         nombre,
         apellido,
       };
-
+  
       this.authService.register(formData).subscribe(
         response => {
           this.snackBar.open('Registro exitoso', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/login']);
         },
-        error => {
-          this.snackBar.open('Error en el registro', 'Cerrar', { duration: 3000 });
+        error => {console.log("TS ", error.status, error.error.message);
+          if (error.status === 400 && error.error.message === 'Solo se pueden registrar alumnos.') {
+            this.snackBar.open('Solo se puede registrar alumnos', 'Cerrar', { duration: 3000 });
+          } else {
+            this.snackBar.open('Error en el registro', 'Cerrar', { duration: 3000 });
+          }
         }
       );
     } else {
