@@ -113,6 +113,11 @@ export class PuntajesComponent implements OnInit {
     return puntaje;
   }
 
+
+  esResultadoDisponible(prediccion: any): boolean {
+    const resultadoPartido = this.resultados.find(resultado => resultado.id_partido === prediccion.id_partido);
+    return resultadoPartido !== undefined; // Devuelve true si se encontró el resultado del partido
+  }
  
 
 }

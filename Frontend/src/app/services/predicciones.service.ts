@@ -16,10 +16,6 @@ export class PrediccionesService {
     return this.http.get(`${this.baseUrl}/matches/upcoming`);
   }
 
-  getPastMatches(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/matches/upcoming`);
-  }
-
   submitMatchPrediction(prediction: any): Observable<any> {   
     return this.http.post(`${this.baseUrl}/predictions`, prediction);
   }
@@ -31,6 +27,10 @@ export class PrediccionesService {
 
   getPredictions(documento: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/predictions/${documento}`);
+  }
+
+  getAllPredictions(): Observable<any[]> {console.log("SERVICE GET");
+    return this.http.get<any[]>(`${this.baseUrl}/predictions`);
   }
 
   getTorneoPrediction(documento: string): Observable<any> {

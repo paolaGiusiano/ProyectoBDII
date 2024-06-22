@@ -12,8 +12,12 @@ export class EstadisticasService {
 
   constructor(private http: HttpClient) { }
 
-  getEstadisticas(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/estadisticas`);
+  getEstadisticas(carreraId?: string): Observable<any> {
+    let url = `${this.apiUrl}/estadisticas`;
+    if (carreraId) {
+      url += `?id_carrera=${carreraId}`;
+    }
+    return this.http.get<any>(url);
   }
 
 }

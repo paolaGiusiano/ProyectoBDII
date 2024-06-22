@@ -1,5 +1,5 @@
 <nav class="navbar">
-  <img src="assets/logoCA.png" alt="Logo" class="logo">
+  <img src="assets/pencaucu2.png" alt="Logo" class="logo">
     <div class="nav-container">
         <a href="../inicio" class="nav-link">Inicio</a>
     </div>
@@ -19,7 +19,12 @@
           {{ prediccion.equipo_local }} vs {{ prediccion.equipo_visitante }}
         </td>
         <td>
-          {{ obtenerPuntaje(prediccion) }}
+          <span *ngIf="esResultadoDisponible(prediccion)">
+            {{ obtenerPuntaje(prediccion) }}
+          </span>
+          <span *ngIf="!esResultadoDisponible(prediccion)">
+            Resultado pendiente
+          </span>
         </td>
       </tr>
     </tbody>

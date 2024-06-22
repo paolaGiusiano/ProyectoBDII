@@ -703,10 +703,6 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 
-
-
-
-USE `pencaucu`;
 DELETE FROM prediccion;
 DELETE FROM alumno;
 DELETE FROM login;

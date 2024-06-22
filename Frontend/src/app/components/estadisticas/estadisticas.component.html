@@ -1,23 +1,45 @@
-<div>
-    <h2>Estadísticas de Aciertos de Alumnos</h2>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>Documento</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Aciertos Totales</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let estadistica of estadisticas">
-          <td>{{ estadistica.documento }}</td>
-          <td>{{ estadistica.nombre }}</td>
-          <td>{{ estadistica.apellido }}</td>
-          <td>{{ estadistica.aciertos_totales }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+<nav class="navbar">
+  <img src="assets/pencaucu2.png" alt="Logo" class="logo">
+    <div class="nav-container">
+        <a href="../inicio" class="nav-link">Inicio</a>
+    </div>
+</nav>
+
+<div class="container">
+
+  <label for="carrera">Filtrar por carrera:</label>
+  <select id="carrera" (change)="filtrarPorCarrera($event)">
+    <option value="0">Todas</option>
+    <option *ngFor="let carrera of carreras" [value]="carrera.id">{{ carrera.nombre }}</option>
+  </select>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Documento</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Aciertos Exactos</th>
+        <th>Aciertos Correctos</th>
+        <th>Fallos</th>
+        <th>Aciertos Totales</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="filteredEstadisticas.length === 0">
+        <td colspan="7" style="text-align: center;">No hay estadísticas disponibles</td>
+      </tr>
+      <tr *ngFor="let estadistica of filteredEstadisticas">
+        <td data-label="Documento">{{ estadistica.documento }}</td>
+        <td data-label="Nombre">{{ estadistica.nombre }}</td>
+        <td data-label="Apellido">{{ estadistica.apellido }}</td>
+        <td data-label="Aciertos Exactos" class="aciertos">{{ estadistica.aciertos_exactos }}</td>
+        <td data-label="Aciertos Correctos" class="correctos">{{ estadistica.aciertos_correctos }}</td>
+        <td data-label="Fallos" class="fallos">{{ estadistica.fallos }}</td>
+        <td data-label="Aciertos Totales" class="total">{{ estadistica.aciertos_totales }}</td>
+      </tr>
+      
+    </tbody>
+  </table>
+ 
+</div>

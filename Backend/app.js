@@ -533,6 +533,22 @@ app.get('/predictions/:documento', (req, res) => {
 });
 
 
+// Ruta para obtener todas las predicciones
+app.get('/predictions', (req, res) => {
+  const query = `
+    SELECT p.*, c.equipo_local, c.equipo_visitante 
+    FROM prediccion p
+    JOIN compite c ON p.id_partido = c.id
+  `;
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error.sqlMessage);
+      return res.status(500).json({ error: 'Error de base de datos al obtener todas las predicciones', details: error.sqlMessage });
+    }
+    res.json(results);
+  });
+});
+
 // Ruta para obtener la prediccion del torneo por documento del alumno
 app.get('/tournament-prediction/:documento', (req, res) => {
   const documento = req.params.documento;
@@ -764,17 +780,16 @@ app.get('/equipos', (req, res) => {
   });
 });
 
-
 // Ruta para obtener estadísticas
 app.get('/estadisticas', (req, res) => {
   const query = `
-    SELECT a.documento, u.nombre, u.apellido, c.nombre AS carrera, pt.puntaje_total
+    SELECT a.documento, u.nombre, u.apellido, a.id_carrera, pt.puntaje_total AS aciertos_totales
     FROM alumno a
     JOIN usuario u ON a.documento = u.documento
     JOIN carrerra c ON a.id_carrera = c.id
     JOIN PuntajeTotal pt ON a.documento = pt.documento_alumno;
   `;
-  console.log("APP ");
+
   connection.query(query, (error, results) => {
     if (error) {
       console.error('Error fetching statistics:', error);
@@ -783,6 +798,8 @@ app.get('/estadisticas', (req, res) => {
     res.status(200).json(results);
   });
 });
+
+
 
 
 // Iniciar el servidor

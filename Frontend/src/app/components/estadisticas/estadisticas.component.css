@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+
+.container {
+    max-width: 1000px;
+    margin: 70px auto 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    z-index: 4;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    position: absolute;
+    top: -85px;
+    left: 45px;
+    width: 210px;
+    height: 210px;
+  }
+  
+  .navbar {
+    background-color: rgba(49, 65, 111, 255);
+    padding: 15px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-container {
+    max-width: 1000px;
+    height: 40px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 50px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #f2f2f2;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(49, 65, 111, 255);
+  }
+  
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  select:focus {
+    border-color: rgba(49, 65, 111, 255);
+    outline: none;
+  }
+
+  
+  .table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table thead {
+    background-color: rgba(49, 65, 111, 255);
+  }
+  
+  .table th, .table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: rgba(49, 65, 111, 255);
+    color: #fff;
+    font-weight: bold;
+    font-family: 'Nunito', cursive; 
+  
+  }
+  
+  .table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .table td.aciertos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .table td.correctos {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .table td.fallos {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .table td.total {
+    align-items: center;
+    text-align: center;
+  }
+ 
+ 
+  @media (max-width: 600px) {
+    .table, .table thead, .table tbody, .table th, .table td, .table tr {
+      display: block;
+    }
+    
+    .table thead tr {
+      display: none;
+    }
+    
+    .table tr {
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .table td {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .table td:before {
+      content: attr(data-label);
+      font-weight: bold;
+      color: #333;
+    }
+
+   
+  }
+  
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-top: -10px;
+  }
+  
+  .image-container img {
+    position: absolute;
+    right: -440px;
+    width: 32%;
+    height: auto;
+    opacity: 0.6;
+    filter: brightness(70%);
+  }
+  
