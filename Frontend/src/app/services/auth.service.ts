@@ -18,9 +18,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { username, password }).pipe(
-      tap(response => {
+  login(username: string, password: string): Observable<LoginResponse> { 
+    return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, { username, password }).pipe(
+      tap(response => { 
         if (response && response.documento) {
           this.documento = response.documento;
           localStorage.setItem('documento', this.documento);  
@@ -50,11 +50,11 @@ export class AuthService {
   
     
   getAlumno(documento: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/alumnos/${documento}`);
+    return this.http.get<any>(`${this.baseUrl}/user/alumnos/${documento}`);
   }
 
   getAdministrador(documento: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/administrador/${documento}`);
+    return this.http.get<any>(`${this.baseUrl}/user/administrador/${documento}`);
   }
 
 
@@ -65,16 +65,16 @@ export class AuthService {
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, userData);
+    return this.http.post(`${this.baseUrl}/auth/register`, userData);
   }
 
 
   getCarreras(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/carreras`);
+    return this.http.get<any[]>(`${this.baseUrl}/match/carreras`);
   }
 
   getEquipos(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/equipos`);
+    return this.http.get<any[]>(`${this.baseUrl}/match/equipos`);
   }
 
 

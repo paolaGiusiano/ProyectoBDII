@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PartidosService {
-  private apiUrl = 'http://localhost:3000/partidos'; 
+  private apiUrl = 'http://localhost:3000/match/partidos'; 
                    
 
   constructor(private http: HttpClient) { }

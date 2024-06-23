@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ResultadoService {
-  private apiUrl = 'http://localhost:3000/matches/results';
+  private apiUrl = 'http://localhost:3000/result/matches/results';
 
   constructor(private http: HttpClient) { }
 

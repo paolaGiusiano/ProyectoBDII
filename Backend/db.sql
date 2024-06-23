@@ -62,7 +62,6 @@ CREATE TABLE IF NOT EXISTS `compite` (
   FOREIGN KEY (`equipo_visitante`) REFERENCES `equipo` (`pais`)
 );
 
-
 CREATE TABLE IF NOT EXISTS `prediccion` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `documento_alumno` VARCHAR(8) NOT NULL,
@@ -708,6 +707,8 @@ DELETE FROM alumno;
 DELETE FROM login;
 DELETE FROM usuario;
 USE `pencaucu`;
+
+
 SELECT * FROM administrador;
 SELECT * FROM alumno;
 SELECT * FROM usuario;

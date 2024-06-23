@@ -13,7 +13,7 @@ export class EstadisticasService {
   constructor(private http: HttpClient) { }
 
   getEstadisticas(carreraId?: string): Observable<any> {
-    let url = `${this.apiUrl}/estadisticas`;
+    let url = `${this.apiUrl}/statistics/estadisticas`;
     if (carreraId) {
       url += `?id_carrera=${carreraId}`;
     }

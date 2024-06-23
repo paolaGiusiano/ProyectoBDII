@@ -13,11 +13,11 @@ export class PrediccionesService {
   constructor(private http: HttpClient) { }
 
   getUpcomingMatches(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/matches/upcoming`);
+    return this.http.get(`${this.baseUrl}/match/matches/upcoming`);
   }
 
   submitMatchPrediction(prediction: any): Observable<any> {   
-    return this.http.post(`${this.baseUrl}/predictions`, prediction);
+    return this.http.post(`${this.baseUrl}/prediction/predictions`, prediction);
   }
  
   submitTournamentPrediction(predictionData: any): Observable<any> {
@@ -26,11 +26,11 @@ export class PrediccionesService {
 
 
   getPredictions(documento: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/predictions/${documento}`);
+    return this.http.get<any[]>(`${this.baseUrl}/prediction/predictions/${documento}`);
   }
 
-  getAllPredictions(): Observable<any[]> {console.log("SERVICE GET");
-    return this.http.get<any[]>(`${this.baseUrl}/predictions`);
+  getAllPredictions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/prediction/predictions`);
   }
 
   getTorneoPrediction(documento: string): Observable<any> {
@@ -44,7 +44,7 @@ export class PrediccionesService {
 
   //modificar/actualizar una prediccion
   updatePrediction(predictionData: any): Observable<any> {
-    const url = `${this.baseUrl}/predictions/${predictionData.id}`;
+    const url = `${this.baseUrl}/prediction/predictions/${predictionData.id}`;
     return this.http.put(url, predictionData);
   }
  
