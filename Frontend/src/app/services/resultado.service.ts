@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ResultadoService {
   private apiUrl = 'http://localhost:3000/result/matches/results';
+ 
 
   constructor(private http: HttpClient) { }
 
@@ -18,6 +19,10 @@ export class ResultadoService {
     return this.http.get(this.apiUrl);
   }
 
-  
+  // obtener el resultado del último partido (la final)
+  getFinalResult(): Observable<any> { 
+    const finalResultUrl = `${this.apiUrl}/final`;
+    return this.http.get(finalResultUrl);
+  }
 
 }

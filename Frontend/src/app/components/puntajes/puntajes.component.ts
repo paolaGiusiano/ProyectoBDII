@@ -70,13 +70,27 @@ export class PuntajesComponent implements OnInit {
     // Obtener predicciones de campeonato
     this.prediccionesService.getTorneoPrediction(documento).subscribe(
       (data) => {
-        this.campeonatoPrediccion = data;
-        this.actualizarPuntajeCampeonato(); // Calcular puntaje de campeonato una vez se obtenga la predicción
+        this.campeonatoPrediccion = data[0];;
+        //this.actualizarPuntajeCampeonato(); 
+        console.log("TS TORNEO ", this.campeonatoPrediccion.campeon);
       },
       (error) => {
         console.error('Error al obtener la predicción del campeonato:', error);
       }
     );
+
+   // Obtener el resultado del partido final
+   this.resultadoService.getFinalResult().subscribe(
+    (finalResult) => {
+      const resultadoPartidoFinal = finalResult;
+      this.compararPrediccionFinal(resultadoPartidoFinal);
+      console.log("RESULT ", resultadoPartidoFinal  );
+      console.log("RESULT2 ", resultadoPartidoFinal.campeon);
+    },
+    (error) => {
+      console.error('Error al obtener el resultado del partido final:', error);
+    }
+  );
 
   }
 
@@ -135,7 +149,7 @@ export class PuntajesComponent implements OnInit {
     const resultadoPartido = this.resultados.find(resultado => resultado.id_partido === prediccion.id_partido);
     return resultadoPartido !== undefined; // Devuelve true si se encontró el resultado del partido
   }
-
+/*
   actualizarPuntajeCampeonato(): void {
     // Actualizar puntaje de campeonato en base de datos
     const documento = this.authService.getDocumento();
@@ -164,7 +178,47 @@ export class PuntajesComponent implements OnInit {
       this.puntosTotales += puntosCampeon + puntosSubcampeon;
          
     }
-  }
- 
+    
+  }*/
+
+  
+    compararPrediccionFinal(resultadoPartidoFinal: any): void {
+      const campeonReal = resultadoPartidoFinal.campeon;
+      const subcampeonReal = resultadoPartidoFinal.subcampeon;
+  
+      const campeonPredicho = this.campeonatoPrediccion.campeon;
+      const subcampeonPredicho = this.campeonatoPrediccion.subcampeon;
+  
+      console.log("Comparando: ", campeonReal, subcampeonReal, campeonPredicho, subcampeonPredicho);
+  
+      this.puntosCampeon = campeonPredicho === campeonReal ? 10 : 0;
+      this.puntosSubcampeon = subcampeonPredicho === subcampeonReal ? 5 : 0;
+  
+      // Actualizar puntaje de campeonato en base de datos
+      const documento = this.authService.getDocumento();
+      if (documento) {
+          this.puntajeService.updatePuntajeTotal(documento, this.puntosCampeon).subscribe(
+              response => {
+                  console.log('Puntaje de campeon actualizado:', response);
+              },
+              error => {
+                  console.error('Error al actualizar el puntaje de campeon:', error);
+              }
+          );
+  
+          this.puntajeService.updatePuntajeTotal(documento, this.puntosSubcampeon).subscribe(
+              response => {
+                  console.log('Puntaje de subcampeon actualizado:', response);
+              },
+              error => {
+                  console.error('Error al actualizar el puntaje de subcampeon:', error);
+              }
+          );
+  
+          // Actualizar puntos totales
+          this.puntosTotales += this.puntosCampeon + this.puntosSubcampeon;
+          console.log("Puntos totales actualizados:", this.puntosTotales);
+      }
+    }
 
 }

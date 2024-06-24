@@ -716,7 +716,7 @@ DELETE FROM login;
 DELETE FROM usuario;
 
 USE `pencaucu`;
-SELECT * FROM prediccion_campeonato;
+SELECT * FROM compite;
 SELECT * FROM alumno;
 SELECT * FROM usuario;
 
