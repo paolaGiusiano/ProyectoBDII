@@ -694,13 +694,13 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 ('2024-07-06', '22:00', 'Por definirse', 'Por definirse');
 
 
-USE `pencaucu`;
+
 -- Semifinal
 INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
 ('2024-07-09', '21:00', 'Por definirse', 'Por definirse'),
 ('2024-07-10', '21:00', 'Por definirse', 'Por definirse');
 
-
+USE `pencaucu`;
 -- Final
 INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
 ('2024-07-14', '21:00', 'Por definirse', 'Por definirse');
@@ -708,16 +708,18 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
+DELETE FROM compite
+WHERE id = 32;
 
 
 USE `pencaucu`;
 DELETE FROM resultado;
-DELETE FROM login;
+DELETE FROM compite;
 DELETE FROM usuario;
 
 USE `pencaucu`;
 SELECT * FROM compite;
-SELECT * FROM alumno;
+SELECT * FROM resultado;
 SELECT * FROM usuario;
 
 

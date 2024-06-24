@@ -14,6 +14,9 @@ export class ResultadoService {
   saveResult(result: any): Observable<any> {
     return this.http.post(this.apiUrl, result);
   }
+  saveResult2(matchData: any): Observable<any> {console.log("SAVE ", matchData);
+    return this.http.post(this.apiUrl, matchData);
+  }
 
   getResults(): Observable<any> {
     return this.http.get(this.apiUrl);
@@ -24,5 +27,11 @@ export class ResultadoService {
     const finalResultUrl = `${this.apiUrl}/final`;
     return this.http.get(finalResultUrl);
   }
+
+  updateMatchTeams(matchId: number, equipo_local: string, equipo_visitante: string): Observable<any> {
+    const updateUrl = `${this.apiUrl}/updateTeams`;
+    return this.http.put(updateUrl, { matchId, equipo_local, equipo_visitante });
+  }
+  
 
 }

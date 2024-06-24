@@ -34,10 +34,9 @@ interface Team {
 export class FixtureComponent {
   matches: Match[] = [];
   predictions: { [key: number]: any } = {};
-  tournamentPrediction: any = {
-    campeon: '',
-    subcampeon: ''
-  };
+  campeon: any;
+  subcampeon: any;
+
 
   teamFlags: { [key: string]: string } = {
     'Argentina': 'arg.png',
@@ -59,15 +58,15 @@ export class FixtureComponent {
   };
 
   cuartosFinales: Match[] = [
-    { id: 31, fecha: "Jueves, 4/7", hora: "22:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
-    { id: 32, fecha: "Viernes, 5/7", hora: "22:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
-    { id: 33, fecha: "Sábado, 6/7", hora: "19:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
-    { id: 34, fecha: "Sábado, 6/7", hora: "22:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" }
+    { id: 45, fecha: "Jueves, 4/7", hora: "22:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
+    { id: 46, fecha: "Viernes, 5/7", hora: "22:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
+    { id: 47, fecha: "Sábado, 6/7", hora: "19:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
+    { id: 48, fecha: "Sábado, 6/7", hora: "22:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" }
   ];
 
   semifinales: Match[] = [
-    { id: 29, fecha: "Martes, 9/7", hora: "21:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
-    { id: 30, fecha: "Miércoles, 10/7", hora: "21:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" }
+    { id: 49, fecha: "Martes, 9/7", hora: "21:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" },
+    { id: 50, fecha: "Miércoles, 10/7", hora: "21:00", equipo_local: "Por definirse", equipo_visitante: "Por definirse" }
   ];
 
   constructor(private predictionService: PrediccionesService, private authService: AuthService, private resultadoService: ResultadoService , private snackBar: MatSnackBar) { }
@@ -94,7 +93,8 @@ export class FixtureComponent {
       });
 
       this.predictionService.getTorneoPrediction(documento).subscribe(prediction => {
-        this.tournamentPrediction = prediction || { campeon: '', subcampeon: '' };
+        this.campeon = prediction[0].campeon;
+        this.subcampeon = prediction[0].subcampeon;
       }, error => {
         console.error('Error al cargar la predicción del torneo', error);
       });
@@ -326,12 +326,12 @@ export class FixtureComponent {
   
       // Asignar equipos y banderas a las semifinales
       this.semifinales.forEach(semifinal => {
-        if (semifinal.id === 43) {
-          semifinal.equipo_local = cuartosGanadores[31]; // Ganador partido 1 cuartos
-          semifinal.equipo_visitante = cuartosGanadores[32]; // Ganador partido 2 cuartos
-        } else if (semifinal.id === 44) {
-          semifinal.equipo_local = cuartosGanadores[33]; // Ganador partido 3 cuartos
-          semifinal.equipo_visitante = cuartosGanadores[34]; // Ganador partido 4 cuartos
+        if (semifinal.id === 49) {
+          semifinal.equipo_local = cuartosGanadores[45]; // Ganador partido 1 cuartos
+          semifinal.equipo_visitante = cuartosGanadores[46]; // Ganador partido 2 cuartos
+        } else if (semifinal.id === 50) {
+          semifinal.equipo_local = cuartosGanadores[47]; // Ganador partido 3 cuartos
+          semifinal.equipo_visitante = cuartosGanadores[48]; // Ganador partido 4 cuartos
         }
       });
   

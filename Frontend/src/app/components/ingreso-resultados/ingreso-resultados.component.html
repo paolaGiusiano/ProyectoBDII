@@ -33,7 +33,7 @@
             <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
             <span>{{ match.equipo_visitante }}</span>
         </div>
-        <button (click)="saveResult(match.id)">Save Result</button>
+        <button (click)="saveResult(match)">Save Result</button>
     </div>
 </div>
    
@@ -62,7 +62,7 @@
          <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
          <span>{{ match.equipo_visitante }}</span>
        </div>
-       <button (click)="saveResult(match.id)">Save Result</button>
+       <button (click)="saveResult(match)">Save Result</button>
      </div>
    </div>
  
@@ -90,7 +90,7 @@
          <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
          <span>{{ match.equipo_visitante }}</span>
        </div>
-       <button (click)="saveResult(match.id)">Save Result</button>
+       <button (click)="saveResult(match)">Save Result</button>
      </div>
    </div>
 
@@ -119,7 +119,7 @@
         <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
         <span>{{ match.equipo_visitante }}</span>
       </div>
-      <button (click)="saveResult(match.id)">Save Result</button>
+      <button (click)="saveResult(match)">Save Result</button>
     </div>
   </div>
   

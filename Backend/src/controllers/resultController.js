@@ -7,8 +7,69 @@ const { connection, queryPromise } = require('../../app');
 const router = express.Router();
 
 
+router.post('/matches/results', (req, res) => {
+  const { id_partido, goles_local, goles_visitante, equipo_local, equipo_visitante } = req.body;
 
+  console.log("APP MATCH ", req.body);
 
+  const getTeamsQuery = 'SELECT equipo_local, equipo_visitante FROM compite WHERE id = ?';
+  connection.query(getTeamsQuery, [id_partido], (error, results) => {
+    if (error) {
+      console.error('Error fetching current team names:', error);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    if (results.length !== 1) {
+      return res.status(404).send('Match not found');
+    }
+
+    let equipo_local_actual = results[0].equipo_local;
+    let equipo_visitante_actual = results[0].equipo_visitante;
+
+    console.log("APP2 MATCH ", req.body, equipo_local_actual, equipo_local);
+
+    // Verificar y actualizar si los nombres son "Por definirse"
+    if (equipo_local_actual === 'Por definirse') {
+      equipo_local_actual = equipo_local; // Usar el nombre real enviado en la solicitud
+    }
+
+    if (equipo_visitante_actual === 'Por definirse') {
+      equipo_visitante_actual = equipo_visitante; // Usar el nombre real enviado en la solicitud
+    }
+
+    console.log('Updated equipos:', equipo_local_actual, equipo_visitante_actual);
+
+    const updateTeamsQuery =
+      `UPDATE compite 
+      SET 
+          equipo_local = ?, 
+          equipo_visitante = ? 
+      WHERE id = ?`;
+
+    connection.query(updateTeamsQuery, [equipo_local_actual, equipo_visitante_actual, id_partido], (error, updateResults) => {
+      if (error) {
+        console.error('Error updating team names:', error);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      // Insertar el resultado del partido en la tabla resultado
+      const insertResultQuery =
+        `INSERT INTO resultado (id_partido, goles_local, goles_visitante, fecha) 
+        SELECT ?, ?, ?, fecha FROM compite WHERE id = ?`;
+
+      connection.query(insertResultQuery, [id_partido, goles_local, goles_visitante, id_partido], (error, results) => {
+        if (error) {
+          console.error('Error inserting match result:', error);
+          return res.status(500).send('Internal Server Error');
+        }
+
+        res.status(200).json({ success: true, message: 'Result saved successfully' });
+      });
+    });
+  });
+});
+
+/*
 router.post('/matches/results', (req, res) => {
     const { id_partido, goles_local, goles_visitante } = req.body;
     const query = 'INSERT INTO resultado (id_partido, goles_local, goles_visitante, fecha) SELECT ?, ?, ?, fecha FROM compite WHERE id = ?';
@@ -21,6 +82,7 @@ router.post('/matches/results', (req, res) => {
     });
   });
   
+ */
   
 router.get('/matches/results', (req, res) => {
     const query = `

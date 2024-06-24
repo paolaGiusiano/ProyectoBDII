@@ -69,12 +69,12 @@ export class IngresoResultadosComponent implements OnInit {
         this.matches = data.filter(match => match.id <= 24);
   
         // Cuartos de final 
-        this.cuartosFinales = data.filter(match => match.id >= 31 && match.id <= 34);
+        this.cuartosFinales = data.filter(match => match.id >= 45 && match.id <= 48);
   
         // Semifinales 
-        this.semifinales = data.filter(match => match.id === 43 || match.id === 44);
+        this.semifinales = data.filter(match => match.id === 49 || match.id === 50);
         
-        this.final = data.filter(match => match.id === 42); 
+        this.final = data.filter(match => match.id === 51); 
 
         this.matches.concat(this.cuartosFinales, this.semifinales, this.final).forEach(match => {
           if (this.isLocalStorageAvailable()) {
@@ -95,18 +95,20 @@ export class IngresoResultadosComponent implements OnInit {
 
   }
 
-  saveResult(matchId: number): void {
-    const result = this.result[matchId];
-    this.resultadoService.saveResult({
-      id_partido: matchId,
+  saveResult(match: Match): void {
+    const result = this.result[match.id];
+    this.resultadoService.saveResult2({
+      id_partido: match.id,
       goles_local: result.goles_local,
       goles_visitante: result.goles_visitante,
+      equipo_local: match.equipo_local,
+      equipo_visitante: match.equipo_visitante
     }).subscribe(
       response => {
         console.log('Result saved', response);
 
         if (this.isLocalStorageAvailable()) {
-          localStorage.setItem(`result_${matchId}`, JSON.stringify(result));
+          localStorage.setItem(`result_${match.id}`, JSON.stringify(result));
         }
 
         this.snackBar.open('Resultado guardado con éxito', 'Cerrar', {
@@ -115,7 +117,7 @@ export class IngresoResultadosComponent implements OnInit {
       },
       error => {
         console.error('Error saving result:', error);
-   
+
         this.snackBar.open('Error al guardar el resultado', 'Cerrar', {
           duration: 3000,
         });
@@ -132,7 +134,7 @@ export class IngresoResultadosComponent implements OnInit {
         'C': ['Estados Unidos', 'Uruguay', 'Panamá', 'Bolivia'],
         'D': ['Brasil', 'Colombia', 'Paraguay', 'Costa Rica']
       };
-  
+      
       const teams: { [key: string]: Team } = {};
       const matchesPlayed: { [key: string]: number } = {};
   
@@ -234,12 +236,12 @@ export class IngresoResultadosComponent implements OnInit {
   
       // Asignar equipos y banderas a las semifinales
       this.semifinales.forEach(semifinal => {
-        if (semifinal.id === 43) {
-          semifinal.equipo_local = cuartosGanadores[31]; // Ganador partido 1 cuartos
-          semifinal.equipo_visitante = cuartosGanadores[32]; // Ganador partido 2 cuartos
-        } else if (semifinal.id === 44) {
-          semifinal.equipo_local = cuartosGanadores[33]; // Ganador partido 3 cuartos
-          semifinal.equipo_visitante = cuartosGanadores[34]; // Ganador partido 4 cuartos
+        if (semifinal.id === 49) {
+          semifinal.equipo_local = cuartosGanadores[45]; // Ganador partido 1 cuartos
+          semifinal.equipo_visitante = cuartosGanadores[46]; // Ganador partido 2 cuartos
+        } else if (semifinal.id === 50) {
+          semifinal.equipo_local = cuartosGanadores[47]; // Ganador partido 3 cuartos
+          semifinal.equipo_visitante = cuartosGanadores[48]; // Ganador partido 4 cuartos
         }
       });
   
@@ -269,9 +271,9 @@ export class IngresoResultadosComponent implements OnInit {
   
       // Asignar equipos a la final
       this.final.forEach(final => {
-        if (final.id === 42) { // ID del partido de la final
-          final.equipo_local = semifinalistas[43]; // Equipo ganador de la primera semifinal
-          final.equipo_visitante = semifinalistas[44]; // Equipo ganador de la segunda semifinal
+        if (final.id === 51) { // ID del partido de la final
+          final.equipo_local = semifinalistas[49]; // Equipo ganador de la primera semifinal
+          final.equipo_visitante = semifinalistas[50]; // Equipo ganador de la segunda semifinal
         }
       });
   
