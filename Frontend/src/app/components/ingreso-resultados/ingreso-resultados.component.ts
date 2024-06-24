@@ -32,6 +32,7 @@ export class IngresoResultadosComponent implements OnInit {
   matches: Match[] = [];
   cuartosFinales: Match[] = [];
   semifinales: Match[] = [];
+  final: Match[] = [];
   result: { [key: number]: { goles_local: number, goles_visitante: number } } = {};
 
   // Mapa de equipos a nombres de archivos de banderas
@@ -71,10 +72,11 @@ export class IngresoResultadosComponent implements OnInit {
         this.cuartosFinales = data.filter(match => match.id >= 31 && match.id <= 34);
   
         // Semifinales 
-        this.semifinales = data.filter(match => match.id === 29 || match.id === 30);
+        this.semifinales = data.filter(match => match.id === 43 || match.id === 44);
         
+        this.final = data.filter(match => match.id === 42); 
 
-        this.matches.concat(this.cuartosFinales, this.semifinales).forEach(match => {
+        this.matches.concat(this.cuartosFinales, this.semifinales, this.final).forEach(match => {
           if (this.isLocalStorageAvailable()) {
             const savedResult = localStorage.getItem(`result_${match.id}`);
             if (savedResult) {
@@ -89,6 +91,7 @@ export class IngresoResultadosComponent implements OnInit {
       });
       this.actualizarCuartos();
       this.actualizarSemifinal();
+      this.actualizarFinal();
 
   }
 
@@ -231,10 +234,10 @@ export class IngresoResultadosComponent implements OnInit {
   
       // Asignar equipos y banderas a las semifinales
       this.semifinales.forEach(semifinal => {
-        if (semifinal.id === 29) {
+        if (semifinal.id === 43) {
           semifinal.equipo_local = cuartosGanadores[31]; // Ganador partido 1 cuartos
           semifinal.equipo_visitante = cuartosGanadores[32]; // Ganador partido 2 cuartos
-        } else if (semifinal.id === 30) {
+        } else if (semifinal.id === 44) {
           semifinal.equipo_local = cuartosGanadores[33]; // Ganador partido 3 cuartos
           semifinal.equipo_visitante = cuartosGanadores[34]; // Ganador partido 4 cuartos
         }
@@ -245,6 +248,37 @@ export class IngresoResultadosComponent implements OnInit {
     });
   }
   
+  
+  actualizarFinal(): void {
+    this.resultadoService.getResults().subscribe(results => {
+      const semifinalistas: { [key: string]: string } = {};
+  
+      // Obtener los equipos ganadores de las semifinales
+      this.semifinales.forEach(semifinal => {
+        const result = results.find((r: { id_partido: number }) => r.id_partido === semifinal.id);
+        if (result) {
+          if (result.goles_local > result.goles_visitante) {
+            semifinalistas[semifinal.id] = semifinal.equipo_local;
+          } else {
+            semifinalistas[semifinal.id] = semifinal.equipo_visitante;
+          }
+        } else {
+          console.error(`No se encontró el resultado para el partido de semifinal con ID ${semifinal.id}`);
+        }
+      });
+  
+      // Asignar equipos a la final
+      this.final.forEach(final => {
+        if (final.id === 42) { // ID del partido de la final
+          final.equipo_local = semifinalistas[43]; // Equipo ganador de la primera semifinal
+          final.equipo_visitante = semifinalistas[44]; // Equipo ganador de la segunda semifinal
+        }
+      });
+  
+    }, error => {
+      console.error('Error al obtener los resultados de las semifinales', error);
+    });
+  }
   
 
 

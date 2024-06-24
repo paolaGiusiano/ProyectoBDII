@@ -27,8 +27,36 @@
           </span>
         </td>
       </tr>
+      <tr>
+        <td>
+          Campeón: {{ campeonatoPrediccion.campeon }}
+        </td>
+        <td>
+          <span *ngIf="campeonatoPrediccion.campeon !== 'Resultado pendiente'">
+            {{ puntosCampeon }}
+          </span>
+          <span *ngIf="campeonatoPrediccion.campeon === 'Resultado pendiente'">
+            Resultado pendiente
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Subcampeón: {{ campeonatoPrediccion.subcampeon }}
+        </td>
+        <td>
+          <span *ngIf="campeonatoPrediccion.subcampeon !== 'Resultado pendiente'">
+            {{ puntosSubcampeon }}
+          </span>
+          <span *ngIf="campeonatoPrediccion.subcampeon === 'Resultado pendiente'">
+            Resultado pendiente
+          </span>
+        </td>
+      </tr>
     </tbody>
   </table>
+
+ 
 
   <div class="total-container">
     <p>Total: {{ puntosTotales }}</p>

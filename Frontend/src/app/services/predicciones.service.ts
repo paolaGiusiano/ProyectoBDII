@@ -34,7 +34,7 @@ export class PrediccionesService {
   }
 
   getTorneoPrediction(documento: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/tournament-prediction/${documento}`);
+    return this.http.get<any>(`${this.baseUrl}/prediction/tournament-prediction/${documento}`);
   }
 
 

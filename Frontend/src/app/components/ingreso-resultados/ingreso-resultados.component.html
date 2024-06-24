@@ -93,6 +93,37 @@
        <button (click)="saveResult(match.id)">Save Result</button>
      </div>
    </div>
+
+
+   <div class="final">
+    <h2>Final</h2>
+    <div *ngFor="let match of final" class="match">
+      <div class="match-date-time">
+        <span class="match-date">{{ formatDate(match.fecha) }}</span>
+        <span class="match-time">{{ formatTime(match.hora) }}</span>
+      </div>
+      <div class="team team-local">
+        <span>{{ match.equipo_local }}</span>
+        <img [src]="getFlagUrl(match.equipo_local)" alt="{{ match.equipo_local }} flag" class="flag">
+      </div>
+      <div class="score-inputs">
+        <label>
+           <input type="number" [(ngModel)]="result[match.id].goles_local">
+        </label>
+        -
+        <label>
+           <input type="number" [(ngModel)]="result[match.id].goles_visitante">
+        </label>
+      </div>
+      <div class="team team-visitante">
+        <img [src]="getFlagUrl(match.equipo_visitante)" alt="{{ match.equipo_visitante }} flag" class="flag">
+        <span>{{ match.equipo_visitante }}</span>
+      </div>
+      <button (click)="saveResult(match.id)">Save Result</button>
+    </div>
+  </div>
+  
+   
  
   
    </div>

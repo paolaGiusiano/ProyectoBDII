@@ -136,6 +136,21 @@ router.get('/predictions', (req, res) => {
     });
 });
 
+// Ruta para obtener las predicciones del campeonato por documento del alumno
+router.get('/tournament-prediction/:documento', (req, res) => {
+  const documento = req.params.documento;
+
+  const query = 'SELECT * FROM prediccion_campeonato WHERE documento_alumno = ?';
+  connection.query(query, [documento], (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error.sqlMessage);
+      return res.status(500).json({ error: 'Error de base de datos al obtener las predicciones del campeonato', details: error.sqlMessage });
+    }
+    console.log("Resultados de predicciones del campeonato:", results);
+    res.json(results);
+  });
+});
+
 
   
 function obtenerHoraInicioPartido(id_partido) {

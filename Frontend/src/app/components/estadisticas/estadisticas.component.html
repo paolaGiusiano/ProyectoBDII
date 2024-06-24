@@ -7,11 +7,13 @@
 
 <div class="container">
 
-  <label for="carrera">Filtrar por carrera:</label>
-  <select id="carrera" (change)="filtrarPorCarrera($event)">
-    <option value="0">Todas</option>
-    <option *ngFor="let carrera of carreras" [value]="carrera.id">{{ carrera.nombre }}</option>
-  </select>
+  <!-- HTML -->
+<label for="carrera">Filtrar por carrera:</label>
+<select id="carrera" (change)="filtrarPorCarrera($event)">
+  <option value="0">Todas</option>
+  <option *ngFor="let carrera of carreras" [value]="carrera.id">{{ carrera.nombre }}</option>
+</select>
+
 
   <table class="table">
     <thead>

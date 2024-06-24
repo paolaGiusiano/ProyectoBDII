@@ -19,6 +19,9 @@ export class PuntajesComponent implements OnInit {
   resultados: any[] = [];
   partidos: any[] = []; // Variable para almacenar los partidos
   puntosTotales = 0;
+  campeonatoPrediccion: any = { campeon: 'Resultado pendiente', subcampeon: 'Resultado pendiente' };
+  puntosCampeon = 0;
+  puntosSubcampeon = 0;
 
   constructor(private resultadoService: ResultadoService,
               private prediccionesService: PrediccionesService,
@@ -62,6 +65,19 @@ export class PuntajesComponent implements OnInit {
         console.error('Error al obtener los partidos:', error);
       }
     );
+
+
+    // Obtener predicciones de campeonato
+    this.prediccionesService.getTorneoPrediction(documento).subscribe(
+      (data) => {
+        this.campeonatoPrediccion = data;
+        this.actualizarPuntajeCampeonato(); // Calcular puntaje de campeonato una vez se obtenga la predicción
+      },
+      (error) => {
+        console.error('Error al obtener la predicción del campeonato:', error);
+      }
+    );
+
   }
 
  
@@ -79,6 +95,7 @@ export class PuntajesComponent implements OnInit {
         }
       }
     });
+   
     this.actualizarPuntajeTotal();
   }
 
@@ -117,6 +134,36 @@ export class PuntajesComponent implements OnInit {
   esResultadoDisponible(prediccion: any): boolean {
     const resultadoPartido = this.resultados.find(resultado => resultado.id_partido === prediccion.id_partido);
     return resultadoPartido !== undefined; // Devuelve true si se encontró el resultado del partido
+  }
+
+  actualizarPuntajeCampeonato(): void {
+    // Actualizar puntaje de campeonato en base de datos
+    const documento = this.authService.getDocumento();
+    if (documento) {
+      const puntosCampeon = (this.campeonatoPrediccion.campeon === 'Resultado pendiente') ? 0 : 10;
+      const puntosSubcampeon = (this.campeonatoPrediccion.subcampeon === 'Resultado pendiente') ? 0 : 5;
+      //this.puntosCampeonato = puntosCampeon + puntosSubcampeon;
+      this.puntosCampeon = puntosCampeon;
+      this.puntosSubcampeon = puntosSubcampeon;
+      this.puntajeService.updatePuntajeTotal(documento, this.puntosCampeon).subscribe(
+        response => {
+          console.log('Puntaje de campeon actualizado:', response);
+        },
+        error => {
+          console.error('Error al actualizar el puntaje de campeon:', error);
+        }
+      );
+      this.puntajeService.updatePuntajeTotal(documento, this.puntosSubcampeon).subscribe(
+        response => {
+          console.log('Puntaje de subcampeon actualizado:', response);
+        },
+        error => {
+          console.error('Error al actualizar el puntaje de subcampeon:', error);
+        }
+      );
+      this.puntosTotales += puntosCampeon + puntosSubcampeon;
+         
+    }
   }
  
 

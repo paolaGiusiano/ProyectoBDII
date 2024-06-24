@@ -326,10 +326,10 @@ export class FixtureComponent {
   
       // Asignar equipos y banderas a las semifinales
       this.semifinales.forEach(semifinal => {
-        if (semifinal.id === 29) {
+        if (semifinal.id === 43) {
           semifinal.equipo_local = cuartosGanadores[31]; // Ganador partido 1 cuartos
           semifinal.equipo_visitante = cuartosGanadores[32]; // Ganador partido 2 cuartos
-        } else if (semifinal.id === 30) {
+        } else if (semifinal.id === 44) {
           semifinal.equipo_local = cuartosGanadores[33]; // Ganador partido 3 cuartos
           semifinal.equipo_visitante = cuartosGanadores[34]; // Ganador partido 4 cuartos
         }

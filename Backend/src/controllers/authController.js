@@ -79,11 +79,11 @@ router.post('/register', async (req, res) => {
                 const studentQuery = 'INSERT INTO alumno (documento, anio_ingreso, id_carrera) VALUES (?, ?, ?)';
                 await queryPromise(studentQuery, [documento, anio_ingreso, id_carrera]);
               }
-  
+           
               // Insertar en la tabla prediccion_campeonato
               const predictionQuery = 'INSERT INTO prediccion_campeonato (documento_alumno, campeon, subcampeon) VALUES (?, ?, ?)';
               await queryPromise(predictionQuery, [documento, campeon, subcampeon]);
-  
+
               connection.commit((err) => {
                 if (err) {
                   console.error('Error al hacer commit de la transacción:', err);

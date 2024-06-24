@@ -62,8 +62,9 @@ CREATE TABLE IF NOT EXISTS `compite` (
   FOREIGN KEY (`equipo_visitante`) REFERENCES `equipo` (`pais`)
 );
 
+
 CREATE TABLE IF NOT EXISTS `prediccion` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(100) NOT NULL AUTO_INCREMENT,
   `documento_alumno` VARCHAR(8) NOT NULL,
   `id_partido` INT NOT NULL,
   `prediccion_local` INT(11) NOT NULL,
@@ -73,18 +74,19 @@ CREATE TABLE IF NOT EXISTS `prediccion` (
   FOREIGN KEY (`id_partido`) REFERENCES `compite`(`id`)
 );
 
+
 CREATE TABLE IF NOT EXISTS `prediccion_campeonato` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `documento_alumno` VARCHAR(8) NOT NULL,
+  `documento_alumno` VARCHAR(8) PRIMARY KEY ,
   `campeon` VARCHAR(50) NOT NULL,
   `subcampeon` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`id`),
   FOREIGN KEY (`documento_alumno`) REFERENCES `alumno`(`documento`),
   FOREIGN KEY (`campeon`) REFERENCES `equipo`(`pais`),
   FOREIGN KEY (`subcampeon`) REFERENCES `equipo`(`pais`)
 );
 
 
+
+/*
 CREATE TABLE IF NOT EXISTS `plantel` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `nombre` VARCHAR(100) NOT NULL,
@@ -92,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `plantel` (
   `equipo_pais`  VARCHAR(50) NOT NULL,
   FOREIGN KEY (`equipo_pais`) REFERENCES `equipo`(`pais`)
 );
-
+*/
 
 CREATE TABLE IF NOT EXISTS `resultado` (
   `id_partido` int(25) NOT NULL,
@@ -105,15 +107,13 @@ CREATE TABLE IF NOT EXISTS `resultado` (
 
 
 CREATE TABLE IF NOT EXISTS `PuntajeTotal` (
-    `id`  INT AUTO_INCREMENT PRIMARY KEY,
-    `documento_alumno` varchar(8) NOT NULL,
+    `documento_alumno` varchar(8) PRIMARY KEY,
     `puntaje_total`  INT,
     UNIQUE(`documento_alumno`),
     FOREIGN KEY (`documento_alumno` ) REFERENCES `alumno`(`documento` )
 );
 
-
-
+/*
 CREATE TABLE IF NOT EXISTS `notificaciones` (
   `id`  INT AUTO_INCREMENT PRIMARY KEY,
   `documento_alumno` varchar(8) NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `notificaciones` (
   `fecha`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`documento_alumno` ) REFERENCES alumno(`documento` )
 );
-
+*/
 
 CREATE TABLE IF NOT EXISTS `premio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -694,22 +694,29 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 ('2024-07-06', '22:00', 'Por definirse', 'Por definirse');
 
 
+USE `pencaucu`;
 -- Semifinal
 INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
 ('2024-07-09', '21:00', 'Por definirse', 'Por definirse'),
 ('2024-07-10', '21:00', 'Por definirse', 'Por definirse');
 
 
+-- Final
+INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALUES
+('2024-07-14', '21:00', 'Por definirse', 'Por definirse');
 
 
-DELETE FROM prediccion;
-DELETE FROM alumno;
-DELETE FROM login;
-DELETE FROM usuario;
+
 USE `pencaucu`;
 
 
-SELECT * FROM administrador;
+USE `pencaucu`;
+DELETE FROM resultado;
+DELETE FROM login;
+DELETE FROM usuario;
+
+USE `pencaucu`;
+SELECT * FROM prediccion_campeonato;
 SELECT * FROM alumno;
 SELECT * FROM usuario;
 

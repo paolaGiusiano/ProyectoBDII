@@ -17,7 +17,6 @@ router.get('/estadisticas', (req, res) => {
       JOIN carrerra c ON a.id_carrera = c.id
       JOIN PuntajeTotal pt ON a.documento = pt.documento_alumno;
     `;
-  
     connection.query(query, (error, results) => {
       if (error) {
         console.error('Error fetching statistics:', error);

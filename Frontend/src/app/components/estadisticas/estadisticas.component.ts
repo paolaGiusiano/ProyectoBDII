@@ -64,7 +64,7 @@ export class EstadisticasComponent {
   filtrarPorCarrera(event: any) {
     const idCarrera = parseInt(event.target.value, 10);
     if (idCarrera === 0) {
-      this.filteredEstadisticas = this.estadisticas; // Mostrar todas las estadísticas si se selecciona 'Todas'
+      this.filteredEstadisticas = this.estadisticas;
     } else {
       this.filteredEstadisticas = this.estadisticas.filter(e => e.id_carrera === idCarrera);
     }
