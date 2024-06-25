@@ -8,15 +8,15 @@ const router = express.Router();
 
 
 
+
 router.post('/predictions', async (req, res) => {
-    const { id_partido, prediccion_local, prediccion_visitante } = req.body;
-    const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
-  
-    if (!documento_alumno || !id_partido || prediccion_local === undefined || prediccion_visitante === undefined) {
+  const { id_partido, prediccion_local, prediccion_visitante } = req.body;
+  const documento_alumno = req.body.documento_alumno || req.headers['documento'] || null;
+  if (!documento_alumno || !id_partido || prediccion_local === undefined || prediccion_visitante === undefined) {
       return res.status(400).json({ error: 'Faltan campos obligatorios' });
-    }
-  
-    try {
+  }
+
+  try {
       // Verificar si ya existe una predicción para este partido por este alumno
       const checkPredictionQuery = 'SELECT * FROM prediccion WHERE documento_alumno = ? AND id_partido = ?';
       const [error, results] = await new Promise((resolve) => {
@@ -24,6 +24,7 @@ router.post('/predictions', async (req, res) => {
           resolve([error, results]);
         });
       });
+
       const horaInicioPartido = await obtenerHoraInicioPartido(id_partido);
       const horaActual = new Date();
       const diferenciaHoras = (horaInicioPartido - horaActual) / (1000 * 60 * 60);
@@ -49,51 +50,58 @@ router.post('/predictions', async (req, res) => {
           return res.status(400).json({ error: 'No se puede realizar la predicción' });
         }
       }
-  
-  
-      
-      if (error) {
-        console.error('Error de base de datos al verificar la predicción:', error.sqlMessage);
-        return res.status(500).json({ error: 'Error de base de datos al verificar la predicción', details: error.sqlMessage });
-      }
-  
+   
+      // Si ya existe una predicción, manejar el caso según tus requerimientos
       if (results.length > 0) {
-        // Si existe una predicción, actualizarla si es posible
-        const updatePredictionQuery = 'UPDATE prediccion SET prediccion_local = ?, prediccion_visitante = ? WHERE documento_alumno = ? AND id_partido = ?';
+          return res.status(400).json({ error: 'Ya existe una predicción para este partido ' });
+      }
+
+      // Insertar nueva predicción
+      const insertPredictionQuery = 'INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante) VALUES (?, ?, ?, ?)';
+      const [insertError] = await queryPromise(insertPredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante]);
+
+      if (insertError) {
+          console.error('Error al guardar la predicción:', insertError.sqlMessage);
+          return res.status(500).json({ error: 'Error al guardar la predicción', details: insertError.sqlMessage });
+      }
+
+      return res.status(200).json({ message: 'Predicción guardada con éxito' });
+  } catch (error) {
+      console.error('Error:', error);
+      return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+});
+
+
+router.put('/predictions/:id', async (req, res) => {
+  const { id_partido, prediccion_local, prediccion_visitante, documento_alumno } = req.body;
+
+  if (!id_partido || prediccion_local === undefined || prediccion_visitante === undefined || !documento_alumno) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  try {
+
+      // Actualizar la predicción
+      const updatePredictionQuery = 'UPDATE prediccion SET prediccion_local = ?, prediccion_visitante = ? WHERE documento_alumno = ? AND id_partido = ?';
         const [updateError] = await new Promise((resolve) => {
           connection.query(updatePredictionQuery, [prediccion_local, prediccion_visitante, documento_alumno, id_partido], (error, results) => {
             resolve([error, results]);
           });
-        });
-  
-        if (updateError) {
+      });
+
+      if (updateError) {
           console.error('Error al actualizar la predicción:', updateError.sqlMessage);
           return res.status(500).json({ error: 'Error al actualizar la predicción', details: updateError.sqlMessage });
-        }
-  
-        return res.status(200).json({ message: 'Predicción actualizada con éxito' });
-      } else {
-        // Si no existe una predicción, insertar una nueva
-        const insertPredictionQuery = 'INSERT INTO prediccion (documento_alumno, id_partido, prediccion_local, prediccion_visitante) VALUES (?, ?, ?, ?)';
-        const [insertError] = await new Promise((resolve) => {
-          connection.query(insertPredictionQuery, [documento_alumno, id_partido, prediccion_local, prediccion_visitante], (error, results) => {
-            resolve([error, results]);
-          });
-        });
-  
-        if (insertError) {
-          console.error('Error al guardar la predicción:', insertError.sqlMessage);
-          return res.status(500).json({ error: 'Error al guardar la predicción', details: insertError.sqlMessage });
-        }
-  
-        return res.status(200).json({ message: 'Predicción guardada con éxito' });
       }
-    } catch (error) {
+
+      return res.status(200).json({ message: 'Predicción actualizada con éxito' });
+  } catch (error) {
       console.error('Error:', error);
       return res.status(500).json({ error: 'Internal Server Error', details: error.message });
-    }
+  }
 });
- 
+
   
 
 

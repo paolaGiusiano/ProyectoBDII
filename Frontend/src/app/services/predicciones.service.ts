@@ -41,14 +41,19 @@ export class PrediccionesService {
   deletePrediction(id_prediccion: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/predictions/${id_prediccion}`);
   }
-
+/*
   //modificar/actualizar una prediccion
   updatePrediction(predictionData: any): Observable<any> {
     const url = `${this.baseUrl}/prediction/predictions/${predictionData.id}`;
     return this.http.put(url, predictionData);
-  }
+  }*/
  
- 
+    updatePrediction(predictionData: any): Observable<any> {
+      const url = `${this.baseUrl}/prediction/predictions/${predictionData.id}`;
+      console.log("SERVICE ", predictionData);
+      return this.http.put(url, predictionData);
+    }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '¡Error desconocido!';
     if (error.error instanceof ErrorEvent) {
