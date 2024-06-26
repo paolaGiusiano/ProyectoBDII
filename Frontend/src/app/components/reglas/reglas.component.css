@@ -1,37 +1,93 @@
-/* Estilos para el contenedor principal */
+/* Estilos generales */
+body {
+  background-color: #f0f4f8;
+  color: #444;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+}
+
 .container {
-    max-width: 900px; /* Ampliación del ancho */
-    margin: 0 auto; /* Centrar */
-    padding: 40px 20px; /* Aumento del espacio interno */
-    text-align: center; /* Centrar el texto */
-  }
-  
-  /* Estilos para los títulos */
-  .main-heading, h2 {
-    color: rgba(49,65,111,255); /* Color del texto */
-    font-family: 'Arial', sans-serif; /* Familia de fuentes */
-    font-weight: bold; /* Negrita */
-  }
-  
-  /* Estilos para las tarjetas */
-  .rule-card {
-    margin-top: 50px; /* Espacio entre tarjetas */
-    background: #fff; /* Fondo de la tarjeta */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
-    padding: 30px; 
-    text-align: left; 
-  }
-  
-  /* Estilos  párrafos */
-  p {
-    margin-bottom: 20px; 
-    line-height: 1.6; 
-  }
-  
-  /* Estilos para el mensaje de buena suerte */
-  .good-luck {
-    font-style: italic; 
-    color: #666; 
-    margin-top: 40px; 
-  }
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.rule-card {
+  margin-top: 50px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: left;
+}
+
+h2 {
+  color: #336699;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.rule-number {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #336699;
+}
+
+.rule-point {
+  margin-bottom: 15px;
+}
+
+.point-description p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Estilos para el enlace de navegación */
+.navbar {
+  background-color: rgba(49, 65, 111, 255);
+  padding: 15px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  max-width: 1000px;
+  height: 40px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 50px;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #f2f2f2;
+}
+
+/* Estilos para el logo */
+.logo {
+  position: absolute;
+  top: -85px;
+  left: 45px;
+  width: 210px;
+  height: 210px;
+}
+
+/* Estilos para el mensaje de buena suerte */
+.good-luck {
+  font-style: italic;
+  color: #620404a1;
+  margin-top: 30px;
+}

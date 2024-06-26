@@ -4,8 +4,7 @@
 2.	Acceder al directorio del Frontend.
 
 
-3.	Ejecutar el siguiente comando para instalar las dependencias necesarias: 
-npm install --legacy-peer-deps
+3.	Ejecutar el siguiente comando para instalar las dependencias necesarias:  npm install --legacy-peer-deps
 
 4.	Iniciar el Frontend con el siguiente comando: ng serve
 
