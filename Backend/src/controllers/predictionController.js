@@ -32,9 +32,11 @@ router.post('/predictions', async (req, res) => {
       // Obtener la fecha del partido para comparar con la fecha actual
       const fechaPartido = await obtenerFechaPartido(id_partido);
       const fechaActual = new Date();
-
+      const fechaPartidoStartOfDay = new Date(fechaPartido.setHours(0, 0, 0, 0));
+      const fechaActualStartOfDay = new Date(fechaActual.setHours(0, 0, 0, 0));
+      
       // Verificar si ya pasó la fecha del partido
-      if (fechaPartido < fechaActual) {
+      if (fechaPartidoStartOfDay < fechaActualStartOfDay) {
         if (results.length > 0) {
           return res.status(400).json({ error: 'No se puede modificar la predicción' });
         } else {
@@ -83,7 +85,7 @@ router.put('/predictions/:id', async (req, res) => {
   }
  
   try {
-
+   
       // Actualizar la predicción
       const updatePredictionQuery = 'UPDATE prediccion SET prediccion_local = ?, prediccion_visitante = ? WHERE documento_alumno = ? AND id_partido = ?';
         const [updateError] = await new Promise((resolve) => {
@@ -204,7 +206,7 @@ async function obtenerFechaPartido(id_partido) {
         if (error) {
           reject(error);
         } else {
-          if (results.length > 0) {
+          if (results.length > 0) {console.log("FECHA ",results.fecha );
             resolve(new Date(results[0].fecha));
           } else {
             reject(new Error(`No se encontró ningún partido con id_partido = ${id_partido}`));

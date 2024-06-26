@@ -224,8 +224,8 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
-DELETE FROM `prediccion`
-WHERE `id_partido` = 7;
+DELETE FROM `compite`
+WHERE `id` = 53;
 
 
 
