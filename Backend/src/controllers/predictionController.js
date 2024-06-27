@@ -206,7 +206,7 @@ async function obtenerFechaPartido(id_partido) {
         if (error) {
           reject(error);
         } else {
-          if (results.length > 0) {console.log("FECHA ",results.fecha );
+          if (results.length > 0) {
             resolve(new Date(results[0].fecha));
           } else {
             reject(new Error(`No se encontró ningún partido con id_partido = ${id_partido}`));

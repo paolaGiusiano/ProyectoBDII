@@ -1,46 +1,46 @@
 .login-container {
-  background-image: url('https://imgs.elpais.com.uy/dims4/default/0bd5c85/2147483647/strip/false/crop/2240x1400+0+0/resize/1200x750!/quality/90/?url=https%3A%2F%2Fel-pais-uruguay-production-web.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fuploads%2F2020%2F11%2F27%2F5fc18a8828c65.jpeg');
-  background-size: cover;
-  background-position: center;
+  background-color: rgba(235, 233, 233, 0.393); /* Dark background to make the white text visible */
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, ); 
+  
 }
 
 .login-content {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 110px; 
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
+  padding: 110px;
+  border-radius: 10px;
+  background: url('https://acdn.mitiendanube.com/stores/001/736/624/products/art11741-24901-cd709c0748550fabbd16238680549273-640-0.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.2);
+}
 
 .login-content h2 {
   text-align: center;
-  margin-top: -40px;
+  margin-top: -60px;
+  color: white;
+  font-size: 1.8em; 
+  
 }
 
 .login-content form {
-  max-width: 500px; 
-  width: 100%; 
+  max-width: 500px;
+  width: 100%;
   margin: 0 auto;
   margin-left: -60px;
 }
 
-
-
 .btn-container {
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 .btn-container button {
-  width: 100%;
+  width: 50%;
 }
 
 .form-control {
-  width: 150%; 
+  width: 120%;
 }
 
 .form-group {
@@ -49,17 +49,19 @@
 
 .form-label {
   margin-top: 15px;
+  color: white;
 }
 
 .text-danger {
   color: red;
 }
 
-
 .register-link {
   margin-top: 20px;
   text-align: center;
-  margin-left: -60px;
+  margin-left: -180px;
+  color: white;
+  font-size: 1.0em;
 }
 
 .register-link a {
@@ -71,4 +73,7 @@
   text-decoration: underline;
 }
 
-  
+.logo {
+  max-width: 350px; /* Adjust the size of the logo */
+  margin-top: -210px;
+}

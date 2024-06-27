@@ -224,18 +224,9 @@ INSERT INTO `compite` (`fecha`, `hora`, `equipo_local`, `equipo_visitante`) VALU
 
 
 USE `pencaucu`;
-DELETE FROM `compite`
-WHERE `id` = 53;
-
-
 
 USE `pencaucu`;
-DELETE FROM resultado;
-DELETE FROM compite;
-DELETE FROM usuario;
-
-USE `pencaucu`;
-SELECT * FROM compite;
+SELECT * FROM usuario;
 SELECT * FROM resultado;
 SELECT * FROM usuario;
 
